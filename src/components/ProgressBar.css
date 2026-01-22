@@ -1,0 +1,105 @@
+.progress-bar-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    padding: 1rem 1.25rem;
+    background: var(--card-bg);
+    border-radius: var(--card-radius);
+    border: var(--card-border);
+    box-shadow: var(--card-shadow);
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.progress-text {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.progress-percentage {
+    font-size: 0.85rem;
+    color: var(--accent-success);
+    font-weight: 700;
+}
+
+.progress-track {
+    height: 10px;
+    background-color: var(--bg-tertiary);
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--gradient-success);
+    border-radius: 5px;
+    transition: width 0.3s ease;
+    position: relative;
+}
+
+/* Animated shine effect */
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.3) 50%,
+            transparent 100%);
+    animation: shine 1.5s infinite;
+}
+
+@keyframes shine {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.progress-cancel-btn {
+    align-self: flex-end;
+    padding: 0.4rem 1rem;
+    font-size: 0.8rem;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.progress-cancel-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* 深色模式 */
+:root.dark .progress-bar-container {
+    background: var(--card-bg);
+    border: var(--card-border);
+}
+
+:root.dark .progress-text {
+    color: var(--text-primary);
+}
+
+:root.dark .progress-percentage {
+    color: var(--accent-success);
+}
+
+:root.dark .progress-track {
+    background-color: var(--bg-tertiary);
+}

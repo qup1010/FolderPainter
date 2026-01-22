@@ -1,0 +1,147 @@
+/* PromptListView 样式 */
+
+.prompt-list-view {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.prompt-list-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+}
+
+.prompt-list-header .header-icon {
+  font-size: 18px;
+}
+
+.prompt-list-header .header-title {
+  font-weight: 600;
+  color: var(--text-primary, #1f2937);
+}
+
+.prompt-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.prompt-card {
+  background: var(--bg-secondary, #f8f9fa);
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 10px;
+  padding: 12px;
+  transition: all 0.2s ease;
+}
+
+.prompt-card:hover {
+  border-color: var(--primary-color, #6366f1);
+}
+
+.prompt-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.prompt-card-header .folder-index {
+  font-weight: 600;
+  color: var(--primary-color, #6366f1);
+  font-size: 14px;
+}
+
+.prompt-card-header .folder-name {
+  flex: 1;
+  font-weight: 500;
+  color: var(--text-primary, #1f2937);
+}
+
+.prompt-card-header .edit-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.prompt-card-header .edit-btn:hover {
+  opacity: 1;
+}
+
+.prompt-content {
+  font-size: 13px;
+  color: var(--text-secondary, #4b5563);
+  background: rgba(0, 0, 0, 0.03);
+  padding: 10px;
+  border-radius: 6px;
+  word-break: break-word;
+  line-height: 1.5;
+}
+
+.prompt-content .no-prompt {
+  color: var(--text-tertiary, #9ca3af);
+  font-style: italic;
+}
+
+.prompt-edit-area {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.prompt-edit-area textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 60px;
+}
+
+.prompt-edit-area textarea:focus {
+  outline: none;
+  border-color: var(--primary-color, #6366f1);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.edit-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.edit-actions button {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.edit-actions .save-btn {
+  background: var(--primary-color, #6366f1);
+  color: white;
+  border: none;
+}
+
+.edit-actions .save-btn:hover {
+  background: #4f46e5;
+}
+
+.edit-actions .cancel-btn {
+  background: transparent;
+  color: var(--text-secondary, #6b7280);
+  border: 1px solid var(--border-color, #e5e7eb);
+}
+
+.edit-actions .cancel-btn:hover {
+  background: var(--bg-secondary, #f3f4f6);
+}

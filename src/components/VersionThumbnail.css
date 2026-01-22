@@ -1,0 +1,225 @@
+/* VersionThumbnail 样式 */
+
+.version-thumbnail {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-color: #f5f5f5;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.version-thumbnail:hover {
+  border-color: #ccc;
+}
+
+.version-thumbnail.selected {
+  border-color: #396cd8;
+}
+
+.version-thumbnail.generating {
+  border-color: #ff9800;
+}
+
+.version-thumbnail.error {
+  border-color: #f44336;
+}
+
+/* 缩略图 */
+.thumbnail-image {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumbnail-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumbnail-loading,
+.thumbnail-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.thumbnail-loading .spinner {
+  animation: spin 1s linear infinite;
+  font-size: 1.25rem;
+}
+
+.thumbnail-error span {
+  font-size: 1.25rem;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 版本号 */
+.version-number {
+  position: absolute;
+  bottom: 2px;
+  left: 2px;
+  font-size: 0.625rem;
+  padding: 1px 4px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border-radius: 3px;
+}
+
+/* 操作按钮 - 2x2 网格布局 */
+.thumbnail-actions {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.version-thumbnail:hover .thumbnail-actions {
+  opacity: 1;
+}
+
+.thumbnail-actions .action-btn {
+  width: 16px;
+  height: 16px;
+  border: none;
+  border-radius: 3px;
+  font-size: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.thumbnail-actions .action-btn.zoom {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+
+.thumbnail-actions .action-btn.zoom:hover {
+  background-color: #2196f3;
+}
+
+.thumbnail-actions .action-btn.apply {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.thumbnail-actions .action-btn.apply:hover {
+  background-color: #388e3c;
+}
+
+.thumbnail-actions .action-btn.delete {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+
+.thumbnail-actions .action-btn.delete:hover {
+  background-color: #f44336;
+}
+
+.thumbnail-actions .action-btn.removebg {
+  background-color: rgba(156, 39, 176, 0.8);
+  color: #fff;
+}
+
+.thumbnail-actions .action-btn.removebg:hover {
+  background-color: #7b1fa2;
+}
+
+.thumbnail-actions .action-btn.removebg:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 抠图处理中状态 */
+.version-thumbnail.processing {
+  border-color: #9c27b0;
+}
+
+.thumbnail-processing {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(156, 39, 176, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: #fff;
+  font-size: 0.625rem;
+}
+
+.thumbnail-processing .spinner {
+  animation: spin 1s linear infinite;
+}
+
+/* 选中标记 */
+.selected-mark {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 16px;
+  height: 16px;
+  background-color: #396cd8;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.625rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 深色模式 */
+@media (prefers-color-scheme: dark) {
+  .version-thumbnail {
+    background-color: #333;
+  }
+
+  .version-thumbnail:hover {
+    border-color: #555;
+  }
+
+  .version-thumbnail.selected {
+    border-color: #4a7fe8;
+  }
+
+  .selected-mark {
+    background-color: #4a7fe8;
+  }
+}
+
+/* 支持手动切换的深色模式 */
+:root.dark .version-thumbnail {
+  background-color: #333;
+}
+
+:root.dark .version-thumbnail:hover {
+  border-color: #555;
+}
+
+:root.dark .version-thumbnail.selected {
+  border-color: #4a7fe8;
+}
+
+:root.dark .selected-mark {
+  background-color: #4a7fe8;
+}

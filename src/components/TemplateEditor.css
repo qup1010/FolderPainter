@@ -1,0 +1,375 @@
+/* 模板编辑器样式 */
+
+.template-editor-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.template-editor {
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  background-color: var(--bg-secondary, #fff);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+  animation: scaleIn 0.2s ease-out;
+}
+
+/* 头部 */
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-color, #eee);
+  background-color: var(--bg-primary, #fff);
+}
+
+.editor-header h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary, #333);
+}
+
+.editor-header .close-btn {
+  background: transparent;
+  border: none;
+  padding: 0.5rem;
+  color: var(--text-secondary, #999);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editor-header .close-btn:hover {
+  background-color: var(--bg-hover, #f5f5f5);
+  color: var(--text-primary, #666);
+}
+
+/* 表单 */
+.editor-form {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary, #333);
+}
+
+.form-group label .required {
+  color: var(--danger-color, #f44336);
+  margin-left: 0.25rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  background-color: var(--bg-primary, #fff);
+  color: var(--text-primary, #333);
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--primary-color, #396cd8);
+  box-shadow: 0 0 0 3px var(--primary-color-alpha, rgba(57, 108, 216, 0.1));
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.form-group .hint {
+  font-size: 0.75rem;
+  color: var(--text-tertiary, #999);
+  margin-top: 0.25rem;
+}
+
+/* 封面图上传 */
+.cover-group .cover-upload {
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem 0;
+}
+
+.cover-preview {
+  position: relative;
+  width: 100%;
+  max-width: 200px;
+  aspect-ratio: 3/2;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color, #eee);
+}
+
+.cover-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cover-preview .remove-cover {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s;
+  backdrop-filter: blur(4px);
+}
+
+.cover-preview:hover .remove-cover {
+  opacity: 1;
+}
+
+.cover-preview .remove-cover:hover {
+  background-color: var(--danger-color, #f44336);
+  transform: scale(1.1);
+}
+
+.upload-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  height: 120px;
+  border: 2px dashed var(--border-color, #ddd);
+  border-radius: 12px;
+  color: var(--text-tertiary, #999);
+  cursor: pointer;
+  transition: all 0.2s;
+  background-color: var(--bg-hover, #fafafa);
+}
+
+.upload-area:hover {
+  border-color: var(--primary-color, #396cd8);
+  color: var(--primary-color, #396cd8);
+  background-color: var(--primary-color-alpha, rgba(57, 108, 216, 0.05));
+}
+
+.upload-area span {
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+/* 分类选择 */
+.category-select {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.category-select select {
+  flex: 1;
+}
+
+.new-category-btn {
+  padding: 0 1rem;
+  background-color: var(--bg-hover, #f0f0f0);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-secondary, #666);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.new-category-btn:hover {
+  background-color: var(--bg-tertiary, #e0e0e0);
+  color: var(--text-primary, #333);
+}
+
+.new-category-input {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.new-category-input input {
+  flex: 1;
+}
+
+.cancel-new-btn {
+  padding: 0 1rem;
+  background-color: transparent;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  color: var(--text-secondary, #666);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancel-new-btn:hover {
+  background-color: var(--bg-hover, #f0f0f0);
+  border-color: var(--text-secondary, #bbb);
+  color: var(--text-primary, #333);
+}
+
+/* 错误信息 */
+.error-message {
+  padding: 0.75rem 1rem;
+  background-color: var(--danger-bg, #ffebee);
+  color: var(--danger-color, #f44336);
+  font-size: 0.875rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(244, 67, 54, 0.2);
+}
+
+/* 底部按钮 */
+.editor-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--border-color, #eee);
+  background-color: var(--bg-secondary, #fafafa);
+}
+
+.cancel-btn,
+.save-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancel-btn {
+  background-color: transparent;
+  border: 1px solid var(--border-color, #ddd);
+  color: var(--text-secondary, #666);
+}
+
+.cancel-btn:hover:not(:disabled) {
+  background-color: var(--bg-hover, #f0f0f0);
+  border-color: var(--text-secondary, #bbb);
+  color: var(--text-primary, #333);
+}
+
+.save-btn {
+  background-color: var(--primary-color, #396cd8);
+  color: #fff;
+  box-shadow: 0 2px 4px rgba(57, 108, 216, 0.2);
+}
+
+.save-btn:hover:not(:disabled) {
+  background-color: var(--primary-hover, #2d5bb8);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(57, 108, 216, 0.3);
+}
+
+.save-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.save-btn:disabled,
+.cancel-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.save-btn .spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 深色模式适配 */
+/* 注意：由于我们在 TemplatePanel.css 中定义了 :root.dark 变量，
+   这里可以直接复用这些变量，或者如果不在同一个 scope，需要重新定义。
+   假设是全局 CSS 变量。
+*/
+
+@media (prefers-color-scheme: dark) {
+  /* ... 如果没有 CSS 变量支持，保留旧的 fallback ... */
+}

@@ -1,0 +1,363 @@
+{
+    "app": {
+        "name": "FolderPainter",
+        "welcome": "👋 Welcome to FolderPainter!\n\nClick 📁 at the bottom left to add folders and start generating icons!"
+    },
+    "chat": {
+        "inputPlaceholder": "Describe the icon style you want in natural language...",
+        "selectFolderPlaceholder": "Click folder button to select folders",
+        "processing": "Processing...",
+        "sendTitle": "Send (Enter)",
+        "clearChat": "Clear",
+        "clearChatTitle": "Clear chat",
+        "clearSuccess": "🧹 Chat history cleared, session state preserved.",
+        "folderCount": "{count} folders",
+        "addFolderHint": "Click bottom left to add folders",
+        "generateIcon": "✨ Generate Icons",
+        "confirmGenerate": "Confirm generation",
+        "cannotLoadHistory": "Cannot load chat history"
+    },
+    "header": {
+        "toggleLightMode": "Switch to light mode",
+        "toggleDarkMode": "Switch to dark mode",
+        "hidePanel": "Hide preview panel",
+        "showPanel": "Show preview panel",
+        "settings": "Settings"
+    },
+    "apiWarning": {
+        "configureAll": "Please configure API Key to enable all features",
+        "configureImage": "Please configure image model to generate icons",
+        "configureText": "Please configure text model to enable smart chat"
+    },
+    "messages": {
+        "addFolderFirst": "Please add folders first. Click the folder button at bottom left.",
+        "processingFailed": "Processing failed: {error}",
+        "errorOccurred": "Error occurred: {error}",
+        "iconsApplied": "✅ Icons applied! Refresh File Explorer to see the changes.",
+        "promptUpdated": "Updated prompt for {name}.",
+        "templateApplied": "Applied template \"{name}\"\n\nStyle: {style}\n\nClick the button below to start generating.",
+        "templateAppliedWithExtract": "Applied template \"{name}\"\n\nStyle: {style}\n\nExtracted original theme and applied new style.\nClick the button below to start generating.",
+        "templateSelected": "Selected template \"{name}\"\n\nPlease add folders first, then say \"generate icons\".",
+        "customStyleApplied": "Applied custom style\n\nStyle: {style}\n\nClick the button below to start generating.",
+        "useApplyButton": "Please click the \"Apply\" button in the preview panel on the right.",
+        "localProcessingHint": "I can only execute simple commands for now.\n\nSay \"generate icons\" to start, or configure text model in settings for smart chat.",
+        "configureApiFirst": "Please configure image model API first to generate icons.\nClick the settings button at top right.",
+        "configureImageFirst": "Please configure image model API first.",
+        "addFoldersFirst": "Please add folders first.",
+        "noApplicableVersion": "No applicable icon version found",
+        "versionNotReady": "Icon version not ready",
+        "analysisNoTextModel": "Added {count} folders.\n\nYou can configure in settings, or directly describe the icon style you want."
+    },
+    "folder": {
+        "selectTitle": "Select Folder",
+        "addFailed": "Failed to add folder:"
+    },
+    "customStyle": {
+        "title": "Custom Style",
+        "description": "Enter your desired icon style description:",
+        "placeholder": "e.g.: 3d render style, claymorphism, highly detailed",
+        "confirm": "Apply Style"
+    },
+    "preview": {
+        "title": "Preview",
+        "readyCount": "{ready}/{total} ready",
+        "noFolders": "No folders",
+        "selectFolderHint": "Select folders on the left to start",
+        "generating": "Generating",
+        "pending": "Pending",
+        "removeFolder": "Remove folder",
+        "restoreIcon": "Restore original icon",
+        "restoreSuccess": "Restore successful:",
+        "restoreFailed": "Restore failed: {error}",
+        "removeBgFailed": "Background removal failed: {error}",
+        "removeBgAllResults": "Batch background removal results:",
+        "removeBgAllFailed": "Batch background removal failed: {error}",
+        "removeFolderFailed": "Failed to remove folder: {error}",
+        "clearAll": "Clear",
+        "clearAllTitle": "Remove all folders",
+        "removeBgAll": "Remove BG All",
+        "removeBgAllTitle": "Remove background for all current versions",
+        "removingBg": "Removing...",
+        "applyAll": "Apply All",
+        "applying": "Applying..."
+    },
+    "version": {
+        "zoom": "Zoom in",
+        "removeBg": "Remove background",
+        "apply": "Apply this version",
+        "delete": "Delete this version",
+        "processing": "Processing",
+        "title": "Version {number}"
+    },
+    "iconCard": {
+        "pending": "Pending",
+        "generating": "Generating...",
+        "failed": "Generation failed",
+        "promptPlaceholder": "Describe the icon you want...",
+        "regenerate": "Regenerate",
+        "apply": "Apply this icon",
+        "applyBtn": "✓ Apply",
+        "generate": "Generate icon",
+        "generateBtn": "✨ Generate",
+        "retry": "Retry",
+        "retryBtn": "🔄 Retry",
+        "remove": "Remove",
+        "folderCount": "📁 {count} folders | ✅ {ready} ready",
+        "generateAll": "🚀 Generate All",
+        "applyAll": "✓ Apply All",
+        "emptyHint": "Drag folders here, or click 📁 button to select"
+    },
+    "appLayout": {
+        "showPanel": "Show preview panel",
+        "confirmApplyAll": "Confirm Apply All Icons",
+        "applyAllMessage": "About to apply icons to {count} folders. Continue?",
+        "applyAllBtn": "Apply All",
+        "cancel": "Cancel",
+        "applyComplete": "Apply Complete",
+        "applyCompleteMessage": "Icons applied to the following folders:",
+        "confirm": "OK",
+        "applyFailed": "Apply failed:"
+    },
+    "template": {
+        "library": "Template Library",
+        "search": "Search templates...",
+        "create": "New Template",
+        "import": "Import Templates",
+        "export": "Export Templates",
+        "all": "All",
+        "loading": "Loading...",
+        "noMatch": "No matching templates found",
+        "empty": "No templates",
+        "noDescription": "No description",
+        "copy": "Copy template",
+        "edit": "Edit template",
+        "delete": "Delete template",
+        "copyName": "{name} (Copy)",
+        "renameFailed": "Rename failed: {error}",
+        "deleteFailed": "Delete failed: {error}",
+        "renameCategory": "Rename current category",
+        "deleteCategory": "Delete current category",
+        "renameCategoryTitle": "Rename Category",
+        "renameCategoryDesc": "Enter new category name:",
+        "categoryPlaceholder": "Category name",
+        "deleteCategoryTitle": "Delete Category",
+        "deleteCategoryMessage": "Delete category \"{name}\"? Templates in this category will be moved to \"General\".",
+        "deleteTemplateTitle": "Delete Template",
+        "deleteTemplateMessage": "Delete template \"{name}\"? This action cannot be undone.",
+        "deleteBtn": "Delete",
+        "noUserTemplates": "No user templates to export",
+        "exportSuccess": "Successfully exported {count} templates",
+        "exportFailed": "Export failed: {error}",
+        "importSuccess": "Import complete: {imported} imported, {skipped} skipped (already exist)",
+        "importFailed": "Import failed: {error}",
+        "invalidFormat": "Invalid template file format"
+    },
+    "templateEditor": {
+        "editTitle": "Edit Template",
+        "createTitle": "New Template",
+        "coverImage": "Cover Image (Optional)",
+        "coverPreview": "Cover preview",
+        "uploadImage": "Click to upload image",
+        "templateName": "Template Name",
+        "templateNamePlaceholder": "e.g.: Work Documents",
+        "description": "Description",
+        "descriptionPlaceholder": "Brief description of the template",
+        "category": "Category",
+        "newCategory": "+ New Category",
+        "newCategoryPlaceholder": "Enter new category name",
+        "prompt": "Prompt",
+        "promptPlaceholder": "Describe the icon style, e.g.: a blue folder icon with documents...",
+        "promptHint": "This prompt will be used for AI icon generation",
+        "nameRequired": "Please enter template name",
+        "promptRequired": "Please enter prompt",
+        "saveSuccess": "Saved successfully!",
+        "cancel": "Cancel",
+        "save": "Save",
+        "saving": "Saving...",
+        "required": "*"
+    },
+    "settings": {
+        "title": "⚙️ Settings",
+        "tabs": {
+            "image": "🎨 Image",
+            "text": "📝 Text",
+            "postprocess": "✨ Effects",
+            "appearance": "🌓 Theme"
+        },
+        "imageModel": {
+            "title": "Image Generation Model",
+            "desc": "Configure AI models for generating folder icons. Supports DALL-E, Stable Diffusion, and OpenAI-compatible APIs.",
+            "selectPreset": "Select preset...",
+            "noPreset": "No saved presets",
+            "savePreset": "Save Preset",
+            "savePresetTitle": "Save as preset",
+            "endpoint": "API Endpoint",
+            "endpointPlaceholder": "https://api.openai.com/v1/images/generations",
+            "endpointHint": "Full API endpoint URL",
+            "apiKey": "API Key",
+            "apiKeyPlaceholder": "sk-... (leave empty for local models)",
+            "model": "Model Name",
+            "modelPlaceholder": "dall-e-3 / flux-dev / ...",
+            "size": "Image Size",
+            "sizeStandard": "1024×1024 (Standard)",
+            "sizeFast": "512×512 (Fast)",
+            "sizeSmall": "256×256 (Small)",
+            "testConnection": "🔗 Test Connection",
+            "connectionFailed": "❌ Connection failed: {error}"
+        },
+        "generation": {
+            "title": "Generation Behavior",
+            "mode": "Generation Mode",
+            "parallel": "Parallel Generation",
+            "parallelHint": "Generate multiple icons at once (faster but uses more resources)",
+            "sequentialHint": "Generate icons one by one (more stable)",
+            "concurrency": "Concurrency Limit",
+            "concurrencyHint": "Number of icons to generate simultaneously (1-10)"
+        },
+        "textModel": {
+            "title": "Text Analysis Model",
+            "desc": "Configure AI models for analyzing folder content and generating prompts. Supports GPT, DeepSeek, Ollama, etc.",
+            "selectPreset": "Select preset...",
+            "noPreset": "No saved presets",
+            "savePreset": "Save Preset",
+            "savePresetTitle": "Save as preset",
+            "endpoint": "API Endpoint",
+            "endpointPlaceholder": "https://api.openai.com/v1/chat/completions",
+            "endpointHint": "Local Ollama example: http://localhost:11434/v1/chat/completions",
+            "apiKey": "API Key",
+            "apiKeyPlaceholder": "sk-... (leave empty for local models)",
+            "model": "Model Name",
+            "modelPlaceholder": "gpt-4o-mini / deepseek-chat / llama3 / ...",
+            "testConnection": "🔗 Test Connection"
+        },
+        "bgRemoval": {
+            "title": "Background Removal",
+            "desc": "Remove image backgrounds using free Hugging Face Spaces to get transparent icons.",
+            "enable": "Enable Background Removal",
+            "enabled": "Enabled",
+            "disabled": "Disabled",
+            "enableHint": "When enabled, generated images will automatically have background removed",
+            "service": "Removal Service",
+            "serviceHint": "Free Hugging Face Space services",
+            "testConnection": "🔗 Test Connection",
+            "testing": "Testing...",
+            "testingMessage": "Testing background removal service...",
+            "testFailed": "❌ Test failed: {error}",
+            "coldStartHint": "💡 Space may take 1-2 minutes to cold start on first call. Try another service if removal becomes slow."
+        },
+        "appearance": {
+            "title": "Appearance",
+            "desc": "Choose the app theme",
+            "theme": "Theme Mode",
+            "light": "Light",
+            "dark": "Dark",
+            "system": "System",
+            "language": "Language",
+            "chinese": "中文",
+            "english": "English"
+        },
+        "preset": {
+            "saveTitle": "Save Preset",
+            "nameLabel": "Preset Name",
+            "namePlaceholder": "e.g.: OpenAI GPT-4",
+            "cancel": "Cancel",
+            "confirm": "Confirm"
+        },
+        "saveButton": "Save Settings",
+        "saveConfig": "Save Config",
+        "saving": "Saving...",
+        "configSaved": "✅ Config saved",
+        "saveFailed": "❌ Save failed: {error}",
+        "presetSaved": "✅ Preset \"{name}\" saved",
+        "presetSaveFailed": "❌ Preset save failed: {error}",
+        "presetDeleted": "✅ Preset deleted",
+        "presetDeleteFailed": "❌ Preset delete failed: {error}",
+        "deleteConfirm": "Delete preset \"{name}\"?",
+        "fillEndpointFirst": "⚠️ Please fill in Endpoint and Model first",
+        "testingConnection": "Testing connection...",
+        "connectionSuccess": "✅ {result}",
+        "connectionFailed": "❌ Connection failed: {error}",
+        "testFailed": "❌ Test failed: {error}",
+        "loadConfigFailed": "Failed to load config: {error}"
+    },
+    "previewModal": {
+        "generateAll": "🚀 Generate All Previews",
+        "generating": "Generating...",
+        "regenerate": "Regenerate"
+    },
+    "imagePreview": {
+        "loadFailed": "Failed to load full image, using thumbnail",
+        "close": "Close (ESC)"
+    },
+    "dialog": {
+        "confirm": "OK",
+        "cancel": "Cancel",
+        "delete": "Delete"
+    },
+    "progress": {
+        "generating": "Generating"
+    },
+    "tools": {
+        "editPrompt": "Edit prompt",
+        "promptPlaceholder": "Enter new prompt..."
+    },
+    "presetTemplates": {
+        "3d_clay": {
+            "name": "3D Clay",
+            "desc": "Cute rounded 3D style, like stop-motion clay animation"
+        },
+        "glassmorphism": {
+            "name": "Glassmorphism",
+            "desc": "Modern translucent UI design, frosted glass texture"
+        },
+        "cyberpunk": {
+            "name": "Cyberpunk Neon",
+            "desc": "Glowing lines on dark background, futuristic tech vibes"
+        },
+        "low_poly": {
+            "name": "Low Poly",
+            "desc": "Geometric faceted style, minimalist"
+        },
+        "paper_cut": {
+            "name": "Paper Cut",
+            "desc": "Layered shadows, paper texture, dimensional look"
+        },
+        "pixel_art": {
+            "name": "Pixel Art",
+            "desc": "Retro 8-bit game aesthetic"
+        },
+        "watercolor": {
+            "name": "Watercolor",
+            "desc": "Hand-painted artistic style, soft edges"
+        },
+        "minimalist_line": {
+            "name": "Minimalist Line",
+            "desc": "Black and white line art, extremely clean"
+        },
+        "ukiyo_e": {
+            "name": "Ukiyo-e",
+            "desc": "Traditional Japanese woodblock print style"
+        },
+        "vaporwave": {
+            "name": "Vaporwave",
+            "desc": "80s nostalgic aesthetic"
+        },
+        "industrial_metal": {
+            "name": "Industrial Metal",
+            "desc": "Heavy metal texture, realistic style"
+        },
+        "pop_art": {
+            "name": "Pop Art",
+            "desc": "Halftones and vibrant colors, comic book feel"
+        }
+    },
+    "templateCategories": {
+        "general": "General",
+        "3d_style": "3D Style",
+        "modern_ui": "Modern UI",
+        "scifi": "Sci-Fi",
+        "artistic": "Artistic",
+        "retro": "Retro",
+        "realistic": "Realistic"
+    }
+}

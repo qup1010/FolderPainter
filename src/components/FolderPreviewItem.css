@@ -1,0 +1,291 @@
+/* FolderPreviewItem 样式 */
+
+.folder-preview-item {
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.folder-preview-item:hover {
+  border-color: #ddd;
+}
+
+.folder-preview-item.expanded {
+  border-color: #396cd8;
+}
+
+/* 折叠头部 */
+.folder-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.folder-header:hover {
+  background-color: #f8f8f8;
+}
+
+.folder-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.folder-index {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #396cd8;
+  flex-shrink: 0;
+}
+
+.folder-name {
+  font-size: 0.875rem;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.folder-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.current-thumbnail {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  object-fit: cover;
+  border: 1px solid #eee;
+}
+
+.status-badge {
+  font-size: 0.7rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  background-color: #f0f0f0;
+  color: #666;
+}
+
+.status-badge.ready {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-badge.generating {
+  background-color: #fff3e0;
+  color: #ef6c00;
+}
+
+.status-badge.error {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.expand-icon {
+  font-size: 0.625rem;
+  color: #999;
+  transition: transform 0.2s;
+}
+
+/* 展开内容 */
+.folder-content {
+  padding: 0.75rem;
+  border-top: 1px solid #eee;
+  background-color: #fafafa;
+}
+
+/* 版本网格 */
+.versions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* 无版本提示 */
+.no-versions {
+  text-align: center;
+  padding: 1rem;
+  color: #999;
+}
+
+.no-versions span {
+  font-size: 0.875rem;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.no-versions p {
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+/* 操作按钮 */
+.folder-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 0.5rem;
+  border-top: 1px solid #eee;
+}
+
+.remove-btn {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  background-color: transparent;
+  color: #999;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.remove-btn:hover {
+  background-color: #ffebee;
+  border-color: #f44336;
+  color: #f44336;
+}
+
+/* 深色模式 */
+@media (prefers-color-scheme: dark) {
+  .folder-preview-item {
+    background-color: #2a2a2a;
+    border-color: #333;
+  }
+
+  .folder-preview-item:hover {
+    border-color: #444;
+  }
+
+  .folder-preview-item.expanded {
+    border-color: #4a7fe8;
+  }
+
+  .folder-header:hover {
+    background-color: #333;
+  }
+
+  .folder-name {
+    color: #eee;
+  }
+
+  .current-thumbnail {
+    border-color: #444;
+  }
+
+  .status-badge {
+    background-color: #333;
+    color: #aaa;
+  }
+
+  .status-badge.ready {
+    background-color: #1b3d1f;
+    color: #81c784;
+  }
+
+  .status-badge.generating {
+    background-color: #3d2e1b;
+    color: #ffb74d;
+  }
+
+  .status-badge.error {
+    background-color: #3d1b1b;
+    color: #ef5350;
+  }
+
+  .folder-content {
+    background-color: #1f1f1f;
+    border-top-color: #333;
+  }
+
+  .folder-actions {
+    border-top-color: #333;
+  }
+
+  .remove-btn {
+    border-color: #444;
+    color: #888;
+  }
+
+  .remove-btn:hover {
+    background-color: #3d1b1b;
+    border-color: #ef5350;
+    color: #ef5350;
+  }
+}
+
+/* 支持手动切换的深色模式 */
+:root.dark .folder-preview-item {
+  background-color: #2a2a2a;
+  border-color: #333;
+}
+
+:root.dark .folder-preview-item:hover {
+  border-color: #444;
+}
+
+:root.dark .folder-preview-item.expanded {
+  border-color: #4a7fe8;
+}
+
+:root.dark .folder-header:hover {
+  background-color: #333;
+}
+
+:root.dark .folder-name {
+  color: #eee;
+}
+
+:root.dark .current-thumbnail {
+  border-color: #444;
+}
+
+:root.dark .status-badge {
+  background-color: #333;
+  color: #aaa;
+}
+
+:root.dark .status-badge.ready {
+  background-color: #1b3d1f;
+  color: #81c784;
+}
+
+:root.dark .status-badge.generating {
+  background-color: #3d2e1b;
+  color: #ffb74d;
+}
+
+:root.dark .status-badge.error {
+  background-color: #3d1b1b;
+  color: #ef5350;
+}
+
+:root.dark .folder-content {
+  background-color: #1f1f1f;
+  border-top-color: #333;
+}
+
+:root.dark .folder-actions {
+  border-top-color: #333;
+}
+
+:root.dark .remove-btn {
+  border-color: #444;
+  color: #888;
+}
+
+:root.dark .remove-btn:hover {
+  background-color: #3d1b1b;
+  border-color: #ef5350;
+  color: #ef5350;
+}

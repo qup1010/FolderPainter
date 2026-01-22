@@ -1,0 +1,357 @@
+{
+    "app": {
+        "name": "FolderPainter",
+        "welcome": "👋 欢迎使用 FolderPainter！\n\n点击左下角 📁 添加文件夹，开始生成图标吧：）！！"
+    },
+    "chat": {
+        "inputPlaceholder": "用自然语言描述你想要的图标风格...",
+        "selectFolderPlaceholder": "点击文件夹按钮选择文件夹",
+        "processing": "处理中...",
+        "sendTitle": "发送 (Enter)",
+        "clearChat": "清空",
+        "clearChatTitle": "清空对话",
+        "clearSuccess": "🧹 对话历史已清除，会话状态保留。",
+        "folderCount": "{count} 个文件夹",
+        "addFolderHint": "点击左下角添加文件夹开始",
+        "generateIcon": "✨ 生成图标",
+        "confirmGenerate": "确认生成",
+        "cannotLoadHistory": "无法加载聊天历史"
+    },
+    "header": {
+        "toggleLightMode": "切换到浅色模式",
+        "toggleDarkMode": "切换到深色模式",
+        "hidePanel": "隐藏预览面板",
+        "showPanel": "显示预览面板",
+        "settings": "设置"
+    },
+    "apiWarning": {
+        "configureAll": "请配置 API Key 以启用全部功能",
+        "configureImage": "请配置图像模型以生成图标",
+        "configureText": "请配置文本模型以启用智能对话"
+    },
+    "messages": {
+        "addFolderFirst": "请先添加文件夹，点击左下角的文件夹按钮选择文件夹。",
+        "processingFailed": "处理失败: {error}",
+        "errorOccurred": "发生错误: {error}",
+        "iconsApplied": "✅ 图标已应用！请刷新文件资源管理器查看效果。",
+        "promptUpdated": "已更新 {name} 的提示词。",
+        "templateApplied": "已应用模板「{name}」\n\n风格: {style}\n\n点击下方按钮开始生成。",
+        "templateAppliedWithExtract": "已应用模板「{name}」\n\n风格: {style}\n\n已提取原主题并应用新风格。\n点击下方按钮开始生成。",
+        "templateSelected": "已选择模板「{name}」\n\n请先添加文件夹，然后说「生成图标」。",
+        "customStyleApplied": "已应用自定义风格\n\n风格: {style}\n\n点击下方按钮开始生成。",
+        "useApplyButton": "请在右侧预览面板中点击「应用」按钮来应用图标。",
+        "localProcessingHint": "我目前只能执行简单命令。\n\n说「生成图标」开始生成，或在设置中配置文本模型以启用智能对话。",
+        "configureApiFirst": "需要先配置图像模型 API 才能生成图标。\n点击右上角的设置按钮进行配置。",
+        "configureImageFirst": "请先配置图像模型 API。",
+        "addFoldersFirst": "请先添加文件夹。",
+        "noApplicableVersion": "未找到可应用的图标版本",
+        "versionNotReady": "图标版本未就绪",
+        "analysisNoTextModel": "已添加 {count} 个文件夹。\n\n你可以在设置中配置，或直接描述想要的图标风格。"
+    },
+    "folder": {
+        "selectTitle": "选择文件夹",
+        "addFailed": "添加文件夹失败:"
+    },
+    "customStyle": {
+        "title": "自定义风格",
+        "description": "请输入您想要的图标风格描述：",
+        "placeholder": "例如: 3d render style, claymorphism, highly detailed",
+        "confirm": "应用风格"
+    },
+    "preview": {
+        "title": "预览",
+        "readyCount": "{ready}/{total} 就绪",
+        "noFolders": "暂无文件夹",
+        "selectFolderHint": "在左侧选择文件夹开始",
+        "generating": "生成中",
+        "pending": "待生成",
+        "removeFolder": "移除文件夹",
+        "restoreIcon": "还原原始图标",
+        "restoreSuccess": "还原成功:",
+        "restoreFailed": "还原失败: {error}",
+        "removeBgFailed": "抠图失败: {error}",
+        "removeBgAllResults": "一键抠图结果:",
+        "removeBgAllFailed": "一键抠图失败: {error}",
+        "removeFolderFailed": "移除文件夹失败: {error}",
+        "clearAll": "清空",
+        "clearAllTitle": "移除所有文件夹",
+        "removeBgAll": "一键抠图",
+        "removeBgAllTitle": "对所有当前版本执行背景移除",
+        "removingBg": "抠图中...",
+        "applyAll": "全部应用",
+        "applying": "应用中..."
+    },
+    "version": {
+        "zoom": "放大查看",
+        "removeBg": "抠图 (移除背景)",
+        "apply": "应用此版本",
+        "delete": "删除此版本",
+        "processing": "抠图中",
+        "title": "版本 {number}"
+    },
+    "iconCard": {
+        "pending": "待生成",
+        "generating": "生成中...",
+        "failed": "生成失败",
+        "promptPlaceholder": "描述想要的图标...",
+        "regenerate": "重新生成",
+        "apply": "应用此图标",
+        "applyBtn": "✓ 应用",
+        "generate": "生成图标",
+        "generateBtn": "✨ 生成",
+        "retry": "重试",
+        "retryBtn": "🔄 重试",
+        "remove": "移除",
+        "folderCount": "📁 {count} 个文件夹 | ✅ {ready} 个已就绪",
+        "generateAll": "🚀 生成全部",
+        "applyAll": "✓ 应用全部",
+        "emptyHint": "拖拽文件夹到这里，或点击 📁 按钮选择"
+    },
+    "appLayout": {
+        "showPanel": "显示预览面板",
+        "confirmApplyAll": "确认应用全部图标",
+        "applyAllMessage": "即将为 {count} 个文件夹应用图标，是否继续？",
+        "applyAllBtn": "应用全部",
+        "cancel": "取消",
+        "applyComplete": "应用完成",
+        "applyCompleteMessage": "图标已应用到以下文件夹:",
+        "confirm": "确定",
+        "applyFailed": "应用失败:"
+    },
+    "template": {
+        "library": "模板库",
+        "search": "搜索模板...",
+        "create": "新建模板",
+        "import": "导入模板",
+        "export": "导出模板",
+        "all": "全部",
+        "loading": "加载中...",
+        "noMatch": "没有找到匹配的模板",
+        "empty": "暂无模板",
+        "noDescription": "无描述",
+        "copy": "复制模板",
+        "edit": "编辑模板",
+        "delete": "删除模板",
+        "copyName": "{name} (副本)",
+        "renameFailed": "重命名失败: {error}",
+        "deleteFailed": "删除失败: {error}",
+        "renameCategory": "重命名当前分类",
+        "deleteCategory": "删除当前分类",
+        "renameCategoryTitle": "重命名分类",
+        "renameCategoryDesc": "请输入新的分类名称：",
+        "categoryPlaceholder": "分类名称",
+        "deleteCategoryTitle": "删除分类",
+        "deleteCategoryMessage": "确定要删除分类「{name}」吗？该分类下的模板将被移动到「通用」分类。",
+        "deleteTemplateTitle": "删除模板",
+        "deleteTemplateMessage": "确定要删除模板「{name}」吗？此操作无法撤销。",
+        "deleteBtn": "删除",
+        "noUserTemplates": "没有可导出的用户模板",
+        "exportSuccess": "成功导出 {count} 个模板",
+        "exportFailed": "导出失败: {error}",
+        "importSuccess": "导入完成：{imported} 个成功，{skipped} 个跳过（已存在）",
+        "importFailed": "导入失败: {error}",
+        "invalidFormat": "无效的模板文件格式"
+    },
+    "templateEditor": {
+        "editTitle": "编辑模板",
+        "createTitle": "新建模板",
+        "coverImage": "封面图 (可选)",
+        "coverPreview": "封面预览",
+        "uploadImage": "点击上传图片",
+        "templateName": "模板名称",
+        "templateNamePlaceholder": "例如：工作文档",
+        "description": "描述",
+        "descriptionPlaceholder": "简短描述模板的用途",
+        "category": "分类",
+        "newCategory": "+ 新分类",
+        "newCategoryPlaceholder": "输入新分类名称",
+        "prompt": "提示词",
+        "promptPlaceholder": "描述你想要生成的图标风格，例如：a blue folder icon with documents...",
+        "promptHint": "此提示词将用于 AI 生成图标",
+        "nameRequired": "请输入模板名称",
+        "promptRequired": "请输入提示词",
+        "saveSuccess": "保存成功！",
+        "cancel": "取消",
+        "save": "保存",
+        "saving": "保存中...",
+        "required": "*"
+    },
+    "settings": {
+        "title": "⚙️ 设置",
+        "tabs": {
+            "image": "🎨 图像生成",
+            "text": "📝 文本分析",
+            "postprocess": "✨ 后处理",
+            "appearance": "🌓 外观"
+        },
+        "imageModel": {
+            "title": "图像生成模型",
+            "desc": "配置用于生成文件夹图标的 AI 模型，支持 DALL-E、Stable Diffusion 等 OpenAI 兼容 API。",
+            "selectPreset": "选择预设...",
+            "noPreset": "暂无保存的预设",
+            "savePreset": "保存预设",
+            "savePresetTitle": "保存为预设",
+            "endpoint": "API 地址",
+            "endpointPlaceholder": "https://api.openai.com/v1/images/generations",
+            "endpointHint": "完整的 API 端点 URL",
+            "apiKey": "API 密钥",
+            "apiKeyPlaceholder": "sk-... (本地模型可留空)",
+            "model": "模型名称",
+            "modelPlaceholder": "dall-e-3 / flux-dev / ...",
+            "size": "图像尺寸",
+            "sizeStandard": "1024×1024 (标准)",
+            "sizeFast": "512×512 (快速)",
+            "sizeSmall": "256×256 (小图)",
+            "testConnection": "🔗 测试连接"
+        },
+        "generation": {
+            "title": "生成行为",
+            "mode": "生成模式",
+            "parallel": "并行生成",
+            "parallelHint": "同时生成多个图标（更快但占用更多资源）",
+            "sequentialHint": "逐个生成图标（更稳定）",
+            "concurrency": "并发数量",
+            "concurrencyHint": "同时生成的图标数量 (1-10)"
+        },
+        "textModel": {
+            "title": "文本分析模型",
+            "desc": "配置用于分析文件夹内容并生成提示词的 AI 模型，支持 GPT、DeepSeek、Ollama 等。",
+            "selectPreset": "选择预设...",
+            "noPreset": "暂无保存的预设",
+            "savePreset": "保存预设",
+            "savePresetTitle": "保存为预设",
+            "endpoint": "API 地址",
+            "endpointPlaceholder": "https://api.openai.com/v1/chat/completions",
+            "endpointHint": "本地 Ollama 示例: http://localhost:11434/v1/chat/completions",
+            "apiKey": "API 密钥",
+            "apiKeyPlaceholder": "sk-... (本地模型可留空)",
+            "model": "模型名称",
+            "modelPlaceholder": "gpt-4o-mini / deepseek-chat / llama3 / ...",
+            "testConnection": "🔗 测试连接"
+        },
+        "bgRemoval": {
+            "title": "背景移除",
+            "desc": "使用 Hugging Face Space 免费移除生成图像的背景，获得透明图标。",
+            "enable": "启用背景移除",
+            "enabled": "已启用",
+            "disabled": "已禁用",
+            "enableHint": "启用后，生成的图像将自动进行背景移除处理",
+            "service": "抠图服务",
+            "serviceHint": "均为免费的 Hugging Face Space 服务",
+            "testConnection": "🔗 测试连接",
+            "testing": "测试中...",
+            "testingMessage": "正在测试背景移除服务...",
+            "testFailed": "❌ 测试失败: {error}",
+            "coldStartHint": "💡 Space 首次调用可能需要 1-2 分钟冷启动。如果发现抠图速度变慢，可以尝试更换其他服务。"
+        },
+        "appearance": {
+            "title": "外观设置",
+            "desc": "选择应用的主题外观",
+            "theme": "主题模式",
+            "light": "浅色",
+            "dark": "深色",
+            "system": "跟随系统",
+            "language": "语言",
+            "chinese": "中文",
+            "english": "English"
+        },
+        "preset": {
+            "saveTitle": "保存预设",
+            "nameLabel": "预设名称",
+            "namePlaceholder": "例如：OpenAI GPT-4",
+            "cancel": "取消",
+            "confirm": "确定"
+        },
+        "saveButton": "保存设置",
+        "saveConfig": "保存配置",
+        "saving": "保存中...",
+        "configSaved": "✅ 配置已保存",
+        "saveFailed": "❌ 保存失败: {error}",
+        "presetSaved": "✅ 预设「{name}」已保存",
+        "presetDeleted": "✅ 预设已删除",
+        "deleteConfirm": "确定要删除预设「{name}」吗？",
+        "fillEndpointFirst": "⚠️ 请先填写 Endpoint 和 Model",
+        "testingConnection": "正在测试连接...",
+        "loadConfigFailed": "加载配置失败: {error}"
+    },
+    "previewModal": {
+        "generateAll": "🚀 生成全部预览",
+        "generating": "生成中...",
+        "regenerate": "重新生成"
+    },
+    "imagePreview": {
+        "loadFailed": "加载高清大图失败，使用缩略图",
+        "close": "关闭 (ESC)"
+    },
+    "dialog": {
+        "confirm": "确定",
+        "cancel": "取消",
+        "delete": "删除"
+    },
+    "progress": {
+        "generating": "正在生成"
+    },
+    "tools": {
+        "editPrompt": "编辑提示词",
+        "promptPlaceholder": "输入新的提示词..."
+    },
+    "presetTemplates": {
+        "3d_clay": {
+            "name": "3D 软泥",
+            "desc": "圆润可爱的 3D 风格，类似粘土定格动画"
+        },
+        "glassmorphism": {
+            "name": "毛玻璃",
+            "desc": "现代半透明 UI 设计，磨砂玻璃质感"
+        },
+        "cyberpunk": {
+            "name": "赛博霓虹",
+            "desc": "发光线条与暗黑背景，未来科技感"
+        },
+        "low_poly": {
+            "name": "低多边形",
+            "desc": "几何切面硬朗风格，极简主义"
+        },
+        "paper_cut": {
+            "name": "剪纸艺术",
+            "desc": "层叠阴影纸张质感，立体剪纸"
+        },
+        "pixel_art": {
+            "name": "像素风",
+            "desc": "复古 8-bit 游戏感"
+        },
+        "watercolor": {
+            "name": "水彩画",
+            "desc": "手绘艺术渲染，柔和边缘"
+        },
+        "minimalist_line": {
+            "name": "极简线条",
+            "desc": "黑白线条，极度简洁"
+        },
+        "ukiyo_e": {
+            "name": "浮世绘",
+            "desc": "日本传统版画风格"
+        },
+        "vaporwave": {
+            "name": "蒸汽波",
+            "desc": "80年代怀旧美学"
+        },
+        "industrial_metal": {
+            "name": "工业金属",
+            "desc": "重金属质感，现实主义"
+        },
+        "pop_art": {
+            "name": "波普艺术",
+            "desc": "波点与高饱和度，漫画感"
+        }
+    },
+    "templateCategories": {
+        "general": "通用",
+        "3d_style": "3D 风格",
+        "modern_ui": "现代 UI",
+        "scifi": "科幻",
+        "artistic": "艺术风",
+        "retro": "复古",
+        "realistic": "写实"
+    }
+}

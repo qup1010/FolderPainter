@@ -1,0 +1,58 @@
+/* ToolResultRenderer 样式 */
+
+.tool-result {
+  margin: 8px 0;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--bg-secondary, #f5f5f5);
+}
+
+.tool-error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tool-error .error-icon {
+  font-size: 16px;
+}
+
+.tool-error .error-text {
+  color: #ef4444;
+  font-size: 14px;
+}
+
+.tool-update-prompt {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.tool-update-prompt .update-success {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  color: #22c55e;
+  font-weight: 500;
+}
+
+.tool-update-prompt .new-prompt {
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+}
+
+.tool-update-prompt .new-prompt code {
+  font-size: 12px;
+  color: var(--text-secondary, #666);
+  word-break: break-word;
+}
+
+.tool-unknown {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary, #666);
+}

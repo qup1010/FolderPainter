@@ -1,0 +1,122 @@
+/* GenerationProgress 样式 */
+
+.generation-progress {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(139, 92, 246, 0.05));
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.progress-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.progress-header .header-icon {
+  font-size: 20px;
+}
+
+.progress-header .header-title {
+  font-weight: 600;
+  color: var(--primary-color, #6366f1);
+  font-size: 15px;
+}
+
+.target-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.target-item {
+  background: white;
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.target-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.target-info .folder-index {
+  font-weight: 600;
+  color: var(--primary-color, #6366f1);
+  font-size: 13px;
+}
+
+.target-info .folder-name {
+  font-weight: 500;
+  color: var(--text-primary, #1f2937);
+  font-size: 14px;
+}
+
+.target-prompt {
+  background: rgba(0, 0, 0, 0.02);
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.target-prompt code {
+  font-size: 11px;
+  color: var(--text-secondary, #6b7280);
+  word-break: break-word;
+}
+
+.target-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.status-indicator.generating {
+  background: #f59e0b;
+  animation: pulse 1.5s infinite;
+}
+
+.status-indicator.completed {
+  background: #22c55e;
+}
+
+.status-indicator.error {
+  background: #ef4444;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.status-text {
+  font-size: 12px;
+  color: var(--text-secondary, #6b7280);
+}
+
+.progress-footer {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-color, #e5e7eb);
+}
+
+.progress-hint {
+  font-size: 12px;
+  color: var(--text-tertiary, #9ca3af);
+  margin: 0;
+  text-align: center;
+}
