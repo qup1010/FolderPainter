@@ -247,10 +247,11 @@ export function ChatView({
     try {
       const config = await invoke<{
         text_model: { api_key: string | null; endpoint: string; model: string };
-        image_model: { api_key: string | null };
+        image_model: { api_key: string | null; endpoint: string; model: string };
       }>("get_config");
       setTextApiConfigured(!!config.text_model?.endpoint && !!config.text_model?.model);
-      setApiConfigured(!!config.image_model?.api_key);
+      // API Key 可以为空（本地模型不需要），只检查 endpoint 和 model
+      setApiConfigured(!!config.image_model?.endpoint && !!config.image_model?.model);
     } catch (error) {
       console.error("Failed to check API config:", error);
     }

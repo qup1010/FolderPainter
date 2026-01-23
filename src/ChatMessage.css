@@ -396,11 +396,16 @@
 }
 
 :root.dark .analysis-card {
-  background-color: #333;
+  background-color: #2a2a2a;
+  border: 1px solid #3a3a3a;
+}
+
+:root.dark .analysis-card .folder-index {
+  color: #7aa3ff;
 }
 
 :root.dark .analysis-card .folder-name {
-  color: #eee;
+  color: #e0e0e0;
 }
 
 :root.dark .analysis-card .category-badge {
@@ -412,9 +417,14 @@
   color: #aaa;
 }
 
+:root.dark .analysis-card .prompt-label {
+  color: #888;
+}
+
 :root.dark .suggested-prompt code {
-  background-color: #444;
-  color: #eee;
+  background-color: #333;
+  color: #e0e0e0;
+  border: 1px solid #444;
 }
 
 :root.dark .preview-ref-card {

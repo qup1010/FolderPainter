@@ -4,6 +4,7 @@
   <h1>FolderPainter</h1>
 
   <p><strong>AI-Powered Windows Folder Icon Customization Tool</strong></p>
+  <p><strong>One-click generation of unique and beautiful icons :)</strong></p>
 
   <p>
     <img src="https://img.shields.io/badge/Platform-Windows-0078D6?style=flat-square&logo=windows" alt="Windows">
@@ -75,18 +76,21 @@
 ## 📸 Screenshots
 
 | Main Interface | Template Library |
-|----------------|------------------|
-| ![Main](public/main.png) | ![Templates](public/templates.png) |
+|--------|--------|
+| ![Main Interface](public/main.png) | ![Template Library](public/templates.png) |
 
 | Settings | Preview Panel |
-|----------|---------------|
-| ![Settings](public/settings.png) | ![Preview](public/preview.png) |
+|------|----------|
+| ![Settings](public/settings.png) | ![Actual Demo](public/preview.png) |
 
-| Generated Results |
-|-------------------|
-| ![Results](public/result.png) |
+| Generated Results | 
+|------|
+| ![Generated Results](public/result.png) | 
 
----
+Generated using `gemini-3-flash` as the text model + `FLUX-2-KLEIN-4B-FP8` in `ComfyUI` as the image model.
+
+**Tips:** Here is a project that adapts ComfyUI API to OpenAI API format, allowing you to use ComfyUI models with this project:
+[Comfyui2Openai](https://github.com/qup1010/Comfyui2Openai?tab=readme-ov-file)
 
 ## 🚀 Quick Start
 
@@ -95,7 +99,7 @@
 Download the latest version from [Releases](https://github.com/qup1010/FolderPainter/releases):
 
 | Version | Description |
-|---------|-------------|
+|------|------|
 | `FolderPainter_x.x.x_x64-setup.exe` | Installer (Recommended) |
 | `FolderPainter_x.x.x_x64_en-US.msi` | MSI Package |
 
@@ -104,8 +108,8 @@ Download the latest version from [Releases](https://github.com/qup1010/FolderPai
 First-time setup requires AI model API configuration:
 
 1. Click ⚙️ in the top right to open Settings
-2. Configure **Image Generation Model** (Required)
-3. Configure **Text Analysis Model** (Optional, enables smart conversation)
+2. Configure **Image Generation Model**
+3. Configure **Text Analysis Model** (Enables smart conversation)
 4. Click "Test Connection" to verify configuration
 
 #### Supported Image Model Formats
@@ -113,14 +117,13 @@ First-time setup requires AI model API configuration:
 Supports OpenAI-compatible endpoint calls:
 `/v1/images/generations`
 
-Also compatible with ModelScope API format.
+Already adapted for ModelScope (MagicPatch) API format.
 
 #### Supported Text Model Formats
 
 Supports OpenAI-compatible endpoint calls:
 `/v1/chat/completions`
 
----
 
 ## 📖 Usage Guide
 
@@ -159,13 +162,11 @@ FolderPainter/
 └── history.db     # Templates and history
 ```
 
-> ⚠️ Updates or reinstalls will not lose user data
-
 ### Background Removal Service
 
 Uses free HuggingFace Space services:
 
-- BRIA RMBG 2.0
+- BRIA RMBG 2.0 
 - BRIA RMBG 1.4
 - not-lain/background-removal
 - KenjieDec/RemBG
@@ -246,5 +247,5 @@ Issues and Pull Requests are welcome!
 ---
 
 <div align="center">
-  <p>If this project helps you, please give it a ⭐ Star!</p>
+  <p>If this project helps you, please give it a ⭐ Star to support us!</p>
 </div>

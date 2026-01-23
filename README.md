@@ -89,11 +89,13 @@
 | ![生成结果展示](public/result.png) | 
 此为`genimi-3-flash`作为文本模型 + `ComfyUI`中`FLUX-2-KLEIN-4B-FP8`做为图片模型生成的效果
 
+**tips:** 贴一个适配comfyui api到openai api接口类型的项目, 可以使用comfyui中的模型来接入本项目：
+[Comfyui2Openai](https://github.com/qup1010/Comfyui2Openai?tab=readme-ov-file)
 ## 🚀 快速开始
 
 ### 下载安装
 
-从 [Releases](https://github.com/你的用户名/FolderPainter/releases) 下载最新版本：
+从 [Releases](https://github.com/qup1010/FolderPainter/releases) 下载最新版本：
 
 | 版本 | 说明 |
 |------|------|
@@ -105,8 +107,8 @@
 首次使用需要配置 AI 模型 API：
 
 1. 点击右上角 ⚙️ 打开设置
-2. 配置**图像生成模型** (必需)
-3. 配置**文本分析模型** (可选，启用智能对话)
+2. 配置**图像生成模型** 
+3. 配置**文本分析模型** (启用智能对话)
 4. 点击「测试连接」确认配置正确
 
 #### 支持图像模型格式

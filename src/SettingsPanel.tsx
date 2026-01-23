@@ -57,19 +57,6 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
   // 国际化
   const { t } = useI18n();
 
-  // 语言
-  const [language, setLanguageState] = useState<"en" | "zh-CN">(() => getLocale());
-
-  const handleLanguageChange = (lang: "en" | "zh-CN") => {
-    setLanguageState(lang);
-    setLocale(lang);
-  };
-
-  // 监听语言改变并更新 state
-  useEffect(() => {
-    setLanguageState(getLocale());
-  }, []);
-
   // 图像模型配置
   const [imageApiKey, setImageApiKey] = useState("");
   const [imageModel, setImageModel] = useState("");
@@ -731,26 +718,6 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                   >
                     <span className="theme-icon">💻</span>
                     <span className="theme-label">{t('settings.appearance.system')}</span>
-                  </button>
-                </div>
-              </div>
-
-              <div className="setting-group" style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid #eee' }}>
-                <label>{t('settings.appearance.language')}</label>
-                <div className="theme-options">
-                  <button
-                    className={`theme-btn ${language === 'zh-CN' ? 'active' : ''}`}
-                    onClick={() => handleLanguageChange('zh-CN')}
-                  >
-                    <span className="theme-icon">🇨🇳</span>
-                    <span className="theme-label">{t('settings.appearance.chinese')}</span>
-                  </button>
-                  <button
-                    className={`theme-btn ${language === 'en' ? 'active' : ''}`}
-                    onClick={() => handleLanguageChange('en')}
-                  >
-                    <span className="theme-icon">🇬🇧</span>
-                    <span className="theme-label">{t('settings.appearance.english')}</span>
                   </button>
                 </div>
               </div>
