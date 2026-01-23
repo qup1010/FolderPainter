@@ -947,3 +947,151 @@
   border-color: #5a8dee;
   background-color: #333;
 }
+
+/* About 页面样式 */
+.about-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.about-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.about-logo .app-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.about-logo .app-name {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #396cd8, #7c3aed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.about-logo .app-version {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #888;
+  font-weight: 500;
+}
+
+.about-description {
+  text-align: center;
+  max-width: 320px;
+}
+
+.about-description p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.6;
+}
+
+.about-links {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.about-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  background: linear-gradient(135deg, #24292e, #2d333b);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.about-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.about-link svg {
+  flex-shrink: 0;
+}
+
+.about-author {
+  text-align: center;
+}
+
+.about-author p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.about-author strong {
+  color: #396cd8;
+}
+
+.about-tech {
+  text-align: center;
+}
+
+.about-tech .tech-label {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.8rem;
+  color: #888;
+  font-weight: 500;
+}
+
+.about-tech .tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.about-tech .tech-tag {
+  padding: 0.35rem 0.75rem;
+  background: linear-gradient(135deg, #f0f4ff, #e8f0ff);
+  color: #396cd8;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Dark mode - About 页面 */
+:root.dark .about-description p {
+  color: #aaa;
+}
+
+:root.dark .about-logo .app-version {
+  color: #888;
+}
+
+:root.dark .about-author p {
+  color: #aaa;
+}
+
+:root.dark .about-author strong {
+  color: #7aa3ff;
+}
+
+:root.dark .about-tech .tech-label {
+  color: #888;
+}
+
+:root.dark .about-tech .tech-tag {
+  background: linear-gradient(135deg, #2a3a5a, #1e2a4a);
+  color: #7aa3ff;
+}

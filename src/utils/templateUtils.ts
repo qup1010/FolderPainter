@@ -5,21 +5,34 @@
 
 import type { IconTemplate } from '../types/template';
 
-// 预设模板封面图映射 (preset_id -> 图片路径)
-// 封面图存放在 public/template-covers/ 目录
+// 直接导入封面图资源 - 确保 Vite 正确处理和打包
+import cover_3d_clay from '/template-covers/3d_clay.webp?url';
+import cover_glassmorphism from '/template-covers/glassmorphism.webp?url';
+import cover_cyberpunk from '/template-covers/cyberpunk.webp?url';
+import cover_low_poly from '/template-covers/low_poly.webp?url';
+import cover_paper_cut from '/template-covers/paper_cut.webp?url';
+import cover_pixel_art from '/template-covers/pixel_art.webp?url';
+import cover_watercolor from '/template-covers/watercolor.webp?url';
+import cover_minimalist_line from '/template-covers/minimalist_line.webp?url';
+import cover_ukiyo_e from '/template-covers/ukiyo_e.webp?url';
+import cover_vaporwave from '/template-covers/vaporwave.webp?url';
+import cover_industrial_metal from '/template-covers/industrial_metal.webp?url';
+import cover_pop_art from '/template-covers/pop_art.webp?url';
+
+// 预设模板封面图映射 (preset_id -> 导入的图片URL)
 const PRESET_COVERS: Record<string, string> = {
-  '3d_clay': '/template-covers/3d_clay.webp',
-  'glassmorphism': '/template-covers/glassmorphism.webp',
-  'cyberpunk': '/template-covers/cyberpunk.webp',
-  'low_poly': '/template-covers/low_poly.webp',
-  'paper_cut': '/template-covers/paper_cut.webp',
-  'pixel_art': '/template-covers/pixel_art.webp',
-  'watercolor': '/template-covers/watercolor.webp',
-  'minimalist_line': '/template-covers/minimalist_line.webp',
-  'ukiyo_e': '/template-covers/ukiyo_e.webp',
-  'vaporwave': '/template-covers/vaporwave.webp',
-  'industrial_metal': '/template-covers/industrial_metal.webp',
-  'pop_art': '/template-covers/pop_art.webp',
+  '3d_clay': cover_3d_clay,
+  'glassmorphism': cover_glassmorphism,
+  'cyberpunk': cover_cyberpunk,
+  'low_poly': cover_low_poly,
+  'paper_cut': cover_paper_cut,
+  'pixel_art': cover_pixel_art,
+  'watercolor': cover_watercolor,
+  'minimalist_line': cover_minimalist_line,
+  'ukiyo_e': cover_ukiyo_e,
+  'vaporwave': cover_vaporwave,
+  'industrial_metal': cover_industrial_metal,
+  'pop_art': cover_pop_art,
 };
 
 /**

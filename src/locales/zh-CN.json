@@ -182,7 +182,8 @@
             "image": "🎨 图像生成",
             "text": "📝 文本分析",
             "postprocess": "✨ 后处理",
-            "appearance": "🌓 外观"
+            "appearance": "🌓 外观",
+            "about": "ℹ️ 关于"
         },
         "imageModel": {
             "title": "图像生成模型",
@@ -254,6 +255,14 @@
             "language": "语言",
             "chinese": "中文",
             "english": "English"
+        },
+        "about": {
+            "title": "关于 FolderPainter",
+            "desc": "应用信息和开源项目链接",
+            "description": "FolderPainter 是一个 Windows 桌面应用程序，利用 AI (LLM + 图像生成) 智能分析文件夹内容并定制专属图标。",
+            "github": "GitHub 项目主页",
+            "author": "作者",
+            "techStack": "技术栈"
         },
         "preset": {
             "saveTitle": "保存预设",

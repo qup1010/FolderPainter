@@ -4,6 +4,7 @@
   <h1>FolderPainter</h1>
 
   <p><strong>AI 驱动的 Windows 文件夹图标个性化工具</strong></p>
+    <p><strong>一键生成独特好看的图标:)</strong></p>
 
   <p>
     <img src="https://img.shields.io/badge/Platform-Windows-0078D6?style=flat-square&logo=windows" alt="Windows">
@@ -86,13 +87,13 @@
 | 生成结果展示 | 
 |------|
 | ![生成结果展示](public/result.png) | 
-
+此为`genimi-3-flash`作为文本模型 + `ComfyUI`中`FLUX-2-KLEIN-4B-FP8`做为图片模型生成的效果
 
 ## 🚀 快速开始
 
 ### 下载安装
 
-从 [Releases](https://github.com/qup1010/FolderPainter/releases) 下载最新版本：
+从 [Releases](https://github.com/你的用户名/FolderPainter/releases) 下载最新版本：
 
 | 版本 | 说明 |
 |------|------|
@@ -156,8 +157,6 @@ FolderPainter/
 ├── config.json    # API 配置
 └── history.db     # 模板和历史记录
 ```
-
-> ⚠️ 更新或重装不会丢失用户数据
 
 ### 背景移除服务
 

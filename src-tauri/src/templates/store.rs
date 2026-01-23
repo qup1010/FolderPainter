@@ -78,20 +78,6 @@ impl TemplateStore {
 
     /// 初始化内置模板 (仅在表为空时插入，不再每次重置)
     fn init_builtin_templates_internal(&self) -> Result<(), String> {
-        // 检查模板表是否为空（首次运行）
-        let count: i64 = self
-            .conn
-            .query_row("SELECT COUNT(*) FROM icon_templates", [], |row| row.get(0))
-            .map_err(|e| format!("查询模板数量失败: {}", e))?;
-
-        // 如果已有模板，不做任何操作（保留用户修改）
-        if count > 0 {
-            println!("[模板] 已有 {} 个模板，跳过初始化", count);
-            return Ok(());
-        }
-
-        println!("[模板] 首次运行，插入内置模板...");
-
         // 内置模板列表 (使用 preset_id 标识，用于多语言和封面图)
         // 格式: (preset_id, prompt, category_id)
         // name 和 description 将通过前端翻译文件获取
@@ -158,12 +144,70 @@ impl TemplateStore {
             ),
         ];
 
+        // 检查模板表是否为空（首次运行）
+        let count: i64 = self
+            .conn
+            .query_row("SELECT COUNT(*) FROM icon_templates", [], |row| row.get(0))
+            .map_err(|e| format!("查询模板数量失败: {}", e))?;
+
+        // 如果已有模板，检查是否需要迁移（修复缺失的 preset_id）
+        if count > 0 {
+            println!("[模板] 已有 {} 个模板，检查是否需要迁移...", count);
+            self.migrate_builtin_preset_ids(&builtin_templates)?;
+            return Ok(());
+        }
+
+        println!("[模板] 首次运行，插入内置模板...");
+
         for (preset_id, prompt, category) in builtin_templates {
             self.conn.execute(
                 "INSERT INTO icon_templates (preset_id, name, description, prompt, category, is_builtin) VALUES (?1, ?2, ?3, ?4, ?5, 1)",
                 params![preset_id, preset_id, "", prompt, category],
             )
             .map_err(|e| format!("插入内置模板失败: {}", e))?;
+        }
+
+        Ok(())
+    }
+
+    /// 迁移：修复现有内置模板缺失的 preset_id
+    fn migrate_builtin_preset_ids(&self, builtin_templates: &[(&str, &str, &str)]) -> Result<(), String> {
+        // 获取所有 is_builtin=1 但 preset_id 为空的模板
+        let mut stmt = self
+            .conn
+            .prepare("SELECT id, name FROM icon_templates WHERE is_builtin = 1 AND (preset_id IS NULL OR preset_id = '')")
+            .map_err(|e| format!("准备查询失败: {}", e))?;
+
+        let rows: Vec<(i64, String)> = stmt
+            .query_map([], |row| Ok((row.get(0)?, row.get(1)?)))
+            .map_err(|e| format!("查询失败: {}", e))?
+            .filter_map(|r| r.ok())
+            .collect();
+
+        if rows.is_empty() {
+            println!("[模板] 无需迁移，所有内置模板已有 preset_id");
+            return Ok(());
+        }
+
+        println!("[模板] 发现 {} 个需要迁移的内置模板", rows.len());
+
+        // 创建 name -> preset_id 映射
+        let preset_map: std::collections::HashMap<&str, &str> = builtin_templates
+            .iter()
+            .map(|(preset_id, _, _)| (*preset_id, *preset_id))
+            .collect();
+
+        for (id, name) in rows {
+            // 尝试通过 name 匹配 preset_id
+            let preset_id = preset_map.get(name.as_str()).copied().unwrap_or(&name);
+
+            self.conn.execute(
+                "UPDATE icon_templates SET preset_id = ?1 WHERE id = ?2",
+                params![preset_id, id],
+            )
+            .map_err(|e| format!("更新模板 preset_id 失败: {}", e))?;
+
+            println!("[模板] 已迁移模板 {} (id={}) -> preset_id={}", name, id, preset_id);
         }
 
         Ok(())

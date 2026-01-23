@@ -6,7 +6,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
-import { Settings, FolderOpen, PanelRightClose, PanelRightOpen, Moon, Sun } from "lucide-react";
+import { Settings, FolderOpen, PanelRightClose, PanelRightOpen, Moon, Sun, Globe } from "lucide-react";
 import { ChatMessage, ChatMessageData } from "./ChatMessage";
 import { ChatInput } from "./ChatInput";
 import { SettingsPanel } from "./SettingsPanel";
@@ -15,7 +15,7 @@ import { InputDialog } from "./components/Dialogs";
 import { useChatAgent } from "./hooks/useChatAgent";
 import { useFolderSelection } from "./hooks/useFolderSelection";
 import { useIconGeneration } from "./hooks/useIconGeneration";
-import { useI18n } from "./hooks/useI18n";
+import { useI18n, setLocale, getLocale } from "./hooks/useI18n";
 import { ProgressBar } from "./components/ProgressBar";
 import type { PreviewSession, FolderPreview, IconVersion } from "./types/preview";
 import type { IconTemplate } from "./types/template";
@@ -450,6 +450,19 @@ export function ChatView({
           FolderPainter
         </h1>
         <div className="header-actions">
+          {/* 语言切换按钮 */}
+          <button
+            className="header-btn lang-btn"
+            onClick={() => {
+              const currentLang = getLocale();
+              const newLang = currentLang === 'zh-CN' ? 'en' : 'zh-CN';
+              setLocale(newLang);
+            }}
+            title={getLocale() === 'zh-CN' ? 'Switch to English' : '切换到中文'}
+          >
+            <Globe size={20} />
+            <span className="lang-label">{getLocale() === 'zh-CN' ? 'EN' : '中'}</span>
+          </button>
           {/* 深色模式切换按钮 */}
           <button
             className="header-btn"

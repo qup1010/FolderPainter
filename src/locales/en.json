@@ -182,7 +182,8 @@
             "image": "🎨 Image",
             "text": "📝 Text",
             "postprocess": "✨ Effects",
-            "appearance": "🌓 Theme"
+            "appearance": "🌓 Theme",
+            "about": "ℹ️ About"
         },
         "imageModel": {
             "title": "Image Generation Model",
@@ -255,6 +256,14 @@
             "language": "Language",
             "chinese": "中文",
             "english": "English"
+        },
+        "about": {
+            "title": "About FolderPainter",
+            "desc": "App information and open source project links",
+            "description": "FolderPainter is a Windows desktop application that uses AI (LLM + Image Generation) to intelligently analyze folder contents and create custom icons.",
+            "github": "GitHub Project Page",
+            "author": "Author",
+            "techStack": "Tech Stack"
         },
         "preset": {
             "saveTitle": "Save Preset",
