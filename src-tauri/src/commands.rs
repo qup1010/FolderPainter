@@ -97,10 +97,20 @@ pub async fn set_folder_icon_with_ai(
     }
 
     // 将 AI 图像转换为 ICO
-    icon_gen::create_icon_from_ai_image(&image_bytes, &icon_path_str)?;
+    let icon_path_str_task = icon_path_str.clone();
+    let folder_path_task = folder_path.clone();
+    let ini_path_str_task = ini_path_str.clone();
 
-    // 应用图标
-    apply_icon_to_folder(&folder_path, &icon_path_str, &ini_path_str)?;
+    tauri::async_runtime::spawn_blocking(move || {
+        icon_gen::create_icon_from_ai_image(&image_bytes, &icon_path_str_task)
+            .map_err(AppError::System)?;
+
+        // 应用图标
+        apply_icon_to_folder(&folder_path_task, &icon_path_str_task, &ini_path_str_task)
+            .map_err(AppError::System)
+    })
+    .await
+    .map_err(|e| AppError::System(format!("Task failed: {}", e)))??;
 
     // 记录历史
     history.add_entry(&folder_path, "ai", &prompt, backup_path.as_deref())?;
@@ -174,10 +184,20 @@ pub async fn apply_preview_icon(
     }
 
     // 将图像转换为 ICO
-    icon_gen::create_icon_from_ai_image(&image_bytes, &icon_path_str)?;
+    let icon_path_str_task = icon_path_str.clone();
+    let folder_path_task = folder_path.clone();
+    let ini_path_str_task = ini_path_str.clone();
 
-    // 应用图标
-    apply_icon_to_folder(&folder_path, &icon_path_str, &ini_path_str)?;
+    tauri::async_runtime::spawn_blocking(move || {
+        icon_gen::create_icon_from_ai_image(&image_bytes, &icon_path_str_task)
+            .map_err(AppError::System)?;
+
+        // 应用图标
+        apply_icon_to_folder(&folder_path_task, &icon_path_str_task, &ini_path_str_task)
+            .map_err(AppError::System)
+    })
+    .await
+    .map_err(|e| AppError::System(format!("Task failed: {}", e)))??;
 
     // 记录历史
     history.add_entry(
