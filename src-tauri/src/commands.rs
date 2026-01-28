@@ -254,31 +254,37 @@ pub async fn set_multiple_folder_icons(
 /// 扫描文件夹获取子文件夹列表
 #[tauri::command]
 pub async fn scan_subfolders(parent_path: String) -> Result<Vec<String>, AppError> {
-    let parent = Path::new(&parent_path);
+    // Use spawn_blocking to offload blocking I/O to a dedicated thread
+    // This avoids blocking the async runtime while keeping the efficiency of std::fs
+    tokio::task::spawn_blocking(move || {
+        let parent = Path::new(&parent_path);
 
-    if !parent.exists() || !parent.is_dir() {
-        return Err(AppError::System(format!("文件夹不存在: {}", parent_path)));
-    }
+        if !parent.exists() || !parent.is_dir() {
+            return Err(AppError::System(format!("文件夹不存在: {}", parent_path)));
+        }
 
-    let mut subfolders = Vec::new();
+        let mut subfolders = Vec::new();
 
-    let entries = std::fs::read_dir(parent).map_err(AppError::Io)?;
+        let entries = std::fs::read_dir(parent).map_err(AppError::Io)?;
 
-    for entry in entries {
-        if let Ok(entry) = entry {
-            let path = entry.path();
-            if path.is_dir() {
-                if let Some(name) = path.file_name() {
-                    let name_str = name.to_string_lossy();
-                    if !name_str.starts_with('.') {
-                        subfolders.push(path.to_string_lossy().to_string());
+        for entry in entries {
+            if let Ok(entry) = entry {
+                let path = entry.path();
+                if path.is_dir() {
+                    if let Some(name) = path.file_name() {
+                        let name_str = name.to_string_lossy();
+                        if !name_str.starts_with('.') {
+                            subfolders.push(path.to_string_lossy().to_string());
+                        }
                     }
                 }
             }
         }
-    }
 
-    Ok(subfolders)
+        Ok(subfolders)
+    })
+    .await
+    .map_err(|e| AppError::System(format!("Task failed: {}", e)))?
 }
 
 /// 读取本地文件并转换为 Base64 (用于预览高清大图)
