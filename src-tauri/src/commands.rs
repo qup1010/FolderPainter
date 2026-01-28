@@ -285,7 +285,7 @@ pub async fn scan_subfolders(parent_path: String) -> Result<Vec<String>, AppErro
 #[tauri::command]
 pub async fn get_file_base64(file_path: String) -> Result<String, AppError> {
     use base64::Engine;
-    use std::io::Read;
+    use tokio::io::AsyncReadExt;
 
     let path = Path::new(&file_path);
     if !path.exists() || !path.is_file() {
@@ -295,10 +295,10 @@ pub async fn get_file_base64(file_path: String) -> Result<String, AppError> {
         )));
     }
 
-    let mut file = std::fs::File::open(path).map_err(AppError::Io)?;
+    let mut file = tokio::fs::File::open(path).await.map_err(AppError::Io)?;
 
     let mut buffer = Vec::new();
-    file.read_to_end(&mut buffer).map_err(AppError::Io)?;
+    file.read_to_end(&mut buffer).await.map_err(AppError::Io)?;
 
     let base64_data = base64::engine::general_purpose::STANDARD.encode(&buffer);
 
