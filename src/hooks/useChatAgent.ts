@@ -188,13 +188,15 @@ export function useChatAgent(options: UseChatAgentOptions): UseChatAgentReturn {
 
         case 'apply_icons': {
           const { targets } = result.data as { targets: Array<{ folder_path: string }> };
-          for (const target of targets) {
-            try {
-              await onApplyIcon(target.folder_path);
-            } catch (err) {
-              console.error(`应用图标失败 [${target.folder_path}]:`, err);
-            }
-          }
+          await Promise.all(
+            targets.map(async (target) => {
+              try {
+                await onApplyIcon(target.folder_path);
+              } catch (err) {
+                console.error(`应用图标失败 [${target.folder_path}]:`, err);
+              }
+            })
+          );
           break;
         }
 
