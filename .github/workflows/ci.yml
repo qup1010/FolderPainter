@@ -36,6 +36,9 @@ jobs:
       - name: Install frontend dependencies
         run: npm ci
 
+      - name: Check version consistency
+        run: node .github/scripts/check-version.cjs
+
       - name: Run frontend build
         run: npm run build
 
