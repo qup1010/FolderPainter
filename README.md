@@ -84,7 +84,7 @@
 |------|----------|
 | ![设置](public/settings.png) | ![实际演示](public/preview.png) |
 
-| 生成结果展示 | 
+| 生成效果示例 | 
 |------|
 | ![生成结果展示](public/result.png) | 
 此为`genimi-3-flash`作为文本模型 + `ComfyUI`中`FLUX-2-KLEIN-4B-FP8`做为图片模型生成的效果
@@ -92,6 +92,8 @@
 **tips:** 贴一个适配comfyui api到openai api接口类型的项目, 可以使用comfyui中的模型来接入本项目：
 [Comfyui2Openai](https://github.com/qup1010/Comfyui2Openai?tab=readme-ov-file)
 ## 🚀 快速开始
+**前排提醒**
+*使用本应用至少需要一个文本模型以及一个图像生成模型的接口（本地或云服务）*
 
 ### 下载安装
 
@@ -162,12 +164,14 @@ FolderPainter/
 
 ### 背景移除服务
 
-使用免费的 HuggingFace Space 服务：
+使用HuggingFace Space 服务：
 
 - BRIA RMBG 2.0 
 - BRIA RMBG 1.4
 - not-lain/background-removal
 - KenjieDec/RemBG
+
+使用过程中请遵守 HuggingFace Space 服务的使用条款
 
 ---
 
