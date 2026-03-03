@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { useTheme, ThemeMode } from "./hooks/useTheme";
-import { useI18n, setLocale, getLocale } from "./hooks/useI18n";
+import { useI18n } from "./hooks/useI18n";
 import { ChevronDown, Save, Trash2, Plus } from "lucide-react";
 import "./SettingsPanel.css";
 
