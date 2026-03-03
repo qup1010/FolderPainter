@@ -15,7 +15,9 @@
         "addFolderHint": "点击左下角添加文件夹开始",
         "generateIcon": "✨ 生成图标",
         "confirmGenerate": "确认生成",
-        "cannotLoadHistory": "无法加载聊天历史"
+        "cannotLoadHistory": "无法加载聊天历史",
+        "systemMessageLabel": "系统提示",
+        "aiResultLabel": "AI 结果"
     },
     "header": {
         "toggleLightMode": "切换到浅色模式",
@@ -52,11 +54,36 @@
         "selectTitle": "选择文件夹",
         "addFailed": "添加文件夹失败:"
     },
+    "system": {
+        "addedFoldersPrefix": "已添加文件夹: {names}",
+        "addedFolderCount": "已添加 {count} 个文件夹:\n{list}",
+        "continueAddAndAnalyze": "可继续增量添加，选好后点击“分析文件夹”。",
+        "analyzeQueuedFolders": "分析待处理文件夹（{count}）",
+        "pendingAnalysis": "待分析: {count}",
+        "analyzeFoldersButton": "分析文件夹",
+        "analyzeQueuedFoldersTitle": "分析待处理文件夹",
+        "textModelNotConfigured": "文本模型未配置，请先配置后再点击分析。",
+        "noQueuedFolders": "当前会话没有待分析文件夹。",
+        "failedAddFolders": "添加文件夹失败: {error}",
+        "nativeDropListenerFailed": "拖拽监听失败: {error}"
+    },
     "customStyle": {
         "title": "自定义风格",
         "description": "请输入您想要的图标风格描述：",
         "placeholder": "例如: 3d render style, claymorphism, highly detailed",
         "confirm": "应用风格"
+    },
+    "analysis": {
+        "subjectLabel": "主体描述",
+        "warningPrefix": "警告",
+        "selectStyleHint": "请选择图标风格：",
+        "selectTemplate": "选择模板",
+        "customStyle": "自定义风格",
+        "promptLabel": "建议提示词",
+        "applyPrompts": "使用这些提示词",
+        "stepAnalyze": "第 1 步：分析已选文件夹",
+        "stepChooseStyle": "第 1 步：选择风格",
+        "stepGenerate": "第 2 步：生成图标"
     },
     "preview": {
         "title": "预览",
@@ -302,7 +329,10 @@
     },
     "tools": {
         "editPrompt": "编辑提示词",
-        "promptPlaceholder": "输入新的提示词..."
+        "promptPlaceholder": "输入新的提示词...",
+        "executionFailed": "工具执行失败",
+        "promptUpdatedFor": "已更新提示词",
+        "executionDone": "工具执行完成"
     },
     "presetTemplates": {
         "3d_clay": {

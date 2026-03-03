@@ -273,26 +273,28 @@ export function TemplatePanel({ isOpen, onClose, onSelectTemplate }: TemplatePan
 
           {/* 导入导出按钮 */}
           <button
-            className="toolbar-btn"
+            className="toolbar-btn import-btn"
             onClick={handleImport}
             disabled={isImporting}
             title={t('template.import')}
           >
             <Upload size={16} />
+            <span>{isImporting ? t('settings.saving') : t('template.import')}</span>
           </button>
           <button
-            className="toolbar-btn"
+            className="toolbar-btn export-btn"
             onClick={handleExport}
             disabled={isExporting}
             title={t('template.export')}
           >
             <Download size={16} />
+            <span>{isExporting ? t('settings.saving') : t('template.export')}</span>
           </button>
 
           {/* 创建按钮 */}
           <button className="create-btn" onClick={() => setIsCreating(true)}>
             <Plus size={16} />
-            {t('template.create')}
+            <span>{t('template.create')}</span>
           </button>
         </div>
 

@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { invoke, isTauri } from "@tauri-apps/api/core";
+import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { Settings, FolderOpen, PanelRightClose, PanelRightOpen, Moon, Sun, Globe } from "lucide-react";
 import { ChatMessage, ChatMessageData } from "./ChatMessage";
@@ -70,8 +70,6 @@ export function ChatView({
   const [showCustomStyleDialog, setShowCustomStyleDialog] = useState(false);
   // 风格已应用，准备生成
   const [readyToGenerate, setReadyToGenerate] = useState(false);
-  const [pendingAnalyzePaths, setPendingAnalyzePaths] = useState<string[]>([]);
-  const [isDraggingExternal, setIsDraggingExternal] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const initialized = useRef(false);
@@ -143,17 +141,6 @@ export function ChatView({
 
   const isProcessing = isAgentProcessing || isGenerating;
 
-  const handleClearChat = useCallback(async () => {
-    setMessages([]);
-    if (session) {
-      try {
-        await onSaveChatHistory("[]");
-      } catch (e) {
-        console.error("Failed to persist cleared chat history:", e);
-      }
-    }
-  }, [session, onSaveChatHistory]);
-
   // 处理 Agent 返回结果 (定义在 handleFoldersAdded 之前使用)
   const handleAgentResult = useCallback(async (result: AgentProcessResult) => {
     // 显示 Agent 的自然语言回复
@@ -193,58 +180,10 @@ export function ChatView({
     textApiConfigured,
     addAssistantMessage,
     addUserMessage,
-    onFoldersQueued: (folders) => {
-      setPendingAnalyzePaths((prev) => {
-        const next = new Set(prev);
-        folders.forEach((f) => next.add(f.folderPath));
-        return Array.from(next);
-      });
-    },
-  });
-
-  const handleAnalyzeQueuedFolders = useCallback(async () => {
-    if (pendingAnalyzePaths.length === 0) return;
-
-    if (!textApiConfigured) {
-      addAssistantMessage(t("system.textModelNotConfigured"));
-      return;
-    }
-
-    const queuedPaths = [...pendingAnalyzePaths];
-    const queuedFolders = (session?.folders || []).filter((f) => queuedPaths.includes(f.folderPath));
-    if (queuedFolders.length === 0) {
-      setPendingAnalyzePaths([]);
-      addAssistantMessage(t("system.noQueuedFolders"));
-      return;
-    }
-
-    addUserMessage(
-      t("system.analyzeQueuedFolders").replace("{count}", String(queuedFolders.length)),
-      queuedPaths
-    );
-    const result = await sendAgentMessage(
-      "Analyze these folders and suggest icon directions for each one.",
-      { folders: buildFolderContexts(queuedFolders) }
-    );
-
-    if (result) {
-      await handleAgentResult(result);
-      setPendingAnalyzePaths((prev) => prev.filter((p) => !queuedPaths.includes(p)));
-    } else if (agentError) {
-      addAssistantMessage(t("messages.processingFailed").replace("{error}", agentError));
-    }
-  }, [
-    pendingAnalyzePaths,
-    textApiConfigured,
-    addAssistantMessage,
-    session?.folders,
-    addUserMessage,
     sendAgentMessage,
     buildFolderContexts,
     handleAgentResult,
-    agentError,
-    t,
-  ]);
+  });
 
   // 初始化
   useEffect(() => {
@@ -264,77 +203,20 @@ export function ChatView({
     }
   }, [session?.folders, updateFolders]);
 
-  useEffect(() => {
-    const validPaths = new Set((session?.folders || []).map((f) => f.folderPath));
-    setPendingAnalyzePaths((prev) => prev.filter((p) => validPaths.has(p)));
-  }, [session?.folders]);
-
-  useEffect(() => {
-    const handleDragEnter = (event: DragEvent) => {
-      event.preventDefault();
-      setIsDraggingExternal(true);
-    };
-    const handleDragOver = (event: DragEvent) => {
-      event.preventDefault();
-      if (event.dataTransfer) {
-        event.dataTransfer.dropEffect = "copy";
-      }
-      setIsDraggingExternal(true);
-    };
-    const handleDragLeave = () => {
-      setIsDraggingExternal(false);
-    };
-    const handleDrop = (event: DragEvent) => {
-      event.preventDefault();
-      setIsDraggingExternal(false);
-    };
-
-    window.addEventListener("dragenter", handleDragEnter);
-    window.addEventListener("dragover", handleDragOver);
-    window.addEventListener("dragleave", handleDragLeave);
-    window.addEventListener("drop", handleDrop);
-
-    return () => {
-      window.removeEventListener("dragenter", handleDragEnter);
-      window.removeEventListener("dragover", handleDragOver);
-      window.removeEventListener("dragleave", handleDragLeave);
-      window.removeEventListener("drop", handleDrop);
-    };
-  }, []);
-
   // 拖拽文件夹支持
   useEffect(() => {
-    if (!isTauri()) return;
-
-    let disposed = false;
-    let unlistenNative: (() => void) | null = null;
-
-    const unlistenNativePromise = listen<string[]>("native-file-drop", (event) => {
-      const paths = event.payload || [];
-      if (paths.length > 0) {
-        void handleFoldersAdded(paths);
+    const unlisten = listen<{ paths: string[] }>('tauri://drag-drop', (event) => {
+      const paths = event.payload.paths;
+      if (paths && paths.length > 0) {
+        // 直接调用 handleFoldersAdded 处理拖入的路径
+        handleFoldersAdded(paths);
       }
-    })
-      .then((fn) => {
-        if (disposed) {
-          fn();
-        } else {
-          unlistenNative = fn;
-        }
-        return fn;
-      })
-      .catch((err) => {
-        console.error("[dnd] failed to register native-file-drop listener", err);
-        addAssistantMessage(t("system.nativeDropListenerFailed").replace("{error}", String(err)));
-        return () => {};
-      });
+    });
 
     return () => {
-      disposed = true;
-      if (unlistenNative) unlistenNative();
-      else void unlistenNativePromise.then((fn) => fn());
+      unlisten.then((fn) => fn());
     };
-  }, [handleFoldersAdded, addAssistantMessage, t]);
+  }, [handleFoldersAdded]);
 
   // 加载会话聊天历史
   useEffect(() => {
@@ -381,7 +263,7 @@ export function ChatView({
 
     // 检查是否是 clear 命令
     if (message.toLowerCase().trim() === 'clear') {
-      await handleClearChat();
+      setMessages([]);
       addAssistantMessage(t('chat.clearSuccess'));
       return;
     }
@@ -632,7 +514,6 @@ export function ChatView({
 
       {/* 消息列表 */}
       <div className="chat-messages">
-        {isDraggingExternal && <div className="dnd-overlay">Drop folders to add</div>}
         {messages.map((msg) => (
           <ChatMessage
             key={msg.id}
@@ -648,7 +529,6 @@ export function ChatView({
       {/* 生成按钮 (风格已应用后显示) */}
       {readyToGenerate && !generationProgress && (
         <div className="ready-to-generate-bar">
-          <div className="flow-step-caption">{t("analysis.stepGenerate", "Step 2: Generate icons")}</div>
           <button
             className="generate-btn"
             onClick={async () => {
@@ -679,28 +559,20 @@ export function ChatView({
           />
         ) : (
           <>
-            <div className="flow-step-caption">
-              {t("analysis.stepAnalyze", "Step 1: Analyze selected folders")}
-            </div>
-            <div className="status-actions">
-              <button
-                className="flow-primary-btn"
-                onClick={handleAnalyzeQueuedFolders}
-                disabled={isProcessing || isLoading || pendingAnalyzePaths.length === 0}
-                title={t("system.analyzeQueuedFoldersTitle")}
-              >
-                {pendingAnalyzePaths.length > 0
-                  ? `${t("system.analyzeFoldersButton")} (${pendingAnalyzePaths.length})`
-                  : t("system.analyzeFoldersButton")}
-              </button>
-              <button
-                className="flow-secondary-btn"
-                onClick={() => { void handleClearChat(); }}
-                title={t('chat.clearChatTitle')}
-              >
-                {t('chat.clearChat')}
-              </button>
-            </div>
+            <span className="status-text">
+              {totalCount > 0 ? (
+                <>{t('chat.folderCount').replace('{count}', String(totalCount))}</>
+              ) : (
+                t('chat.addFolderHint')
+              )}
+            </span>
+            <button
+              className="clear-btn"
+              onClick={() => { setMessages([]); }}
+              title={t('chat.clearChatTitle')}
+            >
+              {t('chat.clearChat')}
+            </button>
           </>
         )}
       </div>

@@ -15,7 +15,9 @@
         "addFolderHint": "Click bottom left to add folders",
         "generateIcon": "✨ Generate Icons",
         "confirmGenerate": "Confirm generation",
-        "cannotLoadHistory": "Cannot load chat history"
+        "cannotLoadHistory": "Cannot load chat history",
+        "systemMessageLabel": "System",
+        "aiResultLabel": "AI Result"
     },
     "header": {
         "toggleLightMode": "Switch to light mode",
@@ -52,11 +54,36 @@
         "selectTitle": "Select Folder",
         "addFailed": "Failed to add folder:"
     },
+    "system": {
+        "addedFoldersPrefix": "Added folders: {names}",
+        "addedFolderCount": "Added {count} folder(s):\n{list}",
+        "continueAddAndAnalyze": "You can continue adding folders and click \"Analyze Folders\" when ready.",
+        "analyzeQueuedFolders": "Analyze queued folders ({count})",
+        "pendingAnalysis": "Pending analysis: {count}",
+        "analyzeFoldersButton": "Analyze Folders",
+        "analyzeQueuedFoldersTitle": "Analyze queued folders",
+        "textModelNotConfigured": "Text model is not configured yet. Configure it first, then click Analyze.",
+        "noQueuedFolders": "No queued folders found in current session.",
+        "failedAddFolders": "Failed to add folders: {error}",
+        "nativeDropListenerFailed": "Drag-drop listener failed: {error}"
+    },
     "customStyle": {
         "title": "Custom Style",
         "description": "Enter your desired icon style description:",
         "placeholder": "e.g.: 3d render style, claymorphism, highly detailed",
         "confirm": "Apply Style"
+    },
+    "analysis": {
+        "subjectLabel": "Subject",
+        "warningPrefix": "Warning",
+        "selectStyleHint": "Choose icon style:",
+        "selectTemplate": "Select Template",
+        "customStyle": "Custom Style",
+        "promptLabel": "Suggested Prompt",
+        "applyPrompts": "Use These Prompts",
+        "stepAnalyze": "Step 1: Analyze selected folders",
+        "stepChooseStyle": "Step 1: Choose a style",
+        "stepGenerate": "Step 2: Generate icons"
     },
     "preview": {
         "title": "Preview",
@@ -308,7 +335,10 @@
     },
     "tools": {
         "editPrompt": "Edit prompt",
-        "promptPlaceholder": "Enter new prompt..."
+        "promptPlaceholder": "Enter new prompt...",
+        "executionFailed": "Tool execution failed",
+        "promptUpdatedFor": "Updated prompt",
+        "executionDone": "Tool finished"
     },
     "presetTemplates": {
         "3d_clay": {

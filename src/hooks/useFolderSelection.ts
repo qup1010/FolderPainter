@@ -1,122 +1,134 @@
 import { open } from "@tauri-apps/plugin-dialog";
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import type { PreviewSession, FolderPreview } from "../types/preview";
 import type { ChatMessageData } from "../ChatMessage";
-import type { AgentProcessResult } from "../types/agent";
+import { t } from "./useI18n";
 
 interface UseFolderSelectionProps {
-    session: PreviewSession | null;
-    onAddFolders: (paths: string[]) => Promise<FolderPreview[]>;
-    updateFolders: (folders: FolderPreview[]) => void;
-    textApiConfigured: boolean;
-    addAssistantMessage: (content: string, extras?: Partial<ChatMessageData>) => void;
-    addUserMessage: (content: string, paths?: string[]) => void;
-    sendAgentMessage: (message: string, context?: any) => Promise<AgentProcessResult | null>;
-    buildFolderContexts: (folders: FolderPreview[]) => any[];
-    handleAgentResult: (result: AgentProcessResult) => Promise<void>;
+  session: PreviewSession | null;
+  onAddFolders: (paths: string[]) => Promise<FolderPreview[]>;
+  updateFolders: (folders: FolderPreview[]) => void;
+  textApiConfigured: boolean;
+  addAssistantMessage: (content: string, extras?: Partial<ChatMessageData>) => void;
+  addUserMessage: (content: string, paths?: string[]) => void;
+  onFoldersQueued?: (folders: FolderPreview[]) => void;
 }
 
 export function useFolderSelection({
-    session,
-    onAddFolders,
-    updateFolders,
-    textApiConfigured,
-    addAssistantMessage,
-    addUserMessage,
-    sendAgentMessage,
-    buildFolderContexts,
-    handleAgentResult,
+  session,
+  onAddFolders,
+  updateFolders,
+  textApiConfigured,
+  addAssistantMessage,
+  addUserMessage,
+  onFoldersQueued,
 }: UseFolderSelectionProps) {
+  const inFlightPathsRef = useRef<Set<string>>(new Set());
+  const recentPathTsRef = useRef<Map<string, number>>(new Map());
 
-    // 处理添加文件夹
-    const handleFoldersAdded = useCallback(async (paths: string[]) => {
-        const folderNames = paths.map((p) => p.split("\\").pop()).join(", ");
-        addUserMessage(`添加了文件夹: ${folderNames}`, paths);
+  const normalizePath = (p: string) => p.trim().replace(/\//g, "\\").toLowerCase();
 
-        try {
-            const newFolders = await onAddFolders(paths);
-            if (newFolders.length === 0) return;
+  const handleFoldersAdded = useCallback(
+    async (paths: string[]) => {
+      const currentFolders = session?.folders || [];
+      const existing = new Set(currentFolders.map((f) => normalizePath(f.folderPath)));
 
-            const indexList = newFolders.map(f => `[${f.displayIndex}] ${f.folderName}`).join("\n");
+      const deduped = Array.from(new Set(paths.map((p) => p.trim()).filter((p) => p.length > 0)));
+      const now = Date.now();
+      const candidates = deduped.filter((p) => {
+        const key = normalizePath(p);
+        const lastTs = recentPathTsRef.current.get(key) || 0;
+        const inCooldown = now - lastTs < 2000;
+        return !existing.has(key) && !inFlightPathsRef.current.has(key) && !inCooldown;
+      });
 
-            // ⚡ 关键：构建完整的文件夹上下文
-            // 注意：这里需要确保合并逻辑正确，避免重复
-            const currentFolders = session?.folders || [];
-            const incomingPaths = new Set(newFolders.map(f => f.folderPath));
+      // Silent when there is no newly-added folder.
+      if (candidates.length === 0) return [];
 
-            const allFolders = [
-                ...currentFolders.filter(f => !incomingPaths.has(f.folderPath)),
-                ...newFolders
-            ];
+      const folderNames = candidates.map((p) => p.split("\\").pop()).join(", ");
+      addUserMessage(t("system.addedFoldersPrefix").replace("{names}", folderNames), candidates);
 
-            // 同步更新 Hook 状态
-            updateFolders(allFolders);
+      const candidateKeys = candidates.map(normalizePath);
+      candidateKeys.forEach((k) => inFlightPathsRef.current.add(k));
 
-            // 构建用于立即使用的 context
-            const immediateContext = {
-                folders: buildFolderContexts(allFolders),
-            };
+      try {
+        const newFolders = await onAddFolders(candidates);
+        if (newFolders.length === 0) return [];
 
-            if (!textApiConfigured) {
-                addAssistantMessage(
-                    `已添加 ${newFolders.length} 个文件夹:\n${indexList}\n\n` +
-                    "⚠️ 文本模型未配置，无法智能分析。\n" +
-                    "你可以在设置中配置，或直接描述想要的图标风格。"
-                );
-                return;
-            }
+        const indexList = newFolders.map((f) => `[${f.displayIndex}] ${f.folderName}`).join("\n");
+        const incomingPaths = new Set(newFolders.map((f) => f.folderPath));
+        const allFolders = [
+          ...currentFolders.filter((f) => !incomingPaths.has(f.folderPath)),
+          ...newFolders,
+        ];
 
-            addAssistantMessage(`已添加 ${newFolders.length} 个文件夹，正在分析... 🔍`);
+        updateFolders(allFolders);
+        onFoldersQueued?.(newFolders);
 
-            // 通过 Agent 自动分析
-            const folderIndices = newFolders.map(f => f.displayIndex);
-            const result = await sendAgentMessage(
-                `分析文件夹 ${folderIndices.join(", ")}`,
-                immediateContext
-            );
-
-            if (result) {
-                // 处理 Agent 响应
-                await handleAgentResult(result);
-            }
-        } catch (error) {
-            console.error("添加文件夹失败:", error);
-            addAssistantMessage(`添加文件夹失败: ${error}`);
+        if (!textApiConfigured) {
+          addAssistantMessage(
+            t("system.addedFolderCount")
+              .replace("{count}", String(newFolders.length))
+              .replace("{list}", indexList) +
+              "\n\n" +
+              t("system.textModelNotConfigured")
+          );
+        } else {
+          addAssistantMessage(
+            t("system.addedFolderCount")
+              .replace("{count}", String(newFolders.length))
+              .replace("{list}", indexList) +
+              "\n\n" +
+              t("system.continueAddAndAnalyze")
+          );
         }
-    }, [
-        session?.folders,
-        onAddFolders,
-        updateFolders,
-        textApiConfigured,
-        addAssistantMessage,
-        addUserMessage,
-        sendAgentMessage,
-        buildFolderContexts,
-        handleAgentResult
-    ]);
 
-    // 处理选择文件夹
-    const handleSelectFolder = useCallback(async () => {
-        try {
-            const selected = await open({
-                directory: true,
-                multiple: true,
-                title: "选择文件夹",
-            });
+        return newFolders;
+      } catch (error) {
+        console.error("Failed to add folders:", error);
+        addAssistantMessage(t("system.failedAddFolders").replace("{error}", String(error)));
+        return [];
+      } finally {
+        const doneTs = Date.now();
+        candidateKeys.forEach((k) => {
+          inFlightPathsRef.current.delete(k);
+          recentPathTsRef.current.set(k, doneTs);
+        });
+      }
+    },
+    [
+      session?.folders,
+      onAddFolders,
+      updateFolders,
+      textApiConfigured,
+      addAssistantMessage,
+      addUserMessage,
+      onFoldersQueued,
+    ]
+  );
 
-            if (selected) {
-                const paths = Array.isArray(selected) ? selected : [selected];
-                if (paths.length > 0) {
-                    await handleFoldersAdded(paths);
-                }
-            }
-        } catch (error) {
-            console.error("Failed to open folder dialog:", error);
+  const handleSelectFolder = useCallback(async () => {
+    try {
+      const selected = await open({
+        directory: true,
+        multiple: true,
+        title: t("folder.selectTitle", "Select Folder"),
+      });
+
+      if (selected) {
+        const paths = Array.isArray(selected) ? selected : [selected];
+        if (paths.length > 0) {
+          await handleFoldersAdded(paths);
         }
-    }, [handleFoldersAdded]);
+      }
+    } catch (error) {
+      console.error("Failed to open folder dialog:", error);
+    }
+  }, [handleFoldersAdded]);
 
-    return {
-        handleSelectFolder,
-        handleFoldersAdded,
-    };
+  return {
+    handleSelectFolder,
+    handleFoldersAdded,
+  };
 }
+

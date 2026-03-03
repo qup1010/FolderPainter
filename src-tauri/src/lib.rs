@@ -14,6 +14,8 @@ pub mod templates;
 pub mod text_ai;
 pub mod windows_api;
 
+use tauri::Emitter;
+
 use ai_client::{generate_ai_icon, preview_ai_icon, test_api_connection};
 use bg_removal::{test_bg_removal_connection, test_bg_removal_with_config};
 use chat_agent::chat_with_agent;
@@ -43,12 +45,28 @@ use templates::{
 };
 use text_ai::{analyze_folder_content, analyze_multiple_folders, refine_prompt_with_ai};
 
+#[tauri::command]
+fn get_runtime_diagnostics() -> Result<windows_api::RuntimeDiagnostics, String> {
+    windows_api::get_runtime_diagnostics()
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
+        .on_window_event(|window, event| {
+            if let tauri::WindowEvent::DragDrop(drop_event) = event {
+                if let tauri::DragDropEvent::Drop { paths, .. } = drop_event {
+                    let payload: Vec<String> = paths
+                        .iter()
+                        .map(|p| p.to_string_lossy().to_string())
+                        .collect();
+                    let _ = window.emit("native-file-drop", payload);
+                }
+            }
+        })
         .setup(|_app| {
             // 初始化模板存储 (仅运行一次)
             use templates::store::TemplateStore;
@@ -122,7 +140,9 @@ pub fn run() {
             export_user_templates,
             import_templates,
             // Agent 对话命令
-            chat_with_agent
+            chat_with_agent,
+            // Runtime diagnostics
+            get_runtime_diagnostics
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

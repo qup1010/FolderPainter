@@ -2,6 +2,41 @@ use serde::{Deserialize, Serialize};
 use std::fs;
 use std::path::PathBuf;
 
+const KEYRING_SERVICE: &str = "FolderPainter";
+const TEXT_MODEL_KEY: &str = "text_model_api_key";
+const IMAGE_MODEL_KEY: &str = "image_model_api_key";
+const BG_REMOVAL_TOKEN_KEY: &str = "bg_removal_api_token";
+
+fn preset_key(preset_type: &str, name: &str) -> String {
+    format!("{}_preset_api_key_{}", preset_type, name)
+}
+
+fn keyring_entry(account: &str) -> Result<keyring::Entry, String> {
+    keyring::Entry::new(KEYRING_SERVICE, account)
+        .map_err(|e| format!("创建系统凭据条目失败 ({account}): {e}"))
+}
+
+fn load_secret(account: &str) -> Option<String> {
+    let entry = keyring_entry(account).ok()?;
+    match entry.get_password() {
+        Ok(value) if !value.trim().is_empty() => Some(value),
+        _ => None,
+    }
+}
+
+fn save_secret(account: &str, value: Option<&str>) -> Result<(), String> {
+    let entry = keyring_entry(account)?;
+    match value.map(str::trim).filter(|v| !v.is_empty()) {
+        Some(secret) => entry
+            .set_password(secret)
+            .map_err(|e| format!("保存系统凭据失败 ({account}): {e}")),
+        None => match entry.delete_credential() {
+            Ok(_) | Err(keyring::Error::NoEntry) => Ok(()),
+            Err(e) => Err(format!("清理系统凭据失败 ({account}): {e}")),
+        },
+    }
+}
+
 /// 单个 AI 模型配置
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AIModelConfig {
@@ -185,6 +220,65 @@ impl Default for AppConfig {
 }
 
 impl AppConfig {
+    fn has_file_secrets(&self) -> bool {
+        self.text_model.api_key.is_some()
+            || self.image_model.api_key.is_some()
+            || self.bg_removal.api_token.is_some()
+            || self.text_presets.iter().any(|preset| preset.api_key.is_some())
+            || self.image_presets.iter().any(|preset| preset.api_key.is_some())
+    }
+
+    fn hydrate_secrets(&mut self) {
+        if let Some(api_key) = load_secret(TEXT_MODEL_KEY) {
+            self.text_model.api_key = Some(api_key);
+        }
+        if let Some(api_key) = load_secret(IMAGE_MODEL_KEY) {
+            self.image_model.api_key = Some(api_key);
+        }
+        if let Some(api_token) = load_secret(BG_REMOVAL_TOKEN_KEY) {
+            self.bg_removal.api_token = Some(api_token);
+        }
+
+        for preset in &mut self.text_presets {
+            if let Some(api_key) = load_secret(&preset_key("text", &preset.name)) {
+                preset.api_key = Some(api_key);
+            }
+        }
+        for preset in &mut self.image_presets {
+            if let Some(api_key) = load_secret(&preset_key("image", &preset.name)) {
+                preset.api_key = Some(api_key);
+            }
+        }
+    }
+
+    fn persist_secrets(&self) -> Result<(), String> {
+        save_secret(TEXT_MODEL_KEY, self.text_model.api_key.as_deref())?;
+        save_secret(IMAGE_MODEL_KEY, self.image_model.api_key.as_deref())?;
+        save_secret(BG_REMOVAL_TOKEN_KEY, self.bg_removal.api_token.as_deref())?;
+
+        for preset in &self.text_presets {
+            save_secret(&preset_key("text", &preset.name), preset.api_key.as_deref())?;
+        }
+        for preset in &self.image_presets {
+            save_secret(&preset_key("image", &preset.name), preset.api_key.as_deref())?;
+        }
+        Ok(())
+    }
+
+    fn sanitized_for_disk(&self) -> Self {
+        let mut sanitized = self.clone();
+        sanitized.text_model.api_key = None;
+        sanitized.image_model.api_key = None;
+        sanitized.bg_removal.api_token = None;
+
+        for preset in &mut sanitized.text_presets {
+            preset.api_key = None;
+        }
+        for preset in &mut sanitized.image_presets {
+            preset.api_key = None;
+        }
+        sanitized
+    }
     /// 获取配置文件路径
     fn config_path() -> Result<PathBuf, String> {
         let app_data = std::env::var("APPDATA").map_err(|_| "无法获取 APPDATA 路径".to_string())?;
@@ -207,16 +301,27 @@ impl AppConfig {
         }
 
         let content = fs::read_to_string(&path).map_err(|e| format!("读取配置文件失败: {}", e))?;
+        let mut config: Self =
+            serde_json::from_str(&content).map_err(|e| format!("解析配置文件失败: {}", e))?;
 
-        serde_json::from_str(&content).map_err(|e| format!("解析配置文件失败: {}", e))
+        let had_file_secrets = config.has_file_secrets();
+        config.hydrate_secrets();
+
+        // Migrate old plaintext secrets in config.json to OS credential store.
+        if had_file_secrets {
+            config.save()?;
+        }
+
+        Ok(config)
     }
 
-    /// 保存配置
     pub fn save(&self) -> Result<(), String> {
+        self.persist_secrets()?;
         let path = Self::config_path()?;
+        let sanitized = self.sanitized_for_disk();
 
-        let content =
-            serde_json::to_string_pretty(self).map_err(|e| format!("序列化配置失败: {}", e))?;
+        let content = serde_json::to_string_pretty(&sanitized)
+            .map_err(|e| format!("序列化配置失败: {}", e))?;
 
         fs::write(&path, content).map_err(|e| format!("写入配置文件失败: {}", e))?;
 

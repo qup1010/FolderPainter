@@ -1,4 +1,4 @@
-/* PreviewPanel 样式 - 网格卡片布局 */
+﻿/* PreviewPanel 鏍峰紡 - 缃戞牸鍗＄墖甯冨眬 */
 
 .preview-panel {
   display: flex;
@@ -12,7 +12,7 @@
   align-items: center;
 }
 
-/* 空状态 */
+/* 绌虹姸鎬?*/
 .empty-state {
   text-align: center;
   padding: 2rem;
@@ -36,7 +36,7 @@
   margin: 0;
 }
 
-/* 头部 */
+/* 澶撮儴 */
 .panel-header {
   display: flex;
   justify-content: space-between;
@@ -46,7 +46,6 @@
   border-bottom: 1px solid var(--border-color);
   flex-shrink: 0;
 }
-
 .panel-header h3 {
   margin: 0;
   font-size: 1rem;
@@ -63,7 +62,7 @@
   border-radius: 6px;
 }
 
-/* 网格容器 */
+/* 缃戞牸瀹瑰櫒 */
 .folder-grid {
   flex: 1;
   overflow-y: auto;
@@ -75,7 +74,7 @@
   min-height: 200px;
 }
 
-/* 文件夹卡片 */
+/* 鏂囦欢澶瑰崱鐗?*/
 .folder-card {
   background-color: var(--card-bg);
   border-radius: var(--card-radius);
@@ -87,16 +86,16 @@
 }
 
 .folder-card:hover {
-  border-color: var(--border-color);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: color-mix(in srgb, var(--accent-primary) 24%, var(--border-color));
+  box-shadow: 0 3px 10px rgba(2, 8, 23, 0.08);
 }
 
 .folder-card.expanded {
   border-color: var(--accent-primary);
-  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.15);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--accent-primary) 20%, transparent);
 }
 
-/* 卡片主体 */
+/* 鍗＄墖涓讳綋 */
 .card-main {
   display: flex;
   align-items: center;
@@ -106,18 +105,18 @@
   position: relative;
 }
 
-/* 图标预览区 */
+/* 鍥炬爣棰勮鍖?*/
 .card-preview {
   width: 48px;
   height: 48px;
   border-radius: 8px;
-  background-color: #fff;
+  background-color: var(--bg-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   overflow: hidden;
-  border: 1px solid #eee;
+  border: 1px solid var(--border-color);
 }
 
 .card-preview img {
@@ -127,7 +126,7 @@
 }
 
 .card-preview .placeholder-icon {
-  color: #ccc;
+  color: var(--text-muted);
 }
 
 .card-preview .loading-icon {
@@ -145,7 +144,7 @@
   }
 }
 
-/* 文件夹信息 */
+/* 鏂囦欢澶逛俊鎭?*/
 .card-info {
   flex: 1;
   min-width: 0;
@@ -157,18 +156,18 @@
 .card-index {
   font-size: 0.6875rem;
   font-weight: 600;
-  color: #396cd8;
+  color: var(--accent-primary);
 }
 
 .card-name {
   font-size: 0.8125rem;
-  color: #333;
+  color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* 状态标签 */
+/* 鐘舵€佹爣绛?*/
 .card-status {
   flex-shrink: 0;
 }
@@ -201,22 +200,22 @@
   color: #2e7d32;
 }
 
-/* 展开指示器 */
+/* 灞曞紑鎸囩ず鍣?*/
 .expand-indicator {
-  color: #999;
+  color: var(--text-muted);
   flex-shrink: 0;
 }
 
-/* 移除按钮 */
+/* 绉婚櫎鎸夐挳 */
 .card-main .remove-btn {
   position: absolute;
   top: 4px;
   right: 4px;
   width: 24px;
   height: 24px;
-  border: 1px solid #e0e0e0;
-  background-color: rgba(255, 255, 255, 0.9);
-  color: #666;
+  border: 1px solid var(--border-color);
+  background-color: color-mix(in srgb, var(--bg-secondary) 92%, transparent);
+  color: var(--text-secondary);
   border-radius: 6px;
   cursor: pointer;
   display: flex;
@@ -228,22 +227,22 @@
 }
 
 .card-main .remove-btn:hover {
-  background-color: #f44336;
-  border-color: #f44336;
-  color: white;
-  transform: scale(1.1);
+  background-color: color-mix(in srgb, var(--accent-danger) 15%, var(--bg-secondary));
+  border-color: color-mix(in srgb, var(--accent-danger) 45%, var(--border-color));
+  color: var(--accent-danger);
+  transform: none;
 }
 
-/* 还原按钮 */
+/* 杩樺師鎸夐挳 */
 .card-main .restore-btn {
   position: absolute;
   top: 4px;
   right: 32px;
   width: 24px;
   height: 24px;
-  border: 1px solid #e0e0e0;
-  background-color: rgba(255, 255, 255, 0.9);
-  color: #666;
+  border: 1px solid var(--border-color);
+  background-color: color-mix(in srgb, var(--bg-secondary) 92%, transparent);
+  color: var(--text-secondary);
   border-radius: 6px;
   cursor: pointer;
   display: flex;
@@ -255,10 +254,10 @@
 }
 
 .card-main .restore-btn:hover {
-  background-color: #1976d2;
-  border-color: #1976d2;
-  color: white;
-  transform: scale(1.1);
+  background-color: color-mix(in srgb, var(--accent-primary) 14%, var(--bg-secondary));
+  border-color: color-mix(in srgb, var(--accent-primary) 45%, var(--border-color));
+  color: var(--accent-primary);
+  transform: none;
 }
 
 .card-main .restore-btn:disabled {
@@ -270,11 +269,11 @@
   animation: spin 1s linear infinite;
 }
 
-/* 展开的版本列表 */
+/* 灞曞紑鐨勭増鏈垪琛?*/
 .card-expanded {
   padding: 0.5rem 0.75rem 0.75rem;
-  border-top: 1px solid #eee;
-  background-color: #fafafa;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--bg-primary);
 }
 
 .versions-row {
@@ -304,21 +303,21 @@
   border-radius: 2px;
 }
 
-/* 底部 */
+/* 搴曢儴 */
 .panel-footer {
   padding: 0.75rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--border-color);
   flex-shrink: 0;
   display: flex;
   gap: 0.5rem;
 }
 
-/* 清空所有按钮 */
+/* 娓呯┖鎵€鏈夋寜閽?*/
 .clear-all-btn {
   padding: 0.625rem 0.875rem;
   background-color: transparent;
-  color: #666;
-  border: 1px solid #ddd;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   font-size: 0.8125rem;
   font-weight: 500;
@@ -332,9 +331,9 @@
 }
 
 .clear-all-btn:hover:not(:disabled) {
-  background-color: #fee2e2;
-  border-color: #fca5a5;
-  color: #dc2626;
+  background-color: color-mix(in srgb, var(--accent-danger) 10%, var(--bg-secondary));
+  border-color: color-mix(in srgb, var(--accent-danger) 40%, var(--border-color));
+  color: var(--accent-danger);
 }
 
 .clear-all-btn:disabled {
@@ -346,12 +345,12 @@
   flex-shrink: 0;
 }
 
-/* 一键抠图按钮 */
+/* 涓€閿姞鍥炬寜閽?*/
 .removebg-all-btn {
   padding: 0.625rem 0.875rem;
-  background-color: #9c27b0;
-  color: #fff;
-  border: none;
+  background-color: color-mix(in srgb, var(--accent-primary) 10%, var(--bg-secondary));
+  color: var(--text-primary);
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 32%, var(--border-color));
   border-radius: 8px;
   font-size: 0.8125rem;
   font-weight: 500;
@@ -365,7 +364,8 @@
 }
 
 .removebg-all-btn:hover:not(:disabled) {
-  background-color: #7b1fa2;
+  background-color: color-mix(in srgb, var(--accent-primary) 15%, var(--bg-secondary));
+  color: var(--accent-primary);
 }
 
 .removebg-all-btn:disabled {
@@ -384,7 +384,7 @@
 .apply-all-btn {
   width: 100%;
   padding: 0.625rem 1rem;
-  background-color: #396cd8;
+  background-color: var(--accent-primary);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -399,7 +399,7 @@
 }
 
 .apply-all-btn:hover:not(:disabled) {
-  background-color: #2d5bb8;
+  background-color: var(--accent-primary-hover);
 }
 
 .apply-all-btn:disabled {
@@ -415,7 +415,7 @@
   animation: spin 1s linear infinite;
 }
 
-/* 深色模式 */
+/* 娣辫壊妯″紡 */
 @media (prefers-color-scheme: dark) {
   .preview-panel {
     background-color: #242424;
@@ -516,7 +516,7 @@
   }
 }
 
-/* 支持手动切换的深色模式 */
+/* 鏀寔鎵嬪姩鍒囨崲鐨勬繁鑹叉ā寮?*/
 :root.dark .preview-panel {
   background-color: #242424;
 }
@@ -626,7 +626,7 @@
   color: #888;
 }
 
-/* 深色模式还原按钮 */
+/* 娣辫壊妯″紡杩樺師鎸夐挳 */
 :root.dark .card-main .restore-btn {
   color: #666;
 }
@@ -646,3 +646,4 @@
     color: #64b5f6;
   }
 }
+

@@ -36,7 +36,7 @@
   align-items: center;
   padding: 1.5rem;
   border-bottom: 1px solid var(--border-color, #eee);
-  background: linear-gradient(to right, var(--bg-primary, #fff), var(--bg-secondary, #fafafa));
+  background: var(--bg-secondary, #fafafa);
 }
 
 .template-panel .header-left {
@@ -82,6 +82,56 @@
   background-color: var(--bg-secondary, #fafafa);
   border-bottom: 1px solid var(--border-color, #eee);
   align-items: center;
+}
+
+.toolbar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 0.72rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-color, #ddd);
+  background: var(--bg-primary, #fff);
+  color: var(--text-primary, #333);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.toolbar-btn svg {
+  color: var(--text-secondary, #666);
+}
+
+.toolbar-btn:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--primary-color, #396cd8) 36%, var(--border-color, #ddd));
+  background: color-mix(in srgb, var(--primary-color, #396cd8) 8%, var(--bg-primary, #fff));
+}
+
+.toolbar-btn:hover:not(:disabled) svg {
+  color: var(--primary-color, #396cd8);
+}
+
+.toolbar-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.toolbar-btn.import-btn {
+  color: var(--text-primary, #333);
+}
+
+.toolbar-btn.import-btn svg {
+  color: color-mix(in srgb, var(--primary-color, #396cd8) 70%, var(--text-primary, #333));
+}
+
+.toolbar-btn.export-btn {
+  color: var(--text-primary, #333);
+}
+
+.toolbar-btn.export-btn svg {
+  color: color-mix(in srgb, var(--accent-success, #22c55e) 75%, var(--text-primary, #333));
 }
 
 .search-box {
@@ -140,26 +190,46 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.625rem 1rem;
-  background-color: var(--primary-color, #396cd8);
-  color: #fff;
-  border: none;
+  background-color: color-mix(in srgb, var(--primary-color, #396cd8) 10%, var(--bg-primary, #fff));
+  color: var(--text-primary, #333);
+  border: 1px solid color-mix(in srgb, var(--primary-color, #396cd8) 32%, var(--border-color, #ddd));
   border-radius: 8px;
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
   white-space: nowrap;
-  box-shadow: 0 2px 4px rgba(57, 108, 216, 0.2);
+  box-shadow: none;
 }
 
 .create-btn:hover {
-  background-color: var(--primary-hover, #2d5bb8);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(57, 108, 216, 0.3);
+  background-color: color-mix(in srgb, var(--primary-color, #396cd8) 14%, var(--bg-primary, #fff));
+  color: var(--primary-color, #396cd8);
+  transform: none;
+  box-shadow: none;
 }
 
 .create-btn:active {
   transform: translateY(0);
+}
+
+@media (max-width: 860px) {
+  .panel-toolbar {
+    gap: 0.6rem;
+  }
+
+  .toolbar-btn span,
+  .create-btn span {
+    display: none;
+  }
+
+  .toolbar-btn,
+  .create-btn {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    justify-content: center;
+  }
 }
 
 /* 分类标签 */
@@ -301,7 +371,7 @@
   border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: all 0.2s ease;
   position: relative;
   border: 1px solid var(--border-color, #eee);
   display: flex;
@@ -310,8 +380,8 @@
 }
 
 .template-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(2, 8, 23, 0.08);
   border-color: var(--primary-color-alpha, rgba(57, 108, 216, 0.3));
 }
 
@@ -340,7 +410,7 @@
 }
 
 .template-card:hover .card-cover img {
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 
 .cover-placeholder {
@@ -451,22 +521,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: color-mix(in srgb, var(--bg-primary, #fff) 92%, transparent);
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
   border-radius: 6px;
-  color: #555;
+  color: var(--text-secondary, #666);
   cursor: pointer;
   transition: all 0.2s;
   backdrop-filter: blur(2px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: none;
   pointer-events: auto;
   /* 确保按钮始终可点击 */
 }
 
 .card-actions .action-btn:hover {
-  background-color: #fff;
+  background-color: var(--bg-primary, #fff);
   color: var(--primary-color, #396cd8);
-  transform: scale(1.05);
+  transform: none;
 }
 
 .card-actions .action-btn.danger:hover {

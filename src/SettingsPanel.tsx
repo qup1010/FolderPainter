@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import { getVersion } from "@tauri-apps/api/app";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { useTheme, ThemeMode } from "./hooks/useTheme";
 import { useI18n } from "./hooks/useI18n";
@@ -49,6 +50,7 @@ interface SettingsPanelProps {
 export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+  const [appVersion, setAppVersion] = useState("...");
   const [activeTab, setActiveTab] = useState<"image" | "text" | "postprocess" | "appearance" | "about">("image");
 
   // 主题
@@ -133,8 +135,19 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
     if (isOpen) {
       loadConfig();
       loadPresets();
+      loadAppVersion();
     }
   }, [isOpen]);
+
+  const loadAppVersion = async () => {
+    try {
+      const version = await getVersion();
+      setAppVersion(`v${version}`);
+    } catch (error) {
+      console.error("Failed to load app version:", error);
+      setAppVersion("unknown");
+    }
+  };
 
   const loadConfig = async () => {
     try {
@@ -464,7 +477,7 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
               </div>
 
               {/* 并行生成设置 */}
-              <div className="config-section-header" style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid #eee' }}>
+              <div className="config-section-header section-divider">
                 <h3>{t('settings.generation.title')}</h3>
               </div>
 
@@ -679,7 +692,7 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                     {activeTab === "postprocess" && message && <span className="test-result">{message}</span>}
                   </div>
 
-                  <div className="config-hint" style={{ marginTop: '1rem' }}>
+                  <div className="config-hint config-hint-spaced">
                     {t('settings.bgRemoval.coldStartHint')}
                   </div>
                 </>
@@ -723,12 +736,12 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
               </div>
 
               {/* 保存按钮 */}
-              <div className="settings-actions" style={{ marginTop: '1rem' }}>
+              <div className="settings-actions settings-actions-compact">
                 <button className="btn primary" onClick={handleSave} disabled={saving}>
                   <Save size={16} />
                   {saving ? t('settings.saving') : t('settings.saveButton')}
                 </button>
-                {activeTab === "appearance" && message && <span className="test-result" style={{ marginLeft: '1rem' }}>{message}</span>}
+                {activeTab === "appearance" && message && <span className="test-result test-result-inline">{message}</span>}
               </div>
             </div>
           )}
@@ -745,7 +758,7 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                 <div className="about-logo">
                   <img src="/logo.png" alt="FolderPainter" className="app-logo" />
                   <h2 className="app-name">FolderPainter</h2>
-                  <p className="app-version">v0.1.0</p>
+                  <p className="app-version">{appVersion}</p>
                 </div>
 
                 <div className="about-description">

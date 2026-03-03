@@ -1,23 +1,21 @@
-/* FolderPreviewItem 样式 */
-
 .folder-preview-item {
-  background-color: #fff;
-  border: 1px solid #eee;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   margin-bottom: 0.5rem;
   overflow: hidden;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .folder-preview-item:hover {
-  border-color: #ddd;
+  border-color: color-mix(in srgb, var(--accent-primary) 24%, var(--border-color));
+  box-shadow: 0 3px 10px rgba(2, 8, 23, 0.08);
 }
 
 .folder-preview-item.expanded {
-  border-color: #396cd8;
+  border-color: var(--accent-primary);
 }
 
-/* 折叠头部 */
 .folder-header {
   display: flex;
   justify-content: space-between;
@@ -28,7 +26,7 @@
 }
 
 .folder-header:hover {
-  background-color: #f8f8f8;
+  background-color: var(--bg-primary);
 }
 
 .folder-info {
@@ -42,13 +40,13 @@
 .folder-index {
   font-size: 0.75rem;
   font-weight: 600;
-  color: #396cd8;
+  color: var(--accent-primary);
   flex-shrink: 0;
 }
 
 .folder-name {
   font-size: 0.875rem;
-  color: #333;
+  color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -66,46 +64,48 @@
   height: 24px;
   border-radius: 4px;
   object-fit: cover;
-  border: 1px solid #eee;
+  border: 1px solid var(--border-color);
 }
 
 .status-badge {
   font-size: 0.7rem;
   padding: 0.15rem 0.4rem;
   border-radius: 4px;
-  background-color: #f0f0f0;
-  color: #666;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
 }
 
 .status-badge.ready {
-  background-color: #e8f5e9;
-  color: #2e7d32;
+  background-color: color-mix(in srgb, var(--accent-success) 12%, var(--bg-secondary));
+  border-color: color-mix(in srgb, var(--accent-success) 34%, var(--border-color));
+  color: var(--accent-success);
 }
 
 .status-badge.generating {
-  background-color: #fff3e0;
-  color: #ef6c00;
+  background-color: color-mix(in srgb, var(--accent-warning) 14%, var(--bg-secondary));
+  border-color: color-mix(in srgb, var(--accent-warning) 36%, var(--border-color));
+  color: color-mix(in srgb, var(--accent-warning) 75%, var(--text-primary));
 }
 
 .status-badge.error {
-  background-color: #ffebee;
-  color: #c62828;
+  background-color: color-mix(in srgb, var(--accent-danger) 12%, var(--bg-secondary));
+  border-color: color-mix(in srgb, var(--accent-danger) 34%, var(--border-color));
+  color: var(--accent-danger);
 }
 
 .expand-icon {
   font-size: 0.625rem;
-  color: #999;
+  color: var(--text-muted);
   transition: transform 0.2s;
 }
 
-/* 展开内容 */
 .folder-content {
   padding: 0.75rem;
-  border-top: 1px solid #eee;
-  background-color: #fafafa;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--bg-primary);
 }
 
-/* 版本网格 */
 .versions-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
@@ -113,11 +113,10 @@
   margin-bottom: 0.75rem;
 }
 
-/* 无版本提示 */
 .no-versions {
   text-align: center;
   padding: 1rem;
-  color: #999;
+  color: var(--text-muted);
 }
 
 .no-versions span {
@@ -131,161 +130,26 @@
   margin: 0;
 }
 
-/* 操作按钮 */
 .folder-actions {
   display: flex;
   justify-content: flex-end;
   padding-top: 0.5rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--border-color);
 }
 
 .remove-btn {
   font-size: 0.75rem;
   padding: 0.25rem 0.5rem;
-  background-color: transparent;
-  color: #999;
-  border: 1px solid #ddd;
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .remove-btn:hover {
-  background-color: #ffebee;
-  border-color: #f44336;
-  color: #f44336;
-}
-
-/* 深色模式 */
-@media (prefers-color-scheme: dark) {
-  .folder-preview-item {
-    background-color: #2a2a2a;
-    border-color: #333;
-  }
-
-  .folder-preview-item:hover {
-    border-color: #444;
-  }
-
-  .folder-preview-item.expanded {
-    border-color: #4a7fe8;
-  }
-
-  .folder-header:hover {
-    background-color: #333;
-  }
-
-  .folder-name {
-    color: #eee;
-  }
-
-  .current-thumbnail {
-    border-color: #444;
-  }
-
-  .status-badge {
-    background-color: #333;
-    color: #aaa;
-  }
-
-  .status-badge.ready {
-    background-color: #1b3d1f;
-    color: #81c784;
-  }
-
-  .status-badge.generating {
-    background-color: #3d2e1b;
-    color: #ffb74d;
-  }
-
-  .status-badge.error {
-    background-color: #3d1b1b;
-    color: #ef5350;
-  }
-
-  .folder-content {
-    background-color: #1f1f1f;
-    border-top-color: #333;
-  }
-
-  .folder-actions {
-    border-top-color: #333;
-  }
-
-  .remove-btn {
-    border-color: #444;
-    color: #888;
-  }
-
-  .remove-btn:hover {
-    background-color: #3d1b1b;
-    border-color: #ef5350;
-    color: #ef5350;
-  }
-}
-
-/* 支持手动切换的深色模式 */
-:root.dark .folder-preview-item {
-  background-color: #2a2a2a;
-  border-color: #333;
-}
-
-:root.dark .folder-preview-item:hover {
-  border-color: #444;
-}
-
-:root.dark .folder-preview-item.expanded {
-  border-color: #4a7fe8;
-}
-
-:root.dark .folder-header:hover {
-  background-color: #333;
-}
-
-:root.dark .folder-name {
-  color: #eee;
-}
-
-:root.dark .current-thumbnail {
-  border-color: #444;
-}
-
-:root.dark .status-badge {
-  background-color: #333;
-  color: #aaa;
-}
-
-:root.dark .status-badge.ready {
-  background-color: #1b3d1f;
-  color: #81c784;
-}
-
-:root.dark .status-badge.generating {
-  background-color: #3d2e1b;
-  color: #ffb74d;
-}
-
-:root.dark .status-badge.error {
-  background-color: #3d1b1b;
-  color: #ef5350;
-}
-
-:root.dark .folder-content {
-  background-color: #1f1f1f;
-  border-top-color: #333;
-}
-
-:root.dark .folder-actions {
-  border-top-color: #333;
-}
-
-:root.dark .remove-btn {
-  border-color: #444;
-  color: #888;
-}
-
-:root.dark .remove-btn:hover {
-  background-color: #3d1b1b;
-  border-color: #ef5350;
-  color: #ef5350;
+  background-color: color-mix(in srgb, var(--accent-danger) 10%, var(--bg-secondary));
+  border-color: color-mix(in srgb, var(--accent-danger) 38%, var(--border-color));
+  color: var(--accent-danger);
 }

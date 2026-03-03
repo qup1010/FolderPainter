@@ -1,9 +1,4 @@
-/**
- * 聊天消息组件
- * 支持渲染工具调用结果
- */
-
-import { ToolResultRenderer } from "./components/tools";
+﻿import { ToolResultRenderer } from "./components/tools";
 import type { ToolResult } from "./types/agent";
 import { useI18n } from "./hooks/useI18n";
 import "./ChatMessage.css";
@@ -15,9 +10,7 @@ export interface ChatMessageData {
   type: MessageType;
   content: string;
   timestamp: Date;
-  // 国际化键 (如果设置，渲染时会使用翻译而非 content)
   i18nKey?: string;
-  // 可选的附加数据
   folders?: string[];
   previewImages?: { folderPath: string; imageUrl: string }[];
   analysisResults?: {
@@ -28,33 +21,37 @@ export interface ChatMessageData {
     suggestedPrompt: string;
     summary: string;
   }[];
-  // 预览引用 (用于在聊天中显示生成的图标)
   previewRefs?: {
     folderIndex: number;
     versionNumber: number;
     thumbnailBase64: string;
     folderName: string;
   }[];
-  // 工具调用结果
   toolResults?: ToolResult[];
 }
 
 interface ChatMessageProps {
   message: ChatMessageData;
   onAction?: (action: string, data?: any) => void;
-  /** 用户点击"选择模板" */
   onSelectTemplate?: () => void;
-  /** 用户点击"自定义风格" */
   onCustomStyle?: (analyses: any[]) => void;
 }
 
 export function ChatMessage({ message, onAction, onSelectTemplate, onCustomStyle }: ChatMessageProps) {
   const { t } = useI18n();
-
-  // 获取显示内容：优先使用 i18nKey 翻译，否则使用 content
   const displayContent = message.i18nKey ? t(message.i18nKey) : message.content;
 
-  // 处理编辑提示词
+  const isFolderActionMessage =
+    message.type === "user" &&
+    (displayContent.startsWith("Added folders:") ||
+      displayContent.startsWith("Analyze queued folders") ||
+      displayContent.startsWith("已添加文件夹:") ||
+      displayContent.startsWith("分析待处理文件夹"));
+
+  const hasToolResults = Boolean(message.toolResults && message.toolResults.length > 0);
+  const isAssistantNote = message.type === "assistant" && !hasToolResults;
+  const showSystemLabel = message.type === "system" || isAssistantNote;
+
   const handleEditPrompt = (folderPath: string, newPrompt: string) => {
     onAction?.("edit-prompt", { folderPath, newPrompt });
   };
@@ -62,20 +59,21 @@ export function ChatMessage({ message, onAction, onSelectTemplate, onCustomStyle
   return (
     <div className={`chat-message ${message.type} animate-fadeInUp`}>
       <div className="message-content">
-        <div className="message-text">{displayContent}</div>
+        {showSystemLabel && (
+          <div className="message-section-label system-label">{t("chat.systemMessageLabel", "System")}</div>
+        )}
+        <div className={`message-text ${isAssistantNote ? "assistant-note" : ""}`}>{displayContent}</div>
 
-        {/* 显示文件夹列表 */}
-        {message.folders && message.folders.length > 0 && (
+        {message.folders && message.folders.length > 0 && !isFolderActionMessage && (
           <div className="message-folders">
             {message.folders.map((folder, index) => (
               <div key={index} className="folder-tag">
-                📁 {folder.split("\\").pop()}
+                Folder: {folder.split("\\").pop()}
               </div>
             ))}
           </div>
         )}
 
-        {/* 显示预览图片 */}
         {message.previewImages && message.previewImages.length > 0 && (
           <div className="message-previews">
             {message.previewImages.map((preview, index) => (
@@ -87,39 +85,33 @@ export function ChatMessage({ message, onAction, onSelectTemplate, onCustomStyle
           </div>
         )}
 
-        {/* 显示分析结果 (旧格式，保留兼容性) */}
         {message.analysisResults && message.analysisResults.length > 0 && (
           <div className="message-analysis">
             {message.analysisResults.map((result, index) => (
               <div key={index} className="analysis-card">
                 <div className="analysis-card-header">
-                  {result.displayIndex && (
-                    <span className="folder-index">[{result.displayIndex}]</span>
-                  )}
+                  {result.displayIndex && <span className="folder-index">[{result.displayIndex}]</span>}
                   <span className="folder-name">{result.folderName}</span>
                   <span className="category-badge">{result.category}</span>
                 </div>
                 <p className="analysis-summary">{result.summary}</p>
                 <div className="suggested-prompt">
-                  <span className="prompt-label">建议提示词:</span>
+                  <span className="prompt-label">{t("analysis.promptLabel", "Suggested Prompt")}</span>
                   <code>{result.suggestedPrompt}</code>
                 </div>
               </div>
             ))}
             {onAction && (
-              <button
-                className="action-btn primary"
-                onClick={() => onAction("apply-analysis", message.analysisResults)}
-              >
-                ✨ 使用这些提示词生成图标
+              <button className="action-btn primary" onClick={() => onAction("apply-analysis", message.analysisResults)}>
+                {t("analysis.applyPrompts", "Use These Prompts")}
               </button>
             )}
           </div>
         )}
 
-        {/* 显示工具调用结果 (新格式) */}
         {message.toolResults && message.toolResults.length > 0 && (
           <div className="message-tool-results">
+            <div className="message-section-label result-label">{t("chat.aiResultLabel", "AI Result")}</div>
             {message.toolResults.map((result, index) => (
               <ToolResultRenderer
                 key={index}
@@ -132,14 +124,11 @@ export function ChatMessage({ message, onAction, onSelectTemplate, onCustomStyle
           </div>
         )}
 
-        {/* 显示预览引用 (生成的图标缩略图) */}
         {message.previewRefs && message.previewRefs.length > 0 && (
           <div className="message-preview-refs">
             {message.previewRefs.map((ref, index) => (
               <div key={index} className="preview-ref-card">
-                {ref.thumbnailBase64 && (
-                  <img src={ref.thumbnailBase64} alt={`[${ref.folderIndex}]`} />
-                )}
+                {ref.thumbnailBase64 && <img src={ref.thumbnailBase64} alt={`[${ref.folderIndex}]`} />}
                 <div className="preview-ref-info">
                   <span className="ref-index">[{ref.folderIndex}]</span>
                   <span className="ref-name">{ref.folderName}</span>
@@ -150,10 +139,9 @@ export function ChatMessage({ message, onAction, onSelectTemplate, onCustomStyle
           </div>
         )}
 
-        <div className="message-time">
-          {message.timestamp.toLocaleTimeString()}
-        </div>
+        <div className="message-time">{message.timestamp.toLocaleTimeString()}</div>
       </div>
     </div>
   );
 }
+

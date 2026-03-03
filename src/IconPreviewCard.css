@@ -1,8 +1,9 @@
 .icon-preview-card {
-  background-color: #fff;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 0.75rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(2, 8, 23, 0.08);
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -10,20 +11,21 @@
 }
 
 .icon-preview-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-color: color-mix(in srgb, var(--accent-primary) 24%, var(--border-color));
+  box-shadow: 0 4px 12px rgba(2, 8, 23, 0.12);
 }
 
 .icon-preview-card.generating {
-  opacity: 0.8;
+  opacity: 0.88;
 }
 
-/* 图标预览区域 */
 .preview-image-area {
   width: 100%;
   aspect-ratio: 1;
   border-radius: 8px;
   overflow: hidden;
-  background-color: #f5f5f5;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -36,7 +38,7 @@
   flex-direction: column;
   align-items: center;
   gap: 0.25rem;
-  color: #888;
+  color: var(--text-secondary);
 }
 
 .preview-placeholder .icon,
@@ -66,7 +68,6 @@
   object-fit: contain;
 }
 
-/* 文件夹信息 */
 .folder-info {
   text-align: center;
 }
@@ -74,14 +75,13 @@
 .folder-name {
   font-weight: 500;
   font-size: 0.9rem;
-  color: #333;
+  color: var(--text-primary);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   display: block;
 }
 
-/* 提示词区域 */
 .prompt-section {
   min-height: 40px;
 }
@@ -91,20 +91,21 @@
   align-items: center;
   gap: 0.25rem;
   padding: 0.4rem 0.5rem;
-  background-color: #f5f5f5;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .prompt-display:hover {
-  background-color: #eee;
+  background-color: var(--bg-tertiary);
 }
 
 .prompt-text {
   flex: 1;
   font-size: 0.75rem;
-  color: #666;
+  color: var(--text-secondary);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -112,7 +113,7 @@
 
 .edit-icon {
   font-size: 0.75rem;
-  opacity: 0.5;
+  color: var(--text-muted);
 }
 
 .prompt-edit {
@@ -124,17 +125,20 @@
 .prompt-edit textarea {
   width: 100%;
   padding: 0.4rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   font-size: 0.8rem;
   font-family: inherit;
   resize: none;
   box-sizing: border-box;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
 .prompt-edit textarea:focus {
   outline: none;
-  border-color: #396cd8;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-primary) 18%, transparent);
 }
 
 .edit-actions {
@@ -143,92 +147,98 @@
   justify-content: flex-end;
 }
 
-.save-btn,
-.cancel-btn {
+.icon-preview-card .save-btn,
+.icon-preview-card .cancel-btn {
   width: 28px;
   height: 28px;
-  border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  border: 1px solid var(--border-color);
 }
 
-.save-btn {
-  background-color: #4caf50;
-  color: white;
+.icon-preview-card .save-btn {
+  background: color-mix(in srgb, var(--accent-success) 14%, var(--bg-secondary));
+  color: var(--accent-success);
+  border-color: color-mix(in srgb, var(--accent-success) 38%, var(--border-color));
 }
 
-.cancel-btn {
-  background-color: #f5f5f5;
-  color: #666;
+.icon-preview-card .cancel-btn {
+  background: var(--bg-primary);
+  color: var(--text-secondary);
 }
 
-/* 操作按钮 */
 .card-actions {
   display: flex;
   gap: 0.25rem;
   justify-content: center;
 }
 
-.action-btn {
+.icon-preview-card .action-btn {
   padding: 0.4rem 0.6rem;
-  border: none;
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   font-size: 0.8rem;
   cursor: pointer;
   transition: all 0.2s;
+  color: var(--text-primary);
+  background: var(--bg-primary);
 }
 
-.action-btn:disabled {
-  opacity: 0.5;
+.icon-preview-card .action-btn:disabled {
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
-.action-btn.regenerate,
-.action-btn.retry {
-  background-color: #f5f5f5;
-  color: #666;
+.icon-preview-card .action-btn.regenerate,
+.icon-preview-card .action-btn.retry {
+  background-color: var(--bg-primary);
+  color: var(--text-secondary);
 }
 
-.action-btn.regenerate:hover:not(:disabled),
-.action-btn.retry:hover:not(:disabled) {
-  background-color: #eee;
+.icon-preview-card .action-btn.regenerate:hover:not(:disabled),
+.icon-preview-card .action-btn.retry:hover:not(:disabled) {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
 }
 
-.action-btn.generate {
-  background-color: #396cd8;
-  color: white;
+.icon-preview-card .action-btn.generate {
+  background-color: var(--accent-primary);
+  color: #fff;
+  border-color: color-mix(in srgb, var(--accent-primary) 70%, var(--border-color));
   flex: 1;
 }
 
-.action-btn.generate:hover:not(:disabled) {
-  background-color: #2d5bb8;
+.icon-preview-card .action-btn.generate:hover:not(:disabled) {
+  background-color: var(--accent-primary-hover);
 }
 
-.action-btn.apply {
-  background-color: #4caf50;
-  color: white;
+.icon-preview-card .action-btn.apply {
+  background-color: color-mix(in srgb, var(--accent-success) 14%, var(--bg-secondary));
+  color: var(--accent-success);
+  border-color: color-mix(in srgb, var(--accent-success) 36%, var(--border-color));
   flex: 1;
 }
 
-.action-btn.apply:hover:not(:disabled) {
-  background-color: #43a047;
+.icon-preview-card .action-btn.apply:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--accent-success) 22%, var(--bg-secondary));
 }
 
-.action-btn.remove {
+.icon-preview-card .action-btn.remove {
   background-color: transparent;
-  color: #999;
+  color: var(--text-muted);
 }
 
-.action-btn.remove:hover:not(:disabled) {
-  background-color: #ffebee;
-  color: #f44336;
+.icon-preview-card .action-btn.remove:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--accent-danger) 10%, var(--bg-secondary));
+  color: var(--accent-danger);
+  border-color: color-mix(in srgb, var(--accent-danger) 35%, var(--border-color));
 }
 
-/* 预览面板 */
 .icon-preview-panel {
   width: 100%;
-  background-color: #fafafa;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 1rem;
   margin: 0.5rem 0;
@@ -240,12 +250,12 @@
   align-items: center;
   margin-bottom: 1rem;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .panel-title {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .panel-actions {
@@ -255,35 +265,35 @@
 
 .panel-actions .btn {
   padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 0.85rem;
   cursor: pointer;
-  transition: all 0.2s;
+  border: 1px solid var(--border-color);
 }
 
 .panel-actions .btn:disabled {
-  opacity: 0.5;
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
 .panel-actions .btn.primary {
-  background-color: #396cd8;
-  color: white;
+  background-color: var(--accent-primary);
+  border-color: color-mix(in srgb, var(--accent-primary) 70%, var(--border-color));
+  color: #fff;
 }
 
 .panel-actions .btn.primary:hover:not(:disabled) {
-  background-color: #2d5bb8;
+  background-color: var(--accent-primary-hover);
 }
 
 .panel-actions .btn.secondary {
-  background-color: #fff;
-  color: #396cd8;
-  border: 1px solid #396cd8;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
 .panel-actions .btn.secondary:hover:not(:disabled) {
-  background-color: #e8f0ff;
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
 }
 
 .preview-grid {
@@ -295,127 +305,5 @@
 .empty-state {
   text-align: center;
   padding: 2rem;
-  color: #888;
-}
-
-/* 深色模式 */
-@media (prefers-color-scheme: dark) {
-  .icon-preview-card {
-    background-color: #2a2a2a;
-  }
-
-  .preview-image-area {
-    background-color: #333;
-  }
-
-  .folder-name {
-    color: #eee;
-  }
-
-  .prompt-display {
-    background-color: #333;
-  }
-
-  .prompt-display:hover {
-    background-color: #444;
-  }
-
-  .prompt-text {
-    color: #aaa;
-  }
-
-  .prompt-edit textarea {
-    background-color: #333;
-    border-color: #444;
-    color: #eee;
-  }
-
-  .cancel-btn {
-    background-color: #444;
-    color: #aaa;
-  }
-
-  .action-btn.regenerate,
-  .action-btn.retry {
-    background-color: #444;
-    color: #aaa;
-  }
-
-  .icon-preview-panel {
-    background-color: #222;
-  }
-
-  .panel-header {
-    border-bottom-color: #444;
-  }
-
-  .panel-title {
-    color: #aaa;
-  }
-
-  .panel-actions .btn.secondary {
-    background-color: #333;
-    border-color: #5a8dee;
-    color: #7aa3ff;
-  }
-}
-
-/* 支持手动切换的深色模式 */
-:root.dark .icon-preview-card {
-  background-color: #2a2a2a;
-}
-
-:root.dark .preview-image-area {
-  background-color: #333;
-}
-
-:root.dark .folder-name {
-  color: #eee;
-}
-
-:root.dark .prompt-display {
-  background-color: #333;
-}
-
-:root.dark .prompt-display:hover {
-  background-color: #444;
-}
-
-:root.dark .prompt-text {
-  color: #aaa;
-}
-
-:root.dark .prompt-edit textarea {
-  background-color: #333;
-  border-color: #444;
-  color: #eee;
-}
-
-:root.dark .cancel-btn {
-  background-color: #444;
-  color: #aaa;
-}
-
-:root.dark .action-btn.regenerate,
-:root.dark .action-btn.retry {
-  background-color: #444;
-  color: #aaa;
-}
-
-:root.dark .icon-preview-panel {
-  background-color: #222;
-}
-
-:root.dark .panel-header {
-  border-bottom-color: #444;
-}
-
-:root.dark .panel-title {
-  color: #aaa;
-}
-
-:root.dark .panel-actions .btn.secondary {
-  background-color: #333;
-  border-color: #5a8dee;
-  color: #7aa3ff;
+  color: var(--text-muted);
 }

@@ -1,4 +1,4 @@
-/* ToolResultRenderer 样式 */
+﻿/* ToolResultRenderer styles */
 
 .tool-result {
   margin: 8px 0;
@@ -16,7 +16,8 @@
 }
 
 .tool-error .error-icon {
-  font-size: 16px;
+  display: inline-flex;
+  color: #ef4444;
 }
 
 .tool-error .error-text {
@@ -38,6 +39,10 @@
   font-weight: 500;
 }
 
+.tool-update-prompt .success-icon {
+  display: inline-flex;
+}
+
 .tool-update-prompt .new-prompt {
   padding: 8px 12px;
   background: rgba(0, 0, 0, 0.05);
@@ -56,3 +61,8 @@
   gap: 8px;
   color: var(--text-secondary, #666);
 }
+
+.tool-unknown .info-icon {
+  display: inline-flex;
+}
+
