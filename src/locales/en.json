@@ -204,13 +204,13 @@
         "required": "*"
     },
     "settings": {
-        "title": "⚙️ Settings",
+        "title": "Settings",
         "tabs": {
-            "image": "🎨 Image",
-            "text": "📝 Text",
-            "postprocess": "✨ Effects",
-            "appearance": "🌓 Theme",
-            "about": "ℹ️ About"
+            "image": "Image",
+            "text": "Text",
+            "postprocess": "Effects",
+            "appearance": "Theme",
+            "about": "About"
         },
         "imageModel": {
             "title": "Image Generation Model",
@@ -230,8 +230,8 @@
             "sizeStandard": "1024×1024 (Standard)",
             "sizeFast": "512×512 (Fast)",
             "sizeSmall": "256×256 (Small)",
-            "testConnection": "🔗 Test Connection",
-            "connectionFailed": "❌ Connection failed: {error}"
+            "testConnection": "Test Connection",
+            "connectionFailed": "Connection failed: {error}"
         },
         "generation": {
             "title": "Generation Behavior",
@@ -256,7 +256,7 @@
             "apiKeyPlaceholder": "sk-... (leave empty for local models)",
             "model": "Model Name",
             "modelPlaceholder": "gpt-4o-mini / deepseek-chat / llama3 / ...",
-            "testConnection": "🔗 Test Connection"
+            "testConnection": "Test Connection"
         },
         "bgRemoval": {
             "title": "Background Removal",
@@ -267,11 +267,11 @@
             "enableHint": "When enabled, generated images will automatically have background removed",
             "service": "Removal Service",
             "serviceHint": "Free Hugging Face Space services",
-            "testConnection": "🔗 Test Connection",
+            "testConnection": "Test Connection",
             "testing": "Testing...",
             "testingMessage": "Testing background removal service...",
-            "testFailed": "❌ Test failed: {error}",
-            "coldStartHint": "💡 Space may take 1-2 minutes to cold start on first call. Try another service if removal becomes slow."
+            "testFailed": "Test failed: {error}",
+            "coldStartHint": "Space may take 1-2 minutes to cold start on first call. Try another service if removal becomes slow."
         },
         "appearance": {
             "title": "Appearance",
@@ -290,7 +290,8 @@
             "description": "FolderPainter is a Windows desktop application that uses AI (LLM + Image Generation) to intelligently analyze folder contents and create custom icons.",
             "github": "GitHub Project Page",
             "author": "Author",
-            "techStack": "Tech Stack"
+            "techStack": "Tech Stack",
+            "openProject": "Open Project"
         },
         "preset": {
             "saveTitle": "Save Preset",
@@ -302,19 +303,28 @@
         "saveButton": "Save Settings",
         "saveConfig": "Save Config",
         "saving": "Saving...",
-        "configSaved": "✅ Config saved",
-        "saveFailed": "❌ Save failed: {error}",
-        "presetSaved": "✅ Preset \"{name}\" saved",
-        "presetSaveFailed": "❌ Preset save failed: {error}",
-        "presetDeleted": "✅ Preset deleted",
-        "presetDeleteFailed": "❌ Preset delete failed: {error}",
+        "configSaved": "Config saved",
+        "saveFailed": "Save failed: {error}",
+        "presetSaved": "Preset \"{name}\" saved",
+        "presetSaveFailed": "Preset save failed: {error}",
+        "presetDeleted": "Preset deleted",
+        "presetDeleteFailed": "Preset delete failed: {error}",
         "deleteConfirm": "Delete preset \"{name}\"?",
-        "fillEndpointFirst": "⚠️ Please fill in Endpoint and Model first",
+        "fillEndpointFirst": "Please fill in Endpoint and Model first",
         "testingConnection": "Testing connection...",
-        "connectionSuccess": "✅ {result}",
-        "connectionFailed": "❌ Connection failed: {error}",
-        "testFailed": "❌ Test failed: {error}",
-        "loadConfigFailed": "Failed to load config: {error}"
+        "connectionSuccess": "{result}",
+        "connectionFailed": "Connection failed: {error}",
+        "testFailed": "Test failed: {error}",
+        "loadConfigFailed": "Failed to load config: {error}",
+        "iconStorage": {
+            "title": "Icon Storage",
+            "desc": "Choose where generated ICO files are stored.",
+            "mode": "Storage Location",
+            "inFolder": "Inside target folder",
+            "centralized": "Centralized (AppData)",
+            "inFolderHint": "Save icon.ico in each selected folder.",
+            "centralizedHint": "Save icons under AppData\\FolderPainter\\icons."
+        }
     },
     "previewModal": {
         "generateAll": "🚀 Generate All Previews",

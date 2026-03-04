@@ -10,6 +10,7 @@ function App() {
     error,
     addFolders,
     removeFolder,
+    clearFolders,
     generateVersion,
     deleteVersion,
     setCurrentVersion,
@@ -28,6 +29,7 @@ function App() {
       error={error}
       onAddFolders={addFolders}
       onRemoveFolder={removeFolder}
+      onClearFolders={clearFolders}
       onGenerateVersion={generateVersion}
       onDeleteVersion={deleteVersion}
       onSetCurrentVersion={setCurrentVersion}

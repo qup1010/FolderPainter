@@ -57,10 +57,14 @@
 
 .settings-tabs {
   display: flex;
-  gap: 6px;
-  padding: 8px 10px;
+  gap: 8px;
+  padding: 10px 12px;
   border-bottom: 1px solid var(--border-color);
-  background: var(--bg-primary);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg-primary) 86%, var(--accent-primary) 14%),
+    var(--bg-primary)
+  );
   overflow-x: auto;
 }
 
@@ -68,25 +72,29 @@
   flex: 1;
   min-width: 96px;
   border: 1px solid transparent;
-  border-radius: 8px;
-  padding: 8px 10px;
+  border-radius: 10px;
+  padding: 9px 12px;
   font-size: 0.83rem;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   color: var(--text-secondary);
-  background: transparent;
+  background: color-mix(in srgb, var(--bg-secondary) 70%, transparent);
   cursor: pointer;
   white-space: nowrap;
+  transition: all 0.2s ease;
 }
 
 .tab-btn:hover {
-  background: var(--bg-tertiary);
+  background: color-mix(in srgb, var(--bg-tertiary) 84%, var(--accent-primary) 16%);
   color: var(--text-primary);
+  border-color: color-mix(in srgb, var(--accent-primary) 22%, var(--border-color));
 }
 
 .tab-btn.active {
-  color: var(--accent-primary);
-  background: color-mix(in srgb, var(--accent-primary) 12%, transparent);
-  border-color: color-mix(in srgb, var(--accent-primary) 35%, var(--border-color));
+  color: color-mix(in srgb, var(--accent-primary) 78%, var(--text-primary));
+  background: color-mix(in srgb, var(--accent-primary) 16%, var(--bg-secondary));
+  border-color: color-mix(in srgb, var(--accent-primary) 44%, var(--border-color));
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--accent-primary) 18%, transparent);
 }
 
 .settings-content {
@@ -369,6 +377,24 @@
   word-break: break-word;
 }
 
+.test-result-info {
+  border-color: color-mix(in srgb, var(--accent-primary) 28%, var(--border-color));
+  background: color-mix(in srgb, var(--accent-primary) 8%, var(--bg-primary));
+  color: var(--text-secondary);
+}
+
+.test-result-success {
+  border-color: color-mix(in srgb, var(--accent-success) 35%, var(--border-color));
+  background: color-mix(in srgb, var(--accent-success) 12%, var(--bg-primary));
+  color: color-mix(in srgb, var(--accent-success) 80%, var(--text-primary));
+}
+
+.test-result-error {
+  border-color: color-mix(in srgb, var(--accent-danger) 35%, var(--border-color));
+  background: color-mix(in srgb, var(--accent-danger) 10%, var(--bg-primary));
+  color: color-mix(in srgb, var(--accent-danger) 80%, var(--text-primary));
+}
+
 .test-result-inline {
   margin-left: 8px;
 }
@@ -538,95 +564,157 @@
 .about-content {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 14px;
-  padding: 8px 0;
+  padding: 6px 0;
+}
+
+.about-card {
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 20%, var(--border-color));
+  border-radius: 14px;
+  padding: 16px;
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--accent-primary) 10%, var(--bg-secondary)),
+    var(--bg-secondary)
+  );
+  box-shadow: 0 12px 32px rgba(2, 8, 23, 0.08);
+}
+
+.about-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent-primary) 20%, var(--border-color));
 }
 
 .about-logo {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 12px;
+}
+
+.about-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .about-logo .app-logo {
-  width: 72px;
-  height: 72px;
+  width: 68px;
+  height: 68px;
   border-radius: 14px;
-  border: 1px solid var(--border-color);
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 24%, var(--border-color));
+  box-shadow: 0 8px 18px rgba(2, 8, 23, 0.12);
 }
 
 .about-logo .app-name {
   margin: 0;
-  font-size: 1.35rem;
+  font-size: 1.28rem;
   font-weight: 700;
   color: var(--text-primary);
 }
 
 .about-logo .app-version {
   margin: 0;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
 }
 
-.about-description {
-  max-width: 420px;
-  text-align: center;
-}
-
-.about-description p,
-.about-author p,
-.about-tech .tech-label {
+.about-description-text {
   margin: 0;
   color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.55;
 }
 
-.about-links {
+.about-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.about-meta-item {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--bg-primary) 86%, transparent);
   display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.about-meta-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+}
+
+.about-meta-value {
+  font-size: 0.92rem;
+  color: var(--text-primary);
 }
 
 .about-link {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-secondary);
-  color: var(--text-primary);
+  width: 100%;
+  min-height: 38px;
+  border-radius: 9px;
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 28%, var(--border-color));
+  background: color-mix(in srgb, var(--accent-primary) 9%, var(--bg-secondary));
+  color: color-mix(in srgb, var(--accent-primary) 84%, var(--text-primary));
   text-decoration: none;
-  padding: 9px 14px;
-  font-size: 0.88rem;
+  padding: 8px 12px;
+  font-size: 0.82rem;
   font-weight: 600;
+  line-height: 1.2;
+  transition: all 0.2s ease;
 }
 
 .about-link:hover {
-  border-color: var(--accent-primary);
-  color: var(--accent-primary);
+  border-color: color-mix(in srgb, var(--accent-primary) 50%, var(--border-color));
+  background: color-mix(in srgb, var(--accent-primary) 14%, var(--bg-secondary));
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-primary) 18%, transparent);
+}
+
+.about-link:focus-visible {
+  outline: none;
+  border-color: color-mix(in srgb, var(--accent-primary) 58%, var(--border-color));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-primary) 18%, transparent);
 }
 
 .about-link svg {
-  opacity: 0.9;
+  opacity: 0.95;
+}
+
+.about-link span {
+  white-space: nowrap;
 }
 
 .about-tech {
-  text-align: center;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed color-mix(in srgb, var(--accent-primary) 20%, var(--border-color));
 }
 
 .about-tech .tech-label {
-  margin-bottom: 8px;
-  font-size: 0.8rem;
+  margin: 0 0 8px;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
 }
 
 .about-tech .tech-tags {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 6px;
 }
 
 .about-tech .tech-tag {
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-secondary);
   background: var(--bg-primary);
@@ -705,5 +793,13 @@
 
   .theme-options {
     flex-direction: column;
+  }
+
+  .about-meta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-logo {
+    align-items: flex-start;
   }
 }

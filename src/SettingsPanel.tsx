@@ -47,9 +47,12 @@ interface SettingsPanelProps {
   onClose: () => void;
 }
 
+type SettingsMessageType = "info" | "success" | "error";
+
 export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState<SettingsMessageType>("info");
   const [appVersion, setAppVersion] = useState("...");
   const [activeTab, setActiveTab] = useState<"image" | "text" | "postprocess" | "appearance" | "about">("image");
 
@@ -57,7 +60,22 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
   const { mode, setMode } = useTheme();
 
   // 国际化
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+
+  const setInfoMessage = (text: string) => {
+    setMessageType("info");
+    setMessage(text);
+  };
+
+  const setSuccessMessage = (text: string) => {
+    setMessageType("success");
+    setMessage(text);
+  };
+
+  const setErrorMessage = (text: string) => {
+    setMessageType("error");
+    setMessage(text);
+  };
 
   // 图像模型配置
   const [imageApiKey, setImageApiKey] = useState("");
@@ -181,7 +199,7 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
       }
     } catch (error) {
       console.error("Failed to load config:", error);
-      setMessage(t('settings.loadConfigFailed').replace('{error}', String(error)));
+      setErrorMessage(t('settings.loadConfigFailed').replace('{error}', String(error)));
     }
   };
 
@@ -196,44 +214,44 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
     }
   };
 
+  const buildCurrentConfig = (): AppConfig => ({
+    text_model: {
+      endpoint: textEndpoint.trim(),
+      api_key: textApiKey.trim() || null,
+      model: textModel.trim(),
+      use_custom_endpoint: true,
+    },
+    image_model: {
+      endpoint: imageEndpoint.trim(),
+      api_key: imageApiKey.trim() || null,
+      model: imageModel.trim(),
+      size: imageSize,
+      use_custom_endpoint: true,
+    },
+    icon_storage: iconStorage,
+    text_presets: textPresets,
+    image_presets: imagePresets,
+    parallel_generation: parallelGeneration,
+    concurrency_limit: concurrencyLimit,
+    bg_removal: {
+      enabled: bgRemovalEnabled,
+      api_type: bgRemovalApiType,
+      model_id: bgRemovalModelId,
+      payload_template: bgRemovalTemplate,
+      api_token: bgRemovalApiToken.trim() || null,
+    },
+  });
+
   const handleSave = async () => {
     setSaving(true);
     setMessage("");
 
     try {
-      const newConfig: AppConfig = {
-        text_model: {
-          endpoint: textEndpoint.trim(),
-          api_key: textApiKey.trim() || null,
-          model: textModel.trim(),
-          use_custom_endpoint: true,
-        },
-        image_model: {
-          endpoint: imageEndpoint.trim(),
-          api_key: imageApiKey.trim() || null,
-          model: imageModel.trim(),
-          size: imageSize,
-          use_custom_endpoint: true,
-        },
-        icon_storage: iconStorage,
-        text_presets: textPresets,
-        image_presets: imagePresets,
-        parallel_generation: parallelGeneration,
-        concurrency_limit: concurrencyLimit,
-        bg_removal: {
-          enabled: bgRemovalEnabled,
-          api_type: bgRemovalApiType,
-          model_id: bgRemovalModelId,
-          payload_template: bgRemovalTemplate,
-          api_token: bgRemovalApiToken.trim() || null,
-        },
-      };
-
-      await invoke("save_config", { config: newConfig });
-      setMessage(t('settings.configSaved'));
+      await invoke("save_config", { config: buildCurrentConfig() });
+      setSuccessMessage(t('settings.configSaved'));
       setTimeout(() => setMessage(""), 2000);
     } catch (error) {
-      setMessage(t('settings.saveFailed').replace('{error}', String(error)));
+      setErrorMessage(t('settings.saveFailed').replace('{error}', String(error)));
     } finally {
       setSaving(false);
     }
@@ -256,8 +274,9 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
       : { name, endpoint: textEndpoint, api_key: textApiKey || null, model: textModel };
 
     try {
+      await invoke("save_config", { config: buildCurrentConfig() });
       await invoke("save_model_preset", { presetType: type, preset });
-      setMessage(t('settings.presetSaved').replace('{name}', name));
+      setSuccessMessage(t('settings.presetSaved').replace('{name}', name));
       await loadPresets();
       if (type === "image") setSelectedImagePreset(name);
       else setSelectedTextPreset(name);
@@ -266,7 +285,7 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
       setShowNameInput(false);
       setPendingPresetType(null);
     } catch (error) {
-      setMessage(t('settings.presetSaveFailed').replace('{error}', String(error)));
+      setErrorMessage(t('settings.presetSaveFailed').replace('{error}', String(error)));
     }
   };
 
@@ -275,12 +294,12 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
 
     try {
       await invoke("delete_model_preset", { presetType: type, name });
-      setMessage(t('settings.presetDeleted'));
+      setSuccessMessage(t('settings.presetDeleted'));
       await loadPresets();
       if (type === "image" && selectedImagePreset === name) setSelectedImagePreset("");
       if (type === "text" && selectedTextPreset === name) setSelectedTextPreset("");
     } catch (error) {
-      setMessage(t('settings.presetDeleteFailed').replace('{error}', String(error)));
+      setErrorMessage(t('settings.presetDeleteFailed').replace('{error}', String(error)));
     }
   };
 
@@ -307,20 +326,29 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
     const model = type === "image" ? imageModel : textModel;
 
     if (!endpoint || !model) {
-      setMessage(t('settings.fillEndpointFirst'));
+      setErrorMessage(t('settings.fillEndpointFirst'));
       return;
     }
 
     try {
-      setMessage(t('settings.testingConnection'));
-      const result = await invoke<string>("test_api_connection", {
+      setInfoMessage(t('settings.testingConnection'));
+      await invoke<string>("test_api_connection", {
         apiKey: key || "",
         endpoint,
         model
       });
-      setMessage(t('settings.connectionSuccess').replace('{result}', result));
+      setSuccessMessage(t('settings.connectionSuccessSimple'));
     } catch (error) {
-      setMessage(t('settings.connectionFailed').replace('{error}', String(error)));
+      const rawError = String(error);
+      const displayedError = locale === 'zh-CN'
+        ? rawError
+            .split('Connection failed').join('连接失败')
+            .split('Connection refused').join('连接被拒绝')
+            .split('timed out').join('请求超时')
+            .split('Network').join('网络')
+            .split('HTTP').join('状态码')
+        : rawError;
+      setErrorMessage(t('settings.connectionFailed').replace('{error}', displayedError));
     }
   };
 
@@ -473,10 +501,32 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                 >
                   {t('settings.imageModel.testConnection')}
                 </button>
-                {activeTab === "image" && message && <span className="test-result">{message}</span>}
+                {activeTab === "image" && message && <span className={`test-result ${messageType === "success" ? "test-result-success" : messageType === "error" ? "test-result-error" : "test-result-info"}`}>{message}</span>}
               </div>
 
               {/* 并行生成设置 */}
+              <div className="config-section-header section-divider">
+                <h3>{t('settings.iconStorage.title')}</h3>
+                <p className="config-desc">{t('settings.iconStorage.desc')}</p>
+              </div>
+
+              <div className="setting-group">
+                <label>{t('settings.iconStorage.mode')}</label>
+                <select
+                  value={iconStorage}
+                  onChange={(e) => setIconStorage(e.target.value as "InFolder" | "Centralized")}
+                  className="settings-select"
+                >
+                  <option value="InFolder">{t('settings.iconStorage.inFolder')}</option>
+                  <option value="Centralized">{t('settings.iconStorage.centralized')}</option>
+                </select>
+                <span className="field-hint">
+                  {iconStorage === "Centralized"
+                    ? t('settings.iconStorage.centralizedHint')
+                    : t('settings.iconStorage.inFolderHint')}
+                </span>
+              </div>
+
               <div className="config-section-header section-divider">
                 <h3>{t('settings.generation.title')}</h3>
               </div>
@@ -604,7 +654,7 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                 >
                   {t('settings.textModel.testConnection')}
                 </button>
-                {activeTab === "text" && message && <span className="test-result">{message}</span>}
+                {activeTab === "text" && message && <span className={`test-result ${messageType === "success" ? "test-result-success" : messageType === "error" ? "test-result-error" : "test-result-info"}`}>{message}</span>}
               </div>
             </div>
           )}
@@ -670,17 +720,17 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                       className="btn secondary test-btn"
                       onClick={async () => {
                         setBgTestingConnection(true);
-                        setMessage(t('settings.bgRemoval.testingMessage'));
+                        setInfoMessage(t('settings.bgRemoval.testingMessage'));
                         try {
-                          const result = await invoke<string>("test_bg_removal_connection", {
+                          await invoke<string>("test_bg_removal_connection", {
                             apiType: "Gradio",
                             modelId: bgRemovalModelId,
                             payloadTemplate: bgRemovalTemplate,
                             apiToken: bgRemovalApiToken.trim() || null,
                           });
-                          setMessage(result);
+                          setSuccessMessage(t('settings.bgRemoval.connectionSuccessSimple'));
                         } catch (error) {
-                          setMessage(t('settings.testFailed').replace('{error}', String(error)));
+                          setErrorMessage(t('settings.testFailed').replace('{error}', String(error)));
                         } finally {
                           setBgTestingConnection(false);
                         }
@@ -689,7 +739,7 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                     >
                       {bgTestingConnection ? t('settings.bgRemoval.testing') : t('settings.bgRemoval.testConnection')}
                     </button>
-                    {activeTab === "postprocess" && message && <span className="test-result">{message}</span>}
+                    {activeTab === "postprocess" && message && <span className={`test-result ${messageType === "success" ? "test-result-success" : messageType === "error" ? "test-result-error" : "test-result-info"}`}>{message}</span>}
                   </div>
 
                   <div className="config-hint config-hint-spaced">
@@ -741,7 +791,7 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                   <Save size={16} />
                   {saving ? t('settings.saving') : t('settings.saveButton')}
                 </button>
-                {activeTab === "appearance" && message && <span className="test-result test-result-inline">{message}</span>}
+                {activeTab === "appearance" && message && <span className={`test-result test-result-inline ${messageType === "success" ? "test-result-success" : messageType === "error" ? "test-result-error" : "test-result-info"}`}>{message}</span>}
               </div>
             </div>
           )}
@@ -754,37 +804,41 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                 <p className="config-desc">{t('settings.about.desc')}</p>
               </div>
 
-              <div className="about-content">
-                <div className="about-logo">
-                  <img src="/logo.png" alt="FolderPainter" className="app-logo" />
-                  <h2 className="app-name">FolderPainter</h2>
-                  <p className="app-version">{appVersion}</p>
+              <div className="about-content about-card">
+                <div className="about-hero">
+                  <div className="about-logo">
+                    <img src="/logo.png" alt="FolderPainter" className="app-logo" />
+                    <div className="about-title-group">
+                      <h2 className="app-name">FolderPainter</h2>
+                      <p className="app-version">{appVersion}</p>
+                    </div>
+                  </div>
+                  <p className="about-description-text">{t('settings.about.description')}</p>
                 </div>
 
-                <div className="about-description">
-                  <p>{t('settings.about.description')}</p>
-                </div>
-
-                <div className="about-links">
-                  <a
-                    href="https://github.com/qup1010/FolderPainter"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="about-link"
-                    onClick={async (e) => {
-                      e.preventDefault();
-                      await openUrl("https://github.com/qup1010/FolderPainter");
-                    }}
-                  >
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                    </svg>
-                    <span>{t('settings.about.github')}</span>
-                  </a>
-                </div>
-
-                <div className="about-author">
-                  <p>{t('settings.about.author')}: <strong>qup1010</strong></p>
+                <div className="about-meta-grid">
+                  <div className="about-meta-item">
+                    <span className="about-meta-label">{t('settings.about.author')}</span>
+                    <strong className="about-meta-value">qup1010</strong>
+                  </div>
+                  <div className="about-meta-item">
+                    <span className="about-meta-label">{t('settings.about.github')}</span>
+                    <a
+                      href="https://github.com/qup1010/FolderPainter"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="about-link"
+                      onClick={async (e) => {
+                        e.preventDefault();
+                        await openUrl("https://github.com/qup1010/FolderPainter");
+                      }}
+                    >
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                      </svg>
+                      <span>{t('settings.about.openProject')}</span>
+                    </a>
+                  </div>
                 </div>
 
                 <div className="about-tech">

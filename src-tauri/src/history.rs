@@ -1,7 +1,7 @@
 use rusqlite::Connection;
 use serde::{Deserialize, Serialize};
 use std::fs;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 /// 历史记录条目
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -74,16 +74,14 @@ impl HistoryManager {
 
     /// 备份文件夹的原始图标文件
     pub fn backup_folder(&self, folder_path: &str) -> Result<Option<String>, String> {
-        let folder = std::path::Path::new(folder_path);
-        let icon_path = folder.join("icon.ico");
+        let folder = Path::new(folder_path);
+        let icon_path = folder.join(crate::icon_storage::LOCAL_ICON_FILE_NAME);
         let ini_path = folder.join("desktop.ini");
 
-        // 如果没有原始文件，不需要备份
         if !icon_path.exists() && !ini_path.exists() {
             return Ok(None);
         }
 
-        // 生成备份目录名 (使用时间戳)
         let timestamp = chrono_lite_timestamp();
         let backup_name = format!(
             "{}_{}",
@@ -93,27 +91,39 @@ impl HistoryManager {
 
         let backup_dir = Self::backup_dir()?;
         let backup_folder = backup_dir.join(&backup_name);
+        fs::create_dir_all(&backup_folder)
+            .map_err(|e| format!("鍒涘缓澶囦唤鏂囦欢澶瑰け璐? {}", e))?;
 
-        fs::create_dir_all(&backup_folder).map_err(|e| format!("创建备份文件夹失败: {}", e))?;
+        let mut icon_backed_up = false;
 
-        // 备份 icon.ico
-        if icon_path.exists() {
-            let dest = backup_folder.join("icon.ico");
-            fs::copy(&icon_path, &dest).map_err(|e| format!("备份 icon.ico 失败: {}", e))?;
+        if ini_path.exists() {
+            if let Ok(ini_content) = fs::read_to_string(&ini_path) {
+                if let Some(icon_resource) = crate::desktop_ini::parse_icon_resource(&ini_content) {
+                    let resolved_icon = crate::desktop_ini::resolve_icon_path(folder_path, &icon_resource);
+                    if resolved_icon.exists() {
+                        let _ = crate::windows_api::clear_attributes(&resolved_icon.to_string_lossy());
+                        let dest = backup_folder.join(crate::icon_storage::LOCAL_ICON_FILE_NAME);
+                        fs::copy(&resolved_icon, &dest)
+                            .map_err(|e| format!("Backup icon failed: {}", e))?;
+                        icon_backed_up = true;
+                    }
+                }
+            }
         }
 
-        // 备份 desktop.ini
-        if ini_path.exists() {
-            // 先清除只读属性
-            let _ = crate::windows_api::clear_attributes(&ini_path.to_string_lossy());
+        if !icon_backed_up && icon_path.exists() {
+            let dest = backup_folder.join(crate::icon_storage::LOCAL_ICON_FILE_NAME);
+            fs::copy(&icon_path, &dest).map_err(|e| format!("澶囦唤 icon.ico 澶辫触: {}", e))?;
+        }
 
+        if ini_path.exists() {
+            let _ = crate::windows_api::clear_attributes(&ini_path.to_string_lossy());
             let dest = backup_folder.join("desktop.ini");
-            fs::copy(&ini_path, &dest).map_err(|e| format!("备份 desktop.ini 失败: {}", e))?;
+            fs::copy(&ini_path, &dest).map_err(|e| format!("澶囦唤 desktop.ini 澶辫触: {}", e))?;
         }
 
         Ok(Some(backup_folder.to_string_lossy().to_string()))
     }
-
     /// 添加历史记录
     pub fn add_entry(
         &self,
@@ -229,25 +239,32 @@ impl HistoryManager {
 
     /// 还原文件夹到原始状态
     pub fn restore_folder(&self, folder_path: &str) -> Result<String, String> {
-        // 获取最新的有备份的历史记录
         let history = self.get_folder_history(folder_path)?;
 
         let entry = history
             .iter()
             .find(|e| e.backup_path.is_some() && e.can_restore)
-            .ok_or("没有可还原的备份")?;
+            .ok_or("娌℃湁鍙繕鍘熺殑澶囦唤")?;
 
         let backup_path = entry.backup_path.as_ref().unwrap();
-        let backup_folder = std::path::Path::new(backup_path);
-        let target_folder = std::path::Path::new(folder_path);
+        let backup_folder = Path::new(backup_path);
+        let target_folder = Path::new(folder_path);
 
         if !backup_folder.exists() {
-            return Err("备份文件夹不存在".to_string());
+            return Err("澶囦唤鏂囦欢澶逛笉瀛樺湪".to_string());
         }
 
-        // 清除当前文件的属性
-        let current_icon = target_folder.join("icon.ico");
+        let current_icon = target_folder.join(crate::icon_storage::LOCAL_ICON_FILE_NAME);
         let current_ini = target_folder.join("desktop.ini");
+        let managed_icon_to_cleanup = if current_ini.exists() {
+            fs::read_to_string(&current_ini)
+                .ok()
+                .and_then(|content| crate::desktop_ini::parse_icon_resource(&content))
+                .map(|resource| crate::desktop_ini::resolve_icon_path(folder_path, &resource))
+                .filter(|path| crate::icon_storage::is_managed_centralized_icon(path))
+        } else {
+            None
+        };
 
         let _ = crate::windows_api::clear_attributes(folder_path);
         if current_ini.exists() {
@@ -256,62 +273,76 @@ impl HistoryManager {
         if current_icon.exists() {
             let _ = crate::windows_api::clear_attributes(&current_icon.to_string_lossy());
         }
+        if let Some(path) = managed_icon_to_cleanup.as_ref() {
+            if path.exists() {
+                let _ = crate::windows_api::clear_attributes(&path.to_string_lossy());
+            }
+        }
 
-        // 删除当前图标文件
         if current_icon.exists() {
-            fs::remove_file(&current_icon).map_err(|e| format!("删除当前图标失败: {}", e))?;
+            fs::remove_file(&current_icon).map_err(|e| format!("鍒犻櫎褰撳墠鍥炬爣澶辫触: {}", e))?;
         }
         if current_ini.exists() {
             fs::remove_file(&current_ini)
-                .map_err(|e| format!("删除当前 desktop.ini 失败: {}", e))?;
+                .map_err(|e| format!("鍒犻櫎褰撳墠 desktop.ini 澶辫触: {}", e))?;
+        }
+        if let Some(path) = managed_icon_to_cleanup.as_ref() {
+            if path.exists() {
+                fs::remove_file(path)
+                    .map_err(|e| format!("Failed to remove centralized icon file: {}", e))?;
+            }
         }
 
-        // 还原备份的文件
-        let backup_icon = backup_folder.join("icon.ico");
+        let backup_icon = backup_folder.join(crate::icon_storage::LOCAL_ICON_FILE_NAME);
         let backup_ini = backup_folder.join("desktop.ini");
 
         if backup_icon.exists() {
             fs::copy(&backup_icon, &current_icon)
-                .map_err(|e| format!("还原 icon.ico 失败: {}", e))?;
-        }
+                .map_err(|e| format!("杩樺師 icon.ico 澶辫触: {}", e))?;
 
-        if backup_ini.exists() {
+            let _ = crate::windows_api::set_hidden_system(&current_icon.to_string_lossy());
+            crate::desktop_ini::create(folder_path, crate::icon_storage::LOCAL_ICON_FILE_NAME)
+                .map_err(|e| format!("Failed to recreate desktop.ini: {}", e))?;
+            let _ = crate::windows_api::set_hidden_system(&current_ini.to_string_lossy());
+        } else if backup_ini.exists() {
             fs::copy(&backup_ini, &current_ini)
-                .map_err(|e| format!("还原 desktop.ini 失败: {}", e))?;
-
-            // 设置 desktop.ini 属性
+                .map_err(|e| format!("杩樺師 desktop.ini 澶辫触: {}", e))?;
             let _ = crate::windows_api::set_hidden_system(&current_ini.to_string_lossy());
         }
 
-        // 如果有 desktop.ini，设置文件夹只读属性
         if current_ini.exists() {
             let _ = crate::windows_api::set_folder_readonly(folder_path);
         } else {
-            // 清除文件夹只读属性
             let _ = crate::windows_api::clear_attributes(folder_path);
         }
 
-        // 通知 Shell 刷新
         let _ = crate::windows_api::notify_shell_update(folder_path);
 
-        // 标记此记录已还原
         self.conn
             .execute(
                 "UPDATE history SET can_restore = 0 WHERE id = ?1",
                 [entry.id],
             )
-            .map_err(|e| format!("更新历史记录失败: {}", e))?;
+            .map_err(|e| format!("鏇存柊鍘嗗彶璁板綍澶辫触: {}", e))?;
 
-        Ok(format!("已还原文件夹: {}", folder_path))
+        Ok(format!("宸茶繕鍘熸枃浠跺す: {}", folder_path))
     }
-
     /// 清除文件夹图标 (恢复默认)
     pub fn clear_folder_icon(&self, folder_path: &str) -> Result<String, String> {
-        let folder = std::path::Path::new(folder_path);
-        let icon_path = folder.join("icon.ico");
+        let folder = Path::new(folder_path);
+        let icon_path = folder.join(crate::icon_storage::LOCAL_ICON_FILE_NAME);
         let ini_path = folder.join("desktop.ini");
 
-        // 清除属性
+        let managed_icon_to_cleanup = if ini_path.exists() {
+            fs::read_to_string(&ini_path)
+                .ok()
+                .and_then(|content| crate::desktop_ini::parse_icon_resource(&content))
+                .map(|resource| crate::desktop_ini::resolve_icon_path(folder_path, &resource))
+                .filter(|path| crate::icon_storage::is_managed_centralized_icon(path))
+        } else {
+            None
+        };
+
         let _ = crate::windows_api::clear_attributes(folder_path);
         if ini_path.exists() {
             let _ = crate::windows_api::clear_attributes(&ini_path.to_string_lossy());
@@ -319,19 +350,28 @@ impl HistoryManager {
         if icon_path.exists() {
             let _ = crate::windows_api::clear_attributes(&icon_path.to_string_lossy());
         }
+        if let Some(path) = managed_icon_to_cleanup.as_ref() {
+            if path.exists() {
+                let _ = crate::windows_api::clear_attributes(&path.to_string_lossy());
+            }
+        }
 
-        // 删除文件
         if icon_path.exists() {
-            fs::remove_file(&icon_path).map_err(|e| format!("删除图标失败: {}", e))?;
+            fs::remove_file(&icon_path).map_err(|e| format!("鍒犻櫎鍥炬爣澶辫触: {}", e))?;
         }
         if ini_path.exists() {
-            fs::remove_file(&ini_path).map_err(|e| format!("删除 desktop.ini 失败: {}", e))?;
+            fs::remove_file(&ini_path).map_err(|e| format!("鍒犻櫎 desktop.ini 澶辫触: {}", e))?;
+        }
+        if let Some(path) = managed_icon_to_cleanup.as_ref() {
+            if path.exists() {
+                fs::remove_file(path)
+                    .map_err(|e| format!("Failed to remove centralized icon file: {}", e))?;
+            }
         }
 
-        // 通知 Shell 刷新
         let _ = crate::windows_api::notify_shell_update(folder_path);
 
-        Ok(format!("已清除文件夹图标: {}", folder_path))
+        Ok(format!("宸叉竻闄ゆ枃浠跺す鍥炬爣: {}", folder_path))
     }
 }
 

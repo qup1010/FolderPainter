@@ -196,6 +196,14 @@ pub async fn remove_folder_from_session(
     Ok(())
 }
 
+/// 清空会话中的所有文件夹
+#[tauri::command]
+pub async fn clear_folders_from_session(session_id: String) -> Result<(), AppError> {
+    let store = PreviewStore::new()?;
+    store.clear_folders(&session_id)?;
+    Ok(())
+}
+
 /// 为指定文件夹生成新版本图标
 #[tauri::command]
 pub async fn generate_preview_version(

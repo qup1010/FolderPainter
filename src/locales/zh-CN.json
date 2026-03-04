@@ -204,13 +204,13 @@
         "required": "*"
     },
     "settings": {
-        "title": "⚙️ 设置",
+        "title": "设置",
         "tabs": {
-            "image": "🎨 图像生成",
-            "text": "📝 文本分析",
-            "postprocess": "✨ 后处理",
-            "appearance": "🌓 外观",
-            "about": "ℹ️ 关于"
+            "image": "图像生成",
+            "text": "文本分析",
+            "postprocess": "后处理",
+            "appearance": "外观",
+            "about": "关于"
         },
         "imageModel": {
             "title": "图像生成模型",
@@ -230,7 +230,7 @@
             "sizeStandard": "1024×1024 (标准)",
             "sizeFast": "512×512 (快速)",
             "sizeSmall": "256×256 (小图)",
-            "testConnection": "🔗 测试连接"
+            "testConnection": "测试连接"
         },
         "generation": {
             "title": "生成行为",
@@ -255,7 +255,7 @@
             "apiKeyPlaceholder": "sk-... (本地模型可留空)",
             "model": "模型名称",
             "modelPlaceholder": "gpt-4o-mini / deepseek-chat / llama3 / ...",
-            "testConnection": "🔗 测试连接"
+            "testConnection": "测试连接"
         },
         "bgRemoval": {
             "title": "背景移除",
@@ -266,11 +266,11 @@
             "enableHint": "启用后，生成的图像将自动进行背景移除处理",
             "service": "抠图服务",
             "serviceHint": "均为免费的 Hugging Face Space 服务",
-            "testConnection": "🔗 测试连接",
+            "testConnection": "测试连接",
             "testing": "测试中...",
             "testingMessage": "正在测试背景移除服务...",
-            "testFailed": "❌ 测试失败: {error}",
-            "coldStartHint": "💡 Space 首次调用可能需要 1-2 分钟冷启动。如果发现抠图速度变慢，可以尝试更换其他服务。"
+            "testFailed": "测试失败: {error}",
+            "coldStartHint": "Space 首次调用可能需要 1-2 分钟冷启动。如果发现抠图速度变慢，可以尝试更换其他服务。"
         },
         "appearance": {
             "title": "外观设置",
@@ -289,7 +289,8 @@
             "description": "FolderPainter 是一个 Windows 桌面应用程序，利用 AI (LLM + 图像生成) 智能分析文件夹内容并定制专属图标。",
             "github": "GitHub 项目主页",
             "author": "作者",
-            "techStack": "技术栈"
+            "techStack": "技术栈",
+            "openProject": "打开项目主页"
         },
         "preset": {
             "saveTitle": "保存预设",
@@ -301,14 +302,23 @@
         "saveButton": "保存设置",
         "saveConfig": "保存配置",
         "saving": "保存中...",
-        "configSaved": "✅ 配置已保存",
-        "saveFailed": "❌ 保存失败: {error}",
-        "presetSaved": "✅ 预设「{name}」已保存",
-        "presetDeleted": "✅ 预设已删除",
+        "configSaved": "配置已保存",
+        "saveFailed": "保存失败: {error}",
+        "presetSaved": "预设「{name}」已保存",
+        "presetDeleted": "预设已删除",
         "deleteConfirm": "确定要删除预设「{name}」吗？",
-        "fillEndpointFirst": "⚠️ 请先填写 Endpoint 和 Model",
+        "fillEndpointFirst": "请先填写 Endpoint 和 Model",
         "testingConnection": "正在测试连接...",
-        "loadConfigFailed": "加载配置失败: {error}"
+        "loadConfigFailed": "加载配置失败: {error}",
+        "iconStorage": {
+            "title": "图标存储",
+            "desc": "选择生成的 ICO 文件保存位置。",
+            "mode": "存储位置",
+            "inFolder": "保存在目标文件夹内",
+            "centralized": "集中存储（AppData）",
+            "inFolderHint": "在每个已选文件夹中保存 icon.ico。",
+            "centralizedHint": "将图标保存到 AppData\\\\FolderPainter\\\\icons。"
+        }
     },
     "previewModal": {
         "generateAll": "🚀 生成全部预览",

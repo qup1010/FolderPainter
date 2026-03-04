@@ -4,8 +4,36 @@ use crate::desktop_ini;
 use crate::error::AppError;
 use crate::history::HistoryManager;
 use crate::icon_gen;
+use crate::icon_storage;
 use crate::windows_api;
-use std::path::Path;
+use std::path::{Path, PathBuf};
+
+fn resolve_icon_target(
+    folder_path: &str,
+    storage_mode: &crate::config::IconStorage,
+) -> Result<(PathBuf, String), AppError> {
+    icon_storage::resolve_icon_target(folder_path, storage_mode).map_err(AppError::Config)
+}
+
+fn clear_existing_attributes(folder_path: &str, ini_path: &Path, icon_path: &Path) {
+    let _ = windows_api::clear_attributes(folder_path);
+    if ini_path.exists() {
+        let _ = windows_api::clear_attributes(&ini_path.to_string_lossy());
+    }
+    if icon_path.exists() {
+        let _ = windows_api::clear_attributes(&icon_path.to_string_lossy());
+    }
+}
+
+fn cleanup_stale_local_icon(folder_path: &str, active_icon_path: &Path) -> Result<(), AppError> {
+    let local_icon_path = Path::new(folder_path).join(icon_storage::LOCAL_ICON_FILE_NAME);
+    if local_icon_path == active_icon_path || !local_icon_path.exists() {
+        return Ok(());
+    }
+
+    let _ = windows_api::clear_attributes(&local_icon_path.to_string_lossy());
+    std::fs::remove_file(&local_icon_path).map_err(AppError::Io)
+}
 
 /// 设置文件夹图标的完整流程 (纯色)
 ///
@@ -23,27 +51,23 @@ pub async fn set_folder_icon(folder_path: String, color: String) -> Result<Strin
     // 备份原有图标
     let history = HistoryManager::new()?;
     let backup_path = history.backup_folder(&folder_path)?;
+    let config = AppConfig::load()?;
 
-    let icon_path = folder.join("icon.ico");
+    let (icon_path, icon_resource) = resolve_icon_target(&folder_path, &config.icon_storage)?;
     let icon_path_str = icon_path.to_string_lossy().to_string();
     let ini_path = folder.join("desktop.ini");
     let ini_path_str = ini_path.to_string_lossy().to_string();
 
     // 清除旧属性
-    let _ = windows_api::clear_attributes(&folder_path);
-    if ini_path.exists() {
-        let _ = windows_api::clear_attributes(&ini_path_str);
-    }
-    if icon_path.exists() {
-        let _ = windows_api::clear_attributes(&icon_path_str);
-    }
+    clear_existing_attributes(&folder_path, &ini_path, &icon_path);
 
     // 生成纯色图标
     icon_gen::generate_icon_from_hex(&icon_path_str, &color)
         .map_err(|e| AppError::System(format!("生成图标失败: {}", e)))?;
 
     // 应用图标
-    apply_icon_to_folder(&folder_path, &icon_path_str, &ini_path_str)?;
+    apply_icon_to_folder(&folder_path, &icon_path_str, &icon_resource, &ini_path_str)?;
+    cleanup_stale_local_icon(&folder_path, &icon_path)?;
 
     // 记录历史
     history.add_entry(&folder_path, "color", &color, backup_path.as_deref())?;
@@ -82,25 +106,20 @@ pub async fn set_folder_icon_with_ai(
         .generate_icon_with_config(&config.image_model, &prompt)
         .await?;
 
-    let icon_path = folder.join("icon.ico");
+    let (icon_path, icon_resource) = resolve_icon_target(&folder_path, &config.icon_storage)?;
     let icon_path_str = icon_path.to_string_lossy().to_string();
     let ini_path = folder.join("desktop.ini");
     let ini_path_str = ini_path.to_string_lossy().to_string();
 
     // 清除旧属性
-    let _ = windows_api::clear_attributes(&folder_path);
-    if ini_path.exists() {
-        let _ = windows_api::clear_attributes(&ini_path_str);
-    }
-    if icon_path.exists() {
-        let _ = windows_api::clear_attributes(&icon_path_str);
-    }
+    clear_existing_attributes(&folder_path, &ini_path, &icon_path);
 
     // 将 AI 图像转换为 ICO
     icon_gen::create_icon_from_ai_image(&image_bytes, &icon_path_str)?;
 
     // 应用图标
-    apply_icon_to_folder(&folder_path, &icon_path_str, &ini_path_str)?;
+    apply_icon_to_folder(&folder_path, &icon_path_str, &icon_resource, &ini_path_str)?;
+    cleanup_stale_local_icon(&folder_path, &icon_path)?;
 
     // 记录历史
     history.add_entry(&folder_path, "ai", &prompt, backup_path.as_deref())?;
@@ -148,6 +167,8 @@ pub async fn apply_preview_icon(
 
     // 解码 base64 图像数据
     // 移除 data:image/png;base64, 前缀
+    let config = AppConfig::load()?;
+
     let base64_data = if image_base64.contains(",") {
         image_base64.split(",").nth(1).unwrap_or(&image_base64)
     } else {
@@ -159,25 +180,20 @@ pub async fn apply_preview_icon(
         .decode(base64_data)
         .map_err(|e| AppError::System(format!("解码图像数据失败: {}", e)))?;
 
-    let icon_path = folder.join("icon.ico");
+    let (icon_path, icon_resource) = resolve_icon_target(&folder_path, &config.icon_storage)?;
     let icon_path_str = icon_path.to_string_lossy().to_string();
     let ini_path = folder.join("desktop.ini");
     let ini_path_str = ini_path.to_string_lossy().to_string();
 
     // 清除旧属性
-    let _ = windows_api::clear_attributes(&folder_path);
-    if ini_path.exists() {
-        let _ = windows_api::clear_attributes(&ini_path_str);
-    }
-    if icon_path.exists() {
-        let _ = windows_api::clear_attributes(&icon_path_str);
-    }
+    clear_existing_attributes(&folder_path, &ini_path, &icon_path);
 
     // 将图像转换为 ICO
     icon_gen::create_icon_from_ai_image(&image_bytes, &icon_path_str)?;
 
     // 应用图标
-    apply_icon_to_folder(&folder_path, &icon_path_str, &ini_path_str)?;
+    apply_icon_to_folder(&folder_path, &icon_path_str, &icon_resource, &ini_path_str)?;
+    cleanup_stale_local_icon(&folder_path, &icon_path)?;
 
     // 记录历史
     history.add_entry(
@@ -197,7 +213,9 @@ pub async fn apply_multiple_preview_icons(
     image_base64s: Vec<String>,
 ) -> Result<Vec<String>, AppError> {
     if folder_paths.len() != image_base64s.len() {
-        return Err(AppError::System("文件夹数量与图像数量不匹配".to_string()));
+        return Err(AppError::System(
+            "Folder count does not match image count".to_string(),
+        ));
     }
 
     let mut results = Vec::new();
@@ -205,35 +223,37 @@ pub async fn apply_multiple_preview_icons(
     for (path, image_data) in folder_paths.iter().zip(image_base64s.iter()) {
         match apply_preview_icon(path.clone(), image_data.clone()).await {
             Ok(msg) => results.push(msg),
-            Err(e) => results.push(format!("失败 [{}]: {}", path, e)),
+            Err(e) => results.push(format!("Failed [{}]: {}", path, e)),
         }
     }
 
     Ok(results)
 }
+/// Apply icon resources and folder attributes.
+fn apply_icon_to_folder(
+    folder_path: &str,
+    icon_path: &str,
+    icon_resource: &str,
+    ini_path: &str,
+) -> Result<(), String> {
+    desktop_ini::create(folder_path, icon_resource)
+        .map_err(|e| format!("Failed to create desktop.ini: {}", e))?;
 
-/// 应用图标到文件夹的通用逻辑
-fn apply_icon_to_folder(folder_path: &str, _icon_path: &str, ini_path: &str) -> Result<(), String> {
-    // 创建 desktop.ini
-    desktop_ini::create(folder_path, "icon.ico")
-        .map_err(|e| format!("创建 desktop.ini 失败: {}", e))?;
+    windows_api::set_hidden_system(icon_path)
+        .map_err(|e| format!("Failed to set icon attributes: {}", e))?;
 
-    // 设置 desktop.ini 属性 (Hidden + System)
     windows_api::set_hidden_system(ini_path)
-        .map_err(|e| format!("设置 desktop.ini 属性失败: {}", e))?;
+        .map_err(|e| format!("Failed to set desktop.ini attributes: {}", e))?;
 
-    // 设置文件夹属性 (ReadOnly)
     windows_api::set_folder_readonly(folder_path)
-        .map_err(|e| format!("设置文件夹属性失败: {}", e))?;
+        .map_err(|e| format!("Failed to set folder attributes: {}", e))?;
 
-    // 通知 Shell 刷新
     windows_api::notify_shell_update(folder_path)
-        .map_err(|e| format!("通知 Shell 刷新失败: {}", e))?;
+        .map_err(|e| format!("Failed to notify shell update: {}", e))?;
 
     Ok(())
 }
 
-/// 批量设置多个文件夹的图标 (纯色)
 #[tauri::command]
 pub async fn set_multiple_folder_icons(
     folder_paths: Vec<String>,
@@ -244,14 +264,14 @@ pub async fn set_multiple_folder_icons(
     for path in folder_paths {
         match set_folder_icon(path.clone(), color.clone()).await {
             Ok(msg) => results.push(msg),
-            Err(e) => results.push(format!("失败 [{}]: {}", path, e)),
+            Err(e) => results.push(format!("Failed [{}]: {}", path, e)),
         }
     }
 
     Ok(results)
 }
 
-/// 扫描文件夹获取子文件夹列表
+/// Scan subfolders under a parent folder.
 #[tauri::command]
 pub async fn scan_subfolders(parent_path: String) -> Result<Vec<String>, AppError> {
     let parent = Path::new(&parent_path);
@@ -291,7 +311,7 @@ pub async fn get_file_base64(file_path: String) -> Result<String, AppError> {
     if !path.exists() || !path.is_file() {
         return Err(AppError::Io(std::io::Error::new(
             std::io::ErrorKind::NotFound,
-            format!("文件不存在: {}", file_path),
+            format!("File does not exist: {}", file_path),
         )));
     }
 

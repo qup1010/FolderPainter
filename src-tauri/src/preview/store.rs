@@ -442,6 +442,34 @@ impl PreviewStore {
         Ok(())
     }
 
+    /// 清空会话中的所有文件夹
+    pub fn clear_folders(&self, session_id: &str) -> Result<(), String> {
+        // 删除该会话下的所有预览图目录
+        let previews_dir = Self::previews_dir()?;
+        let session_dir = previews_dir.join(session_id);
+        if session_dir.exists() {
+            let _ = fs::remove_dir_all(&session_dir);
+        }
+
+        // 删除数据库记录（preview_versions 由外键级联删除）
+        self.conn
+            .execute(
+                "DELETE FROM preview_folders WHERE session_id = ?1",
+                params![session_id],
+            )
+            .map_err(|e| format!("清空文件夹失败: {}", e))?;
+
+        // 更新会话时间
+        self.conn
+            .execute(
+                "UPDATE preview_sessions SET updated_at = ?1 WHERE id = ?2",
+                params![current_timestamp(), session_id],
+            )
+            .map_err(|e| format!("更新会话时间失败: {}", e))?;
+
+        Ok(())
+    }
+
     /// 重新排序文件夹编号
     pub fn reindex_folders(&self, session_id: &str) -> Result<(), String> {
         let folders = self.load_folders(session_id)?;

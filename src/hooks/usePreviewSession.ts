@@ -28,6 +28,8 @@ export interface UsePreviewSessionReturn {
   addFolders: (folderPaths: string[]) => Promise<FolderPreview[]>;
   /** 移除文件夹 */
   removeFolder: (folderPath: string) => Promise<void>;
+  /** 清空所有文件夹 */
+  clearFolders: () => Promise<void>;
   /** 生成新版本图标 */
   generateVersion: (folderPath: string, prompt: string) => Promise<IconVersion>;
   /** 删除版本 */
@@ -158,6 +160,30 @@ export function usePreviewSession(): UsePreviewSessionReturn {
         sessionId: session.id,
       });
       setSession(updated);
+    } catch (e) {
+      const msg = String(e);
+      setError(msg);
+      throw new Error(msg);
+    }
+  }, [session]);
+
+  // 清空所有文件夹
+  const clearFolders = useCallback(async (): Promise<void> => {
+    if (!session) return;
+
+    setError(null);
+    try {
+      await invoke('clear_folders_from_session', {
+        sessionId: session.id,
+      });
+
+      setSession(prev => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          folders: [],
+        };
+      });
     } catch (e) {
       const msg = String(e);
       setError(msg);
@@ -378,6 +404,7 @@ export function usePreviewSession(): UsePreviewSessionReturn {
     reloadSession,
     addFolders,
     removeFolder,
+    clearFolders,
     generateVersion,
     deleteVersion,
     setCurrentVersion: setCurrentVersionFn,

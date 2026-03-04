@@ -15,6 +15,7 @@ interface ConfirmDialogProps {
   onConfirm: () => void;
   onCancel: () => void;
   isLoading?: boolean;
+  loadingText?: string;
 }
 
 export function ConfirmDialog({
@@ -27,6 +28,7 @@ export function ConfirmDialog({
   onConfirm,
   onCancel,
   isLoading = false,
+  loadingText = '处理中...',
 }: ConfirmDialogProps) {
   if (!isOpen) return null;
 
@@ -62,7 +64,7 @@ export function ConfirmDialog({
             {isLoading ? (
               <>
                 <Loader2 size={14} className="spinner" />
-                处理中...
+                {loadingText}
               </>
             ) : (
               confirmText

@@ -98,7 +98,7 @@ export function ChatInput({
           className="send-btn"
           onClick={handleSubmit}
           disabled={disabled || !input.trim()}
-          title="发送 (Enter)"
+          title={t('chat.sendTitle')}
         >
           <Send size={18} />
         </button>

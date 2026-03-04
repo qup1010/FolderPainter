@@ -86,16 +86,7 @@ body {
 :root.dark ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.25);
 }
-
-@media (prefers-color-scheme: dark) {
-  ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.25);
-  }
-}
+
 
 /* ====== 图标放大预览模态框 ====== */
 .image-preview-modal {
@@ -601,130 +592,7 @@ h1 {
   border-color: #396cd8;
 }
 
-/* 深色模式 */
-@media (prefers-color-scheme: dark) {
-  :root {
-    color: #f6f6f6;
-    background-color: #1a1a1a;
-  }
-
-  .subtitle {
-    color: #999;
-  }
-
-  .drop-zone {
-    background-color: #2a2a2a;
-    border-color: #444;
-  }
-
-  .drop-zone.dragging {
-    border-color: #5a8dee;
-    background-color: #2a3a5a;
-  }
-
-  .folder-item {
-    background-color: #333;
-  }
-
-  .folder-path {
-    color: #eee;
-  }
-
-  .color-value {
-    color: #aaa;
-  }
-
-  .btn:not(.primary):not(.secondary) {
-    background-color: #333;
-    color: #eee;
-  }
-
-  .btn:not(.primary):not(.secondary):hover {
-    background-color: #444;
-  }
-
-  .status {
-    background-color: #1b3a1e;
-    color: #81c784;
-  }
-
-  .mode-switch {
-    background-color: #333;
-  }
-
-  .mode-btn {
-    color: #aaa;
-  }
-
-  .mode-btn.active {
-    background-color: #444;
-    color: #fff;
-  }
-
-  .ai-section textarea {
-    background-color: #2a2a2a;
-    border-color: #444;
-    color: #eee;
-  }
-
-  .ai-section textarea:focus {
-    border-color: #5a8dee;
-  }
-
-  .ai-hint {
-    color: #888;
-  }
-
-  .action-btn:hover {
-    background-color: #444;
-  }
-
-  .action-btn.restore:hover {
-    color: #81c784;
-    background-color: #1b3a1e;
-  }
-
-  .action-btn.clear:hover {
-    color: #e57373;
-    background-color: #3a1b1b;
-  }
-
-  /* 深色模式下的分析结果 */
-  .analysis-results h3 {
-    color: #eee;
-  }
-
-  .analysis-item {
-    background-color: #333;
-  }
-
-  .analysis-folder {
-    color: #eee;
-  }
-
-  .analysis-category {
-    background-color: #2a3a5a;
-    color: #7aa3ff;
-  }
-
-  .analysis-summary {
-    color: #aaa;
-  }
-
-  .analysis-prompt label {
-    color: #888;
-  }
-
-  .analysis-prompt input {
-    background-color: #2a2a2a;
-    border-color: #444;
-    color: #eee;
-  }
-
-  .analysis-prompt input:focus {
-    border-color: #5a8dee;
-  }
-}
+/* 深色模式 */
 
 /* 支持手动切换的深色模式 (.dark class) */
 :root.dark {

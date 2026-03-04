@@ -9,6 +9,7 @@ import type { PreviewSession, FolderPreview, IconVersion } from './types/preview
 import { PreviewPanel } from './components/PreviewPanel';
 import { ChatView } from './ChatView';
 import { ConfirmDialog } from './components/ConfirmDialog';
+import { useI18n } from './hooks/useI18n';
 import './AppLayout.css';
 
 interface AppLayoutProps {
@@ -17,6 +18,7 @@ interface AppLayoutProps {
   error: string | null;
   onAddFolders: (paths: string[]) => Promise<FolderPreview[]>;
   onRemoveFolder: (path: string) => Promise<void>;
+  onClearFolders: () => Promise<void>;
   onGenerateVersion: (folderPath: string, prompt: string) => Promise<IconVersion>;
   onDeleteVersion: (versionId: number, folderPath: string) => Promise<void>;
   onSetCurrentVersion: (folderId: number, versionId: number) => Promise<void>;
@@ -34,6 +36,7 @@ export function AppLayout({
   error,
   onAddFolders,
   onRemoveFolder,
+  onClearFolders,
   onGenerateVersion,
   onDeleteVersion,
   onSetCurrentVersion,
@@ -44,12 +47,14 @@ export function AppLayout({
   getFolderByIndex,
   onSessionUpdate,
 }: AppLayoutProps) {
+  const { t } = useI18n();
   const [panelWidth, setPanelWidth] = useState(320);
   const [isResizing, setIsResizing] = useState(false);
   const [isPanelVisible, setIsPanelVisible] = useState(true);
   const [showApplyAllConfirm, setShowApplyAllConfirm] = useState(false);
   const [isApplying, setIsApplying] = useState(false);
   const [applyResults, setApplyResults] = useState<string[] | null>(null);
+  const [uiMessage, setUiMessage] = useState<string | null>(null);
 
   // 切换面板可见性
   const togglePanel = useCallback(() => {
@@ -96,8 +101,9 @@ export function AppLayout({
       await onApplySingle(folder.folderPath, version.id);
     } catch (e) {
       console.error('应用失败:', e);
+      setUiMessage(`${t('appLayout.applyFailed')} ${String(e)}`);
     }
-  }, [onApplySingle]);
+  }, [onApplySingle, t]);
 
   // 显示全部应用确认
   const handleApplyAllClick = useCallback(() => {
@@ -113,10 +119,11 @@ export function AppLayout({
       setShowApplyAllConfirm(false);
     } catch (e) {
       console.error('应用失败:', e);
+      setUiMessage(`${t('appLayout.applyFailed')} ${String(e)}`);
     } finally {
       setIsApplying(false);
     }
-  }, [onApplyAll]);
+  }, [onApplyAll, t]);
 
   // 关闭确认对话框
   const handleApplyAllCancel = useCallback(() => {
@@ -148,11 +155,12 @@ export function AppLayout({
   // 清除所有文件夹
   const handleClearAll = useCallback(async () => {
     if (!session) return;
-    // 逐个移除所有文件夹
-    for (const folder of session.folders) {
-      await onRemoveFolder(folder.folderPath);
+    try {
+      await onClearFolders();
+    } catch (e) {
+      setUiMessage(`${t('appLayout.clearAllFailed')} ${String(e)}`);
     }
-  }, [session, onRemoveFolder]);
+  }, [session, onClearFolders, t]);
 
   // 获取就绪的文件夹数量
   const readyCount = session?.folders.filter(f => {
@@ -217,7 +225,7 @@ export function AppLayout({
         <button
           className="panel-toggle-btn"
           onClick={togglePanel}
-          title="显示预览面板"
+          title={t('appLayout.showPanel')}
         >
           <PanelRightOpen size={20} />
         </button>
@@ -226,14 +234,15 @@ export function AppLayout({
       {/* 全部应用确认对话框 */}
       <ConfirmDialog
         isOpen={showApplyAllConfirm}
-        title="确认应用全部图标"
-        message={`即将为 ${readyCount} 个文件夹应用图标，是否继续？`}
+        title={t('appLayout.confirmApplyAll')}
+        message={t('appLayout.applyAllMessage').replace('{count}', String(readyCount))}
         details={session?.folders
           .filter(f => f.currentVersionId && f.versions.find(v => v.id === f.currentVersionId)?.status === 'ready')
           .map(f => `[${f.displayIndex}] ${f.folderName}`)
         }
-        confirmText="应用全部"
-        cancelText="取消"
+        confirmText={t('appLayout.applyAllBtn')}
+        cancelText={t('appLayout.cancel')}
+        loadingText={t('appLayout.processing')}
         onConfirm={handleApplyAllConfirm}
         onCancel={handleApplyAllCancel}
         isLoading={isApplying}
@@ -242,13 +251,24 @@ export function AppLayout({
       {/* 应用结果对话框 */}
       <ConfirmDialog
         isOpen={!!applyResults}
-        title="应用完成"
-        message="图标已应用到以下文件夹:"
+        title={t('appLayout.applyComplete')}
+        message={t('appLayout.applyCompleteMessage')}
         details={applyResults ?? []}
-        confirmText="确定"
+        confirmText={t('appLayout.confirm')}
         cancelText=""
         onConfirm={handleCloseResults}
         onCancel={handleCloseResults}
+      />
+
+      {/* 通用错误提示 */}
+      <ConfirmDialog
+        isOpen={!!uiMessage}
+        title={t('appLayout.errorTitle')}
+        message={uiMessage || ''}
+        confirmText={t('appLayout.confirm')}
+        cancelText=""
+        onConfirm={() => setUiMessage(null)}
+        onCancel={() => setUiMessage(null)}
       />
     </div>
   );

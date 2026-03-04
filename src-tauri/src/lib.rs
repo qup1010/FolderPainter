@@ -8,6 +8,7 @@ pub mod desktop_ini;
 pub mod error;
 pub mod history;
 pub mod icon_gen;
+pub mod icon_storage;
 pub mod preview;
 pub mod prompts;
 pub mod templates;
@@ -33,10 +34,10 @@ use history::{
     restore_folder_icon,
 };
 use preview::{
-    add_folders_to_session, apply_all_previews, apply_folder_preview, create_preview_session,
-    delete_preview_session, delete_preview_version, generate_preview_version, list_active_sessions,
-    load_preview_session, remove_folder_from_session, remove_background_for_version,
-    remove_background_all, save_session_chat, set_current_version,
+    add_folders_to_session, apply_all_previews, apply_folder_preview, clear_folders_from_session,
+    create_preview_session, delete_preview_session, delete_preview_version, generate_preview_version,
+    list_active_sessions, load_preview_session, remove_folder_from_session,
+    remove_background_for_version, remove_background_all, save_session_chat, set_current_version,
 };
 use templates::{
     create_template, delete_template, delete_template_category, export_user_templates,
@@ -117,6 +118,7 @@ pub fn run() {
             save_session_chat,
             add_folders_to_session,
             remove_folder_from_session,
+            clear_folders_from_session,
             generate_preview_version,
             delete_preview_version,
             set_current_version,

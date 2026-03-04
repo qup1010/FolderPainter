@@ -86,33 +86,6 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* 深色模式 */
-@media (prefers-color-scheme: dark) {
-  .app-layout {
-    background-color: #1a1a1a;
-  }
-
-  .preview-panel-container {
-    background-color: #242424;
-    border-left-color: #333;
-  }
-
-  .resizer:hover,
-  .app-layout.resizing .resizer {
-    background-color: #4a7fe8;
-  }
-
-  .panel-toggle-btn {
-    background-color: #2a2a2a;
-    border-color: #444;
-    color: #aaa;
-  }
-
-  .panel-toggle-btn:hover {
-    background-color: #333;
-    color: #4a7fe8;
-  }
-}
 
 /* 支持手动切换的深色模式 */
 :root.dark .app-layout {

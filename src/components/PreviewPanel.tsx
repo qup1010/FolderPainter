@@ -3,12 +3,13 @@
  * 显示所有待处理的文件夹及其图标版本（网格卡片布局）
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { CheckCircle2, Loader2, FolderOpen, X, ChevronDown, ChevronUp, RotateCcw, Trash2, Scissors } from 'lucide-react';
 import { invoke } from '@tauri-apps/api/core';
 import type { PreviewSession, FolderPreview, IconVersion } from '../types/preview';
 import { VersionThumbnail } from './VersionThumbnail';
 import { useI18n } from '../hooks/useI18n';
+import { ConfirmDialog } from './ConfirmDialog';
 import './PreviewPanel.css';
 
 interface PreviewPanelProps {
@@ -37,27 +38,65 @@ export function PreviewPanel({
   const { t } = useI18n();
   const [expandedFolder, setExpandedFolder] = useState<string | null>(null);
   const [restoringFolder, setRestoringFolder] = useState<string | null>(null);
+  const [restorableFolders, setRestorableFolders] = useState<Record<string, boolean>>({});
   const [removingBgVersion, setRemovingBgVersion] = useState<number | null>(null);
   const [isRemovingBgAll, setIsRemovingBgAll] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState<string | null>(null);
+
+  const showMessageDialog = (message: string) => {
+    setDialogMessage(message);
+  };
 
   // 切换展开状态
   const toggleExpand = (folderPath: string) => {
     setExpandedFolder(prev => prev === folderPath ? null : folderPath);
   };
 
+  useEffect(() => {
+    const loadRestorableState = async () => {
+      if (!session || session.folders.length === 0) {
+        setRestorableFolders({});
+        return;
+      }
+
+      const entries = await Promise.all(
+        session.folders.map(async (folder) => {
+          try {
+            const canRestore = await invoke<boolean>('can_restore_folder', {
+              folderPath: folder.folderPath,
+            });
+            return [folder.folderPath, canRestore] as const;
+          } catch {
+            return [folder.folderPath, false] as const;
+          }
+        })
+      );
+
+      setRestorableFolders(Object.fromEntries(entries));
+    };
+
+    void loadRestorableState();
+  }, [session?.id, session?.folders]);
+
   // 还原文件夹图标
   const handleRestoreIcon = async (folderPath: string, e: React.MouseEvent) => {
     e.stopPropagation();
     if (restoringFolder) return;
 
+    if (!restorableFolders[folderPath]) {
+      showMessageDialog(t('preview.restoreNoBackup'));
+      return;
+    }
+
     try {
       setRestoringFolder(folderPath);
       const result = await invoke<string>('restore_folder_icon', { folderPath });
       console.log(t('preview.restoreSuccess'), result);
+      setRestorableFolders((prev) => ({ ...prev, [folderPath]: false }));
       // 可以添加一个 toast 通知
     } catch (error) {
       console.error('Restore failed:', error);
-      alert(t('preview.restoreFailed').replace('{error}', String(error)));
+      showMessageDialog(t('preview.restoreFailed').replace('{error}', String(error)));
     } finally {
       setRestoringFolder(null);
     }
@@ -78,7 +117,7 @@ export function PreviewPanel({
       onSessionUpdate?.();
     } catch (error) {
       console.error('Remove bg failed:', error);
-      alert(t('preview.removeBgFailed').replace('{error}', String(error)));
+      showMessageDialog(t('preview.removeBgFailed').replace('{error}', String(error)));
     } finally {
       setRemovingBgVersion(null);
     }
@@ -96,10 +135,10 @@ export function PreviewPanel({
       console.log(t('preview.removeBgAllResults'), results);
       // 刷新会话数据
       onSessionUpdate?.();
-      alert(results.join('\n'));
+      showMessageDialog(results.join('\n'));
     } catch (error) {
       console.error('Batch remove bg failed:', error);
-      alert(t('preview.removeBgAllFailed').replace('{error}', String(error)));
+      showMessageDialog(t('preview.removeBgAllFailed').replace('{error}', String(error)));
     } finally {
       setIsRemovingBgAll(false);
     }
@@ -204,7 +243,7 @@ export function PreviewPanel({
                       await onRemoveFolder(folder.folderPath);
                     } catch (error) {
                       console.error('Remove folder failed:', error);
-                      alert(t('preview.removeFolderFailed').replace('{error}', String(error)));
+                      showMessageDialog(t('preview.removeFolderFailed').replace('{error}', String(error)));
                     }
                   }}
                   title={t('preview.removeFolder')}
@@ -216,8 +255,8 @@ export function PreviewPanel({
                 <button
                   className="restore-btn"
                   onClick={(e) => handleRestoreIcon(folder.folderPath, e)}
-                  disabled={restoringFolder === folder.folderPath}
-                  title={t('preview.restoreIcon')}
+                  disabled={restoringFolder === folder.folderPath || !restorableFolders[folder.folderPath]}
+                  title={restoringFolder === folder.folderPath ? t('preview.restoreInProgress') : restorableFolders[folder.folderPath] ? t('preview.restoreIcon') : t('preview.restoreNoBackup')}
                 >
                   {restoringFolder === folder.folderPath ? (
                     <Loader2 size={12} className="spinning" />
@@ -304,6 +343,16 @@ export function PreviewPanel({
           )}
         </button>
       </div>
+
+      <ConfirmDialog
+        isOpen={!!dialogMessage}
+        title={t('preview.noticeTitle')}
+        message={dialogMessage || ''}
+        confirmText={t('preview.noticeConfirm')}
+        cancelText=""
+        onConfirm={() => setDialogMessage(null)}
+        onCancel={() => setDialogMessage(null)}
+      />
     </div>
   );
 }

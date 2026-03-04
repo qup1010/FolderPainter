@@ -3,7 +3,7 @@
  * 使用 LLM 智能工具调用模式
  */
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { invoke, isTauri } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { Settings, FolderOpen, PanelRightClose, PanelRightOpen, Moon, Sun, Globe } from "lucide-react";
@@ -16,6 +16,7 @@ import { useChatAgent } from "./hooks/useChatAgent";
 import { useFolderSelection } from "./hooks/useFolderSelection";
 import { useIconGeneration } from "./hooks/useIconGeneration";
 import { useI18n, setLocale, getLocale } from "./hooks/useI18n";
+import { useTheme } from "./hooks/useTheme";
 import { ProgressBar } from "./components/ProgressBar";
 import type { PreviewSession, FolderPreview, IconVersion } from "./types/preview";
 import type { IconTemplate } from "./types/template";
@@ -54,16 +55,13 @@ export function ChatView({
 }: ChatViewProps) {
   // 国际化
   const { t } = useI18n();
+  const { resolvedTheme, setMode } = useTheme();
 
   const [messages, setMessages] = useState<ChatMessageData[]>([]);
   const [showSettings, setShowSettings] = useState(false);
   const [showTemplates, setShowTemplates] = useState(false);
   const [apiConfigured, setApiConfigured] = useState(false);
   const [textApiConfigured, setTextApiConfigured] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    const saved = localStorage.getItem('darkMode');
-    return saved === 'true';
-  });
   // 待风格选择的分析结果
   const [pendingAnalyses, setPendingAnalyses] = useState<AnalysisResult[]>([]);
   // 自定义风格输入对话框
@@ -178,9 +176,9 @@ export function ChatView({
     if (applyTool && applyTool.data) {
       // 自动执行应用
       await executeToolActions([applyTool]);
-      addAssistantMessage("✅ 图标已应用！请刷新文件资源管理器查看效果。");
+      addAssistantMessage(t('messages.iconsApplied'));
     }
-  }, [addAssistantMessage, executeToolActions, handleGenerateFromToolResult]);
+  }, [addAssistantMessage, executeToolActions, handleGenerateFromToolResult, t]);
 
   // 使用 FolderSelection Hook
   const {
@@ -250,8 +248,6 @@ export function ChatView({
   useEffect(() => {
     if (initialized.current) return;
     initialized.current = true;
-
-    checkApiConfig();
 
     // 欢迎消息 (使用 i18nKey 以支持语言切换)
     addAssistantMessage('', { i18nKey: 'app.welcome' });
@@ -353,15 +349,22 @@ export function ChatView({
     }
   }, [session?.id]);
 
-  // 保存聊天历史
-  useEffect(() => {
-    if (session && messages.length > 0) {
-      const historyJson = JSON.stringify(messages);
-      onSaveChatHistory(historyJson);
-    }
-  }, [messages, session, onSaveChatHistory]);
+  const serializedMessages = useMemo(() => JSON.stringify(messages), [messages]);
 
-  const checkApiConfig = async () => {
+  // 保存聊天历史（防抖，避免高频写入）
+  useEffect(() => {
+    if (!session || messages.length === 0) return;
+
+    const timer = window.setTimeout(() => {
+      void onSaveChatHistory(serializedMessages);
+    }, 600);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [serializedMessages, messages.length, session?.id, onSaveChatHistory]);
+
+  const checkApiConfig = useCallback(async () => {
     try {
       const config = await invoke<{
         text_model: { api_key: string | null; endpoint: string; model: string };
@@ -373,7 +376,11 @@ export function ChatView({
     } catch (error) {
       console.error("Failed to check API config:", error);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    void checkApiConfig();
+  }, [checkApiConfig]);
 
   // 处理用户发送消息
   const handleSend = async (message: string) => {
@@ -555,7 +562,7 @@ export function ChatView({
   // 显示错误
   useEffect(() => {
     if (error) {
-      addAssistantMessage(`❌ 错误: ${error}`);
+      addAssistantMessage(t('messages.errorOccurred').replace('{error}', error));
       onClearError();
     }
   }, [error, onClearError, addAssistantMessage]);
@@ -586,18 +593,11 @@ export function ChatView({
           <button
             className="header-btn"
             onClick={() => {
-              const newMode = !isDarkMode;
-              setIsDarkMode(newMode);
-              localStorage.setItem('darkMode', String(newMode));
-              if (newMode) {
-                document.documentElement.classList.add('dark');
-              } else {
-                document.documentElement.classList.remove('dark');
-              }
+              setMode(resolvedTheme === 'dark' ? 'light' : 'dark');
             }}
-            title={isDarkMode ? t('header.toggleLightMode') : t('header.toggleDarkMode')}
+            title={resolvedTheme === 'dark' ? t('header.toggleLightMode') : t('header.toggleDarkMode')}
           >
-            {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+            {resolvedTheme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
           </button>
           {/* 预览面板切换按钮 */}
           <button
@@ -632,7 +632,7 @@ export function ChatView({
 
       {/* 消息列表 */}
       <div className="chat-messages">
-        {isDraggingExternal && <div className="dnd-overlay">Drop folders to add</div>}
+        {isDraggingExternal && <div className="dnd-overlay">{t('chat.dropOverlay')}</div>}
         {messages.map((msg) => (
           <ChatMessage
             key={msg.id}

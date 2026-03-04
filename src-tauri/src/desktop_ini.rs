@@ -1,6 +1,6 @@
 use std::fs::File;
 use std::io::Write;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 /// 创建 desktop.ini 文件，用于设置文件夹图标
 ///
@@ -23,6 +23,33 @@ pub fn create(folder_path: &str, icon_name: &str) -> std::io::Result<()> {
     let mut file = File::create(ini_path)?;
     file.write_all(content.as_bytes())?;
     Ok(())
+}
+
+pub fn parse_icon_resource(content: &str) -> Option<String> {
+    for line in content.lines() {
+        let trimmed = line.trim();
+        let lower = trimmed.to_ascii_lowercase();
+        if !lower.starts_with("iconresource=") {
+            continue;
+        }
+
+        let raw_value = trimmed.split_once('=')?.1.trim();
+        let icon_path = raw_value.split(',').next().unwrap_or(raw_value).trim();
+        if !icon_path.is_empty() {
+            return Some(icon_path.to_string());
+        }
+    }
+
+    None
+}
+
+pub fn resolve_icon_path(folder_path: &str, icon_resource: &str) -> PathBuf {
+    let icon_path = Path::new(icon_resource);
+    if icon_path.is_absolute() {
+        icon_path.to_path_buf()
+    } else {
+        Path::new(folder_path).join(icon_path)
+    }
 }
 
 /// 读取现有的 desktop.ini 内容（用于撤销功能）
