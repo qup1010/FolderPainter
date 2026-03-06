@@ -1,8 +1,4 @@
-/**
- * 应用结果视图
- * 展示 apply_icons 工具的结果
- */
-
+import { CheckCircle2 } from 'lucide-react';
 import type { ApplyTarget } from '../../types/agent';
 import './ApplyResultView.css';
 
@@ -19,8 +15,8 @@ export function ApplyResultView({ data }: ApplyResultViewProps) {
   return (
     <div className="apply-result-view">
       <div className="apply-header">
-        <span className="header-icon">📁</span>
-        <span className="header-title">正在应用图标...</span>
+        <CheckCircle2 size={18} className="header-icon" />
+        <span className="header-title">Applying icons...</span>
       </div>
 
       <div className="apply-list">
@@ -30,16 +26,14 @@ export function ApplyResultView({ data }: ApplyResultViewProps) {
             <span className="folder-name">{target.folder_name}</span>
             <span className="apply-status">
               <span className="status-indicator applying"></span>
-              应用中...
+              Applying...
             </span>
           </div>
         ))}
       </div>
 
       <div className="apply-footer">
-        <p className="apply-hint">
-          图标应用后，请刷新文件资源管理器查看效果
-        </p>
+        <p className="apply-hint">Refresh File Explorer after applying to see the latest icon.</p>
       </div>
     </div>
   );

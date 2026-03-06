@@ -2,7 +2,7 @@
 
 项目的重要变更会记录在这里。
 
-## [Unreleased] - 2026-03-06
+## [0.1.3] - 2026-03-06
 
 ### 改进
 - 优化预览面板中版本卡片的可发现性，让关键操作更容易被用户注意到。
@@ -21,3 +21,8 @@
 - 字体与排版
   - 增加更适合 Windows 环境下中英文混排的全局字体栈与回退策略。
   - 细化标题、正文、输入框、状态标签和面板标题的字重、字号、行高与字距。
+
+### Next Steps
+- Unify the visual hierarchy of chat cards and tool result cards with stronger brand styling.
+- Upgrade the app brand mark to SVG and replace bitmap usage in the header and About page.
+- Continue cleaning up legacy encoding issues and improve wording consistency across the UI.

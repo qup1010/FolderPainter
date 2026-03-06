@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import { Check, FolderOpen, Loader2, Pencil, RefreshCw, Sparkles, Trash2, X } from "lucide-react";
 import "./IconPreviewCard.css";
 
 export interface IconPreviewData {
@@ -43,18 +44,17 @@ export function IconPreviewCard({
 
   return (
     <div className={`icon-preview-card ${data.status}`}>
-      {/* 图标预览区域 */}
       <div className="preview-image-area">
         {data.status === "pending" && (
           <div className="preview-placeholder">
-            <span className="icon">📁</span>
-            <span className="text">待生成</span>
+            <FolderOpen size={28} className="icon" />
+            <span className="text">Pending</span>
           </div>
         )}
         {data.status === "generating" && (
           <div className="preview-loading">
-            <span className="spinner">⏳</span>
-            <span className="text">生成中...</span>
+            <Loader2 size={28} className="spinner" />
+            <span className="text">Generating...</span>
           </div>
         )}
         {data.status === "ready" && data.imageUrl && (
@@ -62,20 +62,18 @@ export function IconPreviewCard({
         )}
         {data.status === "error" && (
           <div className="preview-error">
-            <span className="icon">❌</span>
-            <span className="text">生成失败</span>
+            <X size={28} className="icon" />
+            <span className="text">Generation failed</span>
           </div>
         )}
       </div>
 
-      {/* 文件夹信息 */}
       <div className="folder-info">
         <span className="folder-name" title={data.folderPath}>
           {data.folderName}
         </span>
       </div>
 
-      {/* 提示词编辑 */}
       <div className="prompt-section">
         {isEditing ? (
           <div className="prompt-edit">
@@ -83,11 +81,15 @@ export function IconPreviewCard({
               value={editPrompt}
               onChange={(e) => setEditPrompt(e.target.value)}
               rows={2}
-              placeholder="描述想要的图标..."
+              placeholder="Describe the icon you want..."
             />
             <div className="edit-actions">
-              <button onClick={handleSavePrompt} className="save-btn">✓</button>
-              <button onClick={handleCancelEdit} className="cancel-btn">✕</button>
+              <button onClick={handleSavePrompt} className="save-btn" title="Save prompt">
+                <Check size={15} />
+              </button>
+              <button onClick={handleCancelEdit} className="cancel-btn" title="Cancel editing">
+                <X size={15} />
+              </button>
             </div>
           </div>
         ) : (
@@ -95,12 +97,11 @@ export function IconPreviewCard({
             <span className="prompt-text" title={data.prompt}>
               {data.prompt.length > 50 ? data.prompt.slice(0, 50) + "..." : data.prompt}
             </span>
-            {!disabled && <span className="edit-icon">✏️</span>}
+            {!disabled && <Pencil size={14} className="edit-icon" />}
           </div>
         )}
       </div>
 
-      {/* 操作按钮 */}
       <div className="card-actions">
         {data.status === "ready" && (
           <>
@@ -108,17 +109,18 @@ export function IconPreviewCard({
               className="action-btn regenerate"
               onClick={onRegenerate}
               disabled={disabled}
-              title="重新生成"
+              title="Regenerate"
             >
-              🔄
+              <RefreshCw size={15} />
             </button>
             <button
               className="action-btn apply"
               onClick={onApply}
               disabled={disabled}
-              title="应用此图标"
+              title="Apply this icon"
             >
-              ✓ 应用
+              <Check size={15} />
+              <span>Apply</span>
             </button>
           </>
         )}
@@ -127,9 +129,10 @@ export function IconPreviewCard({
             className="action-btn generate"
             onClick={onRegenerate}
             disabled={disabled}
-            title="生成图标"
+            title="Generate icon"
           >
-            ✨ 生成
+            <Sparkles size={15} />
+            <span>Generate</span>
           </button>
         )}
         {data.status === "error" && (
@@ -137,25 +140,25 @@ export function IconPreviewCard({
             className="action-btn retry"
             onClick={onRegenerate}
             disabled={disabled}
-            title="重试"
+            title="Retry"
           >
-            🔄 重试
+            <RefreshCw size={15} />
+            <span>Retry</span>
           </button>
         )}
         <button
           className="action-btn remove"
           onClick={onRemove}
           disabled={disabled}
-          title="移除"
+          title="Remove"
         >
-          ✕
+          <Trash2 size={15} />
         </button>
       </div>
     </div>
   );
 }
 
-// 图标预览面板组件 - 用于批量展示和操作
 interface IconPreviewPanelProps {
   items: IconPreviewData[];
   onItemUpdate: (index: number, updates: Partial<IconPreviewData>) => void;
@@ -180,7 +183,6 @@ export function IconPreviewPanel({
   const readyCount = items.filter((item) => item.status === "ready").length;
   const allReady = items.length > 0 && readyCount === items.length;
 
-  // 生成单个图标
   const handleGenerateSingle = async (index: number) => {
     const item = items[index];
     setGeneratingIndex(index);
@@ -198,7 +200,6 @@ export function IconPreviewPanel({
     }
   };
 
-  // 应用单个图标
   const handleApplySingle = async (index: number) => {
     const item = items[index];
     if (item.imageUrl) {
@@ -210,7 +211,10 @@ export function IconPreviewPanel({
     <div className="icon-preview-panel">
       <div className="panel-header">
         <span className="panel-title">
-          📁 {items.length} 个文件夹 | ✅ {readyCount} 个已就绪
+          <FolderOpen size={16} />
+          <span>{items.length} folders</span>
+          <span className="panel-title-divider">?</span>
+          <span>{readyCount} ready</span>
         </span>
         <div className="panel-actions">
           <button
@@ -218,14 +222,16 @@ export function IconPreviewPanel({
             onClick={onGenerateAll}
             disabled={disabled || items.length === 0}
           >
-            🚀 生成全部
+            <Sparkles size={15} />
+            <span>Generate all</span>
           </button>
           <button
             className="btn primary"
             onClick={onApplyAll}
             disabled={disabled || !allReady}
           >
-            ✓ 应用全部
+            <Check size={15} />
+            <span>Apply all</span>
           </button>
         </div>
       </div>
@@ -246,7 +252,7 @@ export function IconPreviewPanel({
 
       {items.length === 0 && (
         <div className="empty-state">
-          <p>拖拽文件夹到这里，或点击 📁 按钮选择</p>
+          <p>Add folders to start generating icons.</p>
         </div>
       )}
     </div>

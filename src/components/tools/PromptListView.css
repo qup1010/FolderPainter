@@ -1,4 +1,4 @@
-/* PromptListView 样式 */
+/* PromptListView styles */
 
 .prompt-list-view {
   display: flex;
@@ -15,7 +15,9 @@
 }
 
 .prompt-list-header .header-icon {
-  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: var(--accent-primary, #2f6fed);
 }
 
 .prompt-list-header .header-title {
@@ -38,7 +40,7 @@
 }
 
 .prompt-card:hover {
-  border-color: var(--primary-color, #6366f1);
+  border-color: var(--accent-primary, #2f6fed);
 }
 
 .prompt-card-header {
@@ -50,7 +52,7 @@
 
 .prompt-card-header .folder-index {
   font-weight: 600;
-  color: var(--primary-color, #6366f1);
+  color: var(--accent-primary, #2f6fed);
   font-size: 14px;
 }
 
@@ -61,22 +63,29 @@
 }
 
 .prompt-card-header .edit-btn {
-  background: transparent;
-  border: none;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--accent-primary, #2f6fed) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-primary, #2f6fed) 14%, var(--border-color, #e5e7eb));
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 14px;
-  opacity: 0.6;
-  transition: opacity 0.2s;
+  color: var(--text-secondary, #4b5563);
+  transition: all 0.2s;
 }
 
 .prompt-card-header .edit-btn:hover {
-  opacity: 1;
+  color: var(--accent-primary, #2f6fed);
+  border-color: color-mix(in srgb, var(--accent-primary, #2f6fed) 34%, var(--border-color, #e5e7eb));
+  background: color-mix(in srgb, var(--accent-primary, #2f6fed) 10%, transparent);
 }
 
 .prompt-content {
   font-size: 13px;
   color: var(--text-secondary, #4b5563);
-  background: rgba(0, 0, 0, 0.03);
+  background: rgba(15, 23, 42, 0.03);
   padding: 10px;
   border-radius: 6px;
   word-break: break-word;
@@ -84,7 +93,7 @@
 }
 
 .prompt-content .no-prompt {
-  color: var(--text-tertiary, #9ca3af);
+  color: var(--text-muted, #9ca3af);
   font-style: italic;
 }
 
@@ -107,8 +116,8 @@
 
 .prompt-edit-area textarea:focus {
   outline: none;
-  border-color: var(--primary-color, #6366f1);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  border-color: var(--accent-primary, #2f6fed);
+  box-shadow: 0 0 0 3px rgba(47, 111, 237, 0.12);
 }
 
 .edit-actions {
@@ -127,13 +136,13 @@
 }
 
 .edit-actions .save-btn {
-  background: var(--primary-color, #6366f1);
+  background: var(--accent-primary, #2f6fed);
   color: white;
   border: none;
 }
 
 .edit-actions .save-btn:hover {
-  background: #4f46e5;
+  background: var(--accent-primary-hover, #215fda);
 }
 
 .edit-actions .cancel-btn {

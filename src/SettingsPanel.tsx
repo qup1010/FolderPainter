@@ -4,7 +4,7 @@ import { getVersion } from "@tauri-apps/api/app";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { useTheme, ThemeMode } from "./hooks/useTheme";
 import { useI18n } from "./hooks/useI18n";
-import { ChevronDown, Save, Trash2, Plus } from "lucide-react";
+import { ChevronDown, Save, Trash2, Plus, Sun, Moon, Monitor } from "lucide-react";
 import "./SettingsPanel.css";
 
 interface AIModelConfig {
@@ -780,33 +780,33 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
 
               <div className="setting-group">
                 <label>{t('settings.appearance.theme')}</label>
-                <div className="theme-options">
+                                <div className="theme-options">
                   <button
                     className={`theme-btn ${mode === 'light' ? 'active' : ''}`}
                     onClick={() => handleThemeChange('light')}
                   >
-                    <span className="theme-icon">☀️</span>
+                    <span className="theme-icon"><Sun size={16} strokeWidth={2} /></span>
                     <span className="theme-label">{t('settings.appearance.light')}</span>
                   </button>
                   <button
                     className={`theme-btn ${mode === 'dark' ? 'active' : ''}`}
                     onClick={() => handleThemeChange('dark')}
                   >
-                    <span className="theme-icon">🌙</span>
+                    <span className="theme-icon"><Moon size={16} strokeWidth={2} /></span>
                     <span className="theme-label">{t('settings.appearance.dark')}</span>
                   </button>
                   <button
                     className={`theme-btn ${mode === 'system' ? 'active' : ''}`}
                     onClick={() => handleThemeChange('system')}
                   >
-                    <span className="theme-icon">💻</span>
+                    <span className="theme-icon"><Monitor size={16} strokeWidth={2} /></span>
                     <span className="theme-label">{t('settings.appearance.system')}</span>
                   </button>
                 </div>
               </div>
 
-              {/* 保存按钮 */}
-              <div className="settings-actions settings-actions-compact">
+              {/* ?????? */}
+<div className="settings-actions settings-actions-compact">
                 <button className="btn primary" onClick={handleSave} disabled={saving}>
                   <Save size={16} />
                   {saving ? t('settings.saving') : t('settings.saveButton')}

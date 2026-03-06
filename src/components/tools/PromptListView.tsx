@@ -1,9 +1,5 @@
-/**
- * 提示词列表视图
- * 展示 show_prompts 工具的结果，支持编辑
- */
-
 import { useState } from 'react';
+import { FileText, Pencil } from 'lucide-react';
 import type { PromptInfo } from '../../types/agent';
 import './PromptListView.css';
 
@@ -40,8 +36,8 @@ export function PromptListView({ data, onEditPrompt }: PromptListViewProps) {
   return (
     <div className="prompt-list-view">
       <div className="prompt-list-header">
-        <span className="header-icon">📝</span>
-        <span className="header-title">当前提示词列表</span>
+        <FileText size={18} className="header-icon" />
+        <span className="header-title">Current prompts</span>
       </div>
 
       <div className="prompt-cards">
@@ -54,9 +50,9 @@ export function PromptListView({ data, onEditPrompt }: PromptListViewProps) {
                 <button
                   className="edit-btn"
                   onClick={() => handleStartEdit(prompt)}
-                  title="编辑提示词"
+                  title="Edit prompt"
                 >
-                  ✏️
+                  <Pencil size={14} />
                 </button>
               )}
             </div>
@@ -66,7 +62,7 @@ export function PromptListView({ data, onEditPrompt }: PromptListViewProps) {
                 <textarea
                   value={editValue}
                   onChange={(e) => setEditValue(e.target.value)}
-                  placeholder="输入新的提示词..."
+                  placeholder="Enter a new prompt..."
                   rows={3}
                 />
                 <div className="edit-actions">
@@ -74,16 +70,16 @@ export function PromptListView({ data, onEditPrompt }: PromptListViewProps) {
                     className="save-btn"
                     onClick={() => handleSaveEdit(prompt.folder_path)}
                   >
-                    保存
+                    Save
                   </button>
                   <button className="cancel-btn" onClick={handleCancelEdit}>
-                    取消
+                    Cancel
                   </button>
                 </div>
               </div>
             ) : (
               <div className="prompt-content">
-                {prompt.prompt || <span className="no-prompt">暂无提示词</span>}
+                {prompt.prompt || <span className="no-prompt">No prompt yet</span>}
               </div>
             )}
           </div>

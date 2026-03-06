@@ -1,8 +1,8 @@
-/* GenerationProgress 样式 */
+/* GenerationProgress styles */
 
 .generation-progress {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(139, 92, 246, 0.05));
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  background: linear-gradient(135deg, rgba(47, 111, 237, 0.05), rgba(14, 165, 164, 0.05));
+  border: 1px solid rgba(47, 111, 237, 0.18);
   border-radius: 12px;
   padding: 16px;
 }
@@ -15,12 +15,14 @@
 }
 
 .progress-header .header-icon {
-  font-size: 20px;
+  width: 18px;
+  height: 18px;
+  color: var(--accent-primary, #2f6fed);
 }
 
 .progress-header .header-title {
   font-weight: 600;
-  color: var(--primary-color, #6366f1);
+  color: var(--accent-primary, #2f6fed);
   font-size: 15px;
 }
 
@@ -46,7 +48,7 @@
 
 .target-info .folder-index {
   font-weight: 600;
-  color: var(--primary-color, #6366f1);
+  color: var(--accent-primary, #2f6fed);
   font-size: 13px;
 }
 
@@ -57,9 +59,9 @@
 }
 
 .target-prompt {
-  background: rgba(0, 0, 0, 0.02);
+  background: rgba(15, 23, 42, 0.03);
   padding: 8px;
-  border-radius: 4px;
+  border-radius: 6px;
   margin-bottom: 8px;
 }
 
@@ -95,7 +97,8 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -116,7 +119,7 @@
 
 .progress-hint {
   font-size: 12px;
-  color: var(--text-tertiary, #9ca3af);
+  color: var(--text-muted, #9ca3af);
   margin: 0;
   text-align: center;
 }

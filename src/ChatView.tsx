@@ -6,7 +6,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { invoke, isTauri } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
-import { Settings, FolderOpen, PanelRightClose, PanelRightOpen, Moon, Sun, Globe } from "lucide-react";
+import { Settings, PanelRightClose, PanelRightOpen, Moon, Sun, Globe } from "lucide-react";
 import { ChatMessage, ChatMessageData } from "./ChatMessage";
 import { ChatInput } from "./ChatInput";
 import { SettingsPanel } from "./SettingsPanel";
@@ -572,8 +572,8 @@ export function ChatView({
       {/* 头部 */}
       <div className="chat-header">
         <h1>
-          <FolderOpen size={24} className="header-icon" />
-          FolderPainter
+          <img src="/logo.png" alt="" className="header-brand-mark" />
+          <span className="brand-text">FolderPainter</span>
         </h1>
         <div className="header-actions">
           {/* 语言切换按钮 */}

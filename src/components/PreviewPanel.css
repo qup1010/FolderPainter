@@ -42,8 +42,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.25rem;
-  background-color: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-color);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent-primary) 7%, #ffffff), var(--bg-secondary));
+  border-bottom: 1px solid color-mix(in srgb, var(--accent-primary) 12%, var(--border-color));
   flex-shrink: 0;
 }
 .panel-header h3 {
@@ -57,11 +57,12 @@
 
 .folder-count {
   font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  background-color: var(--bg-tertiary);
-  padding: 0.3rem 0.6rem;
-  border-radius: 6px;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--accent-primary) 78%, var(--text-primary));
+  background-color: color-mix(in srgb, var(--accent-primary) 10%, var(--bg-secondary));
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 20%, var(--border-color));
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
 }
 
 /* 缃戞牸瀹瑰櫒 */
@@ -89,12 +90,13 @@
 
 .folder-card:hover {
   border-color: color-mix(in srgb, var(--accent-primary) 24%, var(--border-color));
-  box-shadow: 0 3px 10px rgba(2, 8, 23, 0.08);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
 }
 
 .folder-card.expanded {
-  border-color: var(--accent-primary);
-  box-shadow: 0 4px 14px color-mix(in srgb, var(--accent-primary) 20%, transparent);
+  border-color: color-mix(in srgb, var(--accent-primary) 46%, var(--border-color));
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent-primary) 4%, var(--card-bg)), var(--card-bg));
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--accent-primary) 14%, transparent);
 }
 
 /* 鍗＄墖涓讳綋 */
@@ -111,14 +113,14 @@
 .card-preview {
   width: 48px;
   height: 48px;
-  border-radius: 8px;
-  background-color: var(--bg-secondary);
+  border-radius: 10px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent-primary) 6%, #ffffff), var(--bg-secondary));
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   overflow: hidden;
-  border: 1px solid var(--border-color);
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 12%, var(--border-color));
 }
 
 .card-preview img {
@@ -428,7 +430,8 @@
 }
 
 :root.dark .panel-header {
-  border-bottom-color: #333;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--bg-secondary) 92%, #0b1220), color-mix(in srgb, var(--bg-primary) 80%, #020617));
+  border-bottom-color: color-mix(in srgb, var(--accent-primary) 16%, var(--border-color));
 }
 
 :root.dark .panel-header h3 {
@@ -436,26 +439,31 @@
 }
 
 :root.dark .folder-count {
-  background-color: #333;
-  color: #ccc;
+  background-color: color-mix(in srgb, var(--accent-primary) 14%, var(--bg-secondary));
+  border-color: color-mix(in srgb, var(--accent-primary) 24%, var(--border-color));
+  color: #d9e6ff;
 }
 
 :root.dark .folder-card {
-  background-color: #2a2a2a;
+  background-color: #1b212b;
+  border-color: #313a46;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
 }
 
 :root.dark .folder-card:hover {
-  background-color: #333;
+  background-color: #202734;
+  border-color: color-mix(in srgb, var(--accent-primary) 22%, #313a46);
 }
 
 :root.dark .folder-card.expanded {
-  background-color: #2a2a2a;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent-primary) 7%, #1b212b), #1b212b);
   border-color: #4a7fe8;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.26);
 }
 
 :root.dark .card-preview {
-  background-color: #333;
-  border-color: #444;
+  background: linear-gradient(180deg, rgba(74, 127, 232, 0.08), rgba(255, 255, 255, 0.01));
+  border-color: #344050;
 }
 
 :root.dark .card-preview .placeholder-icon {

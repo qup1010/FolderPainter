@@ -1,8 +1,4 @@
-/**
- * 生成进度视图
- * 展示 generate_icons 工具的结果
- */
-
+import { Sparkles } from 'lucide-react';
 import type { GenerateTarget } from '../../types/agent';
 import './GenerationProgress.css';
 
@@ -19,8 +15,8 @@ export function GenerationProgress({ data }: GenerationProgressProps) {
   return (
     <div className="generation-progress">
       <div className="progress-header">
-        <span className="header-icon">🎨</span>
-        <span className="header-title">正在生成图标...</span>
+        <Sparkles size={18} className="header-icon" />
+        <span className="header-title">Generating icons...</span>
       </div>
 
       <div className="target-list">
@@ -35,16 +31,14 @@ export function GenerationProgress({ data }: GenerationProgressProps) {
             </div>
             <div className="target-status">
               <span className="status-indicator generating"></span>
-              <span className="status-text">生成中...</span>
+              <span className="status-text">Generating...</span>
             </div>
           </div>
         ))}
       </div>
 
       <div className="progress-footer">
-        <p className="progress-hint">
-          图标生成需要一些时间，请稍候...
-        </p>
+        <p className="progress-hint">This can take a little while when generating multiple icons.</p>
       </div>
     </div>
   );
