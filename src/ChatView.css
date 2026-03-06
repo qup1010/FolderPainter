@@ -19,8 +19,10 @@
 
 .chat-header h1 {
   margin: 0;
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 1.32rem;
+  font-weight: 680;
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -65,8 +67,9 @@
 }
 
 .header-btn.lang-btn .lang-label {
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
 }
 
 /* API 配置警告 */
@@ -124,8 +127,10 @@
 }
 
 .flow-step-caption {
-  font-size: 0.78rem;
-  font-weight: 600;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: var(--text-tertiary, #94a3b8);
 }
 
@@ -242,8 +247,9 @@
 
 .generate-btn {
   padding: 0.75rem 2rem;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 0.96rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
   background: var(--accent-primary);
   color: white;
   border: none;

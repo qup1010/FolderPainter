@@ -1,8 +1,13 @@
 :root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
+  --font-sans: "Segoe UI Variable Text", "Segoe UI", "PingFang SC", "Microsoft YaHei UI", "Noto Sans SC", sans-serif;
+  --font-display: "Segoe UI Variable Display", "Segoe UI Variable Text", "Segoe UI", "PingFang SC", "Microsoft YaHei UI", sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.55;
   font-weight: 400;
+  letter-spacing: 0.01em;
 
   /* Light mode colors */
   --bg-primary: #f8fafc;
@@ -51,6 +56,38 @@ body {
   overflow: hidden;
   width: 100%;
   height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--text-primary);
+  font-optical-sizing: auto;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  letter-spacing: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+code,
+pre,
+.color-value {
+  font-family: var(--font-mono);
 }
 
 #root {

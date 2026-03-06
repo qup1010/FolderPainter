@@ -1,11 +1,12 @@
-/**
- * 版本缩略图组件
+﻿/**
+ * 鐗堟湰缂╃暐鍥剧粍浠?
  */
 
 import { useState } from 'react';
 import { Check, X, Loader2, AlertCircle, ZoomIn, Scissors } from 'lucide-react';
 import type { IconVersion } from '../types/preview';
 import { ImagePreviewModal } from './ImagePreviewModal';
+import { useI18n } from '../hooks/useI18n';
 import './VersionThumbnail.css';
 
 interface VersionThumbnailProps {
@@ -28,8 +29,8 @@ export function VersionThumbnail({
   isRemovingBg,
 }: VersionThumbnailProps) {
   const [showPreview, setShowPreview] = useState(false);
+  const { t } = useI18n();
 
-  // 打开放大预览 - 使用原图路径
   const handleZoom = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (version.status === 'ready' && version.imagePath) {
@@ -37,15 +38,12 @@ export function VersionThumbnail({
     }
   };
 
-
-
   return (
     <>
       <div
         className={`version-thumbnail ${isSelected ? 'selected' : ''} ${version.status} ${isRemovingBg ? 'processing' : ''}`}
         onClick={onSelect}
       >
-        {/* 缩略图 */}
         <div className="thumbnail-image">
           {version.status === 'generating' && (
             <div className="thumbnail-loading">
@@ -60,28 +58,30 @@ export function VersionThumbnail({
           {version.status === 'ready' && version.thumbnailBase64 && (
             <img src={version.thumbnailBase64} alt={`v${version.versionNumber}`} />
           )}
-          {/* 抠图处理中遮罩 */}
           {isRemovingBg && (
             <div className="thumbnail-processing">
               <Loader2 size={16} className="spinner" />
-              <span>抠图中</span>
+              <span>{t('version.processing', '处理中')}</span>
             </div>
           )}
         </div>
 
-        {/* 版本号 */}
-        <span className="version-number">v{version.versionNumber}</span>
+        <div className="thumbnail-meta">
+          <span className="version-number">v{version.versionNumber}</span>
+          {isSelected && <span className="version-current">{t('version.current', '当前')}</span>}
+        </div>
 
-        {/* 操作按钮 (悬停显示) */}
         <div className="thumbnail-actions">
           {version.status === 'ready' && (
             <>
               <button
                 className="action-btn zoom"
                 onClick={handleZoom}
-                title="放大查看"
+                title={t('version.zoom', '查看大图')}
+                aria-label={t('version.zoom', '查看大图')}
               >
-                <ZoomIn size={10} />
+                <ZoomIn size={12} />
+                <span>{t('version.zoomShort', '查看')}</span>
               </button>
               {onRemoveBg && (
                 <button
@@ -91,9 +91,11 @@ export function VersionThumbnail({
                     onRemoveBg();
                   }}
                   disabled={isRemovingBg}
-                  title="抠图 (移除背景)"
+                  title={t('version.removeBg', '抠图')}
+                  aria-label={t('version.removeBg', '抠图')}
                 >
-                  <Scissors size={10} />
+                  <Scissors size={12} />
+                  <span>{t('version.removeBgShort', '抠图')}</span>
                 </button>
               )}
               <button
@@ -102,9 +104,11 @@ export function VersionThumbnail({
                   e.stopPropagation();
                   onApply();
                 }}
-                title="应用此版本"
+                title={t('version.apply', '应用此版本')}
+                aria-label={t('version.apply', '应用此版本')}
               >
-                <Check size={10} />
+                <Check size={12} />
+                <span>{t('version.applyShort', '应用')}</span>
               </button>
             </>
           )}
@@ -114,13 +118,14 @@ export function VersionThumbnail({
               e.stopPropagation();
               onDelete();
             }}
-            title="删除此版本"
+            title={t('version.delete', '删除此版本')}
+            aria-label={t('version.delete', '删除此版本')}
           >
-            <X size={10} />
+            <X size={12} />
+            <span>{t('version.deleteShort', '删除')}</span>
           </button>
         </div>
 
-        {/* 选中标记 */}
         {isSelected && (
           <div className="selected-mark">
             <Check size={10} />
@@ -128,15 +133,15 @@ export function VersionThumbnail({
         )}
       </div>
 
-      {/* 放大预览模态框 - 使用原图 */}
       {showPreview && (
         <ImagePreviewModal
           imagePath={version.imagePath || undefined}
           fallbackSrc={version.thumbnailBase64 || undefined}
-          title={`版本 ${version.versionNumber}`}
+          title={t('version.title', '版本 {number}').replace('{number}', String(version.versionNumber))}
           onClose={() => setShowPreview(false)}
         />
       )}
     </>
   );
 }
+

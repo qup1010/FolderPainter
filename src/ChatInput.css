@@ -63,18 +63,21 @@
   flex: 1;
   border: none;
   background: transparent;
-  font-size: 1rem;
-  font-family: inherit;
+  font-size: 0.98rem;
+  font-family: var(--font-sans);
+  font-weight: 450;
   resize: none;
   outline: none;
-  padding: 0.5rem;
+  padding: 0.5rem 0.625rem;
   max-height: 150px;
-  line-height: 1.4;
+  line-height: 1.55;
+  letter-spacing: 0.005em;
   color: var(--text-primary);
 }
 
 .chat-input::placeholder {
   color: var(--text-muted);
+  letter-spacing: 0;
 }
 
 .chat-input-hint {

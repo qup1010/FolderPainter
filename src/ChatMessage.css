@@ -41,9 +41,9 @@
 }
 
 .message-section-label {
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -58,9 +58,12 @@
 .message-text {
   background-color: var(--bg-secondary, #f5f5f5);
   color: var(--text-primary, #1f2937);
-  padding: 0.72rem 0.95rem;
+  padding: 0.76rem 0.98rem;
   border-radius: 10px;
-  line-height: 1.45;
+  font-size: 0.94rem;
+  font-weight: 430;
+  line-height: 1.58;
+  letter-spacing: 0.005em;
   white-space: pre-wrap;
 }
 
@@ -77,8 +80,9 @@
 }
 
 .message-time {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   color: var(--text-tertiary, #9ca3af);
+  letter-spacing: 0.02em;
 }
 
 .message-folders {
@@ -156,7 +160,9 @@
 }
 
 .analysis-card .folder-name {
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-weight: 620;
+  letter-spacing: -0.01em;
 }
 
 .analysis-card .category-badge {

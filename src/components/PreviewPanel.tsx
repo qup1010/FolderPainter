@@ -1,6 +1,6 @@
-/**
- * 预览面板组件
- * 显示所有待处理的文件夹及其图标版本（网格卡片布局）
+﻿/**
+ * 棰勮闈㈡澘缁勪欢
+ * 鏄剧ず鎵€鏈夊緟澶勭悊鐨勬枃浠跺す鍙婂叾鍥炬爣鐗堟湰锛堢綉鏍煎崱鐗囧竷灞€锛?
  */
 
 import { useState, useEffect } from 'react';
@@ -47,7 +47,7 @@ export function PreviewPanel({
     setDialogMessage(message);
   };
 
-  // 切换展开状态
+  // 鍒囨崲灞曞紑鐘舵€?
   const toggleExpand = (folderPath: string) => {
     setExpandedFolder(prev => prev === folderPath ? null : folderPath);
   };
@@ -78,7 +78,7 @@ export function PreviewPanel({
     void loadRestorableState();
   }, [session?.id, session?.folders]);
 
-  // 还原文件夹图标
+  // 杩樺師鏂囦欢澶瑰浘鏍?
   const handleRestoreIcon = async (folderPath: string, e: React.MouseEvent) => {
     e.stopPropagation();
     if (restoringFolder) return;
@@ -93,7 +93,7 @@ export function PreviewPanel({
       const result = await invoke<string>('restore_folder_icon', { folderPath });
       console.log(t('preview.restoreSuccess'), result);
       setRestorableFolders((prev) => ({ ...prev, [folderPath]: false }));
-      // 可以添加一个 toast 通知
+      // 鍙互娣诲姞涓€涓?toast 閫氱煡
     } catch (error) {
       console.error('Restore failed:', error);
       showMessageDialog(t('preview.restoreFailed').replace('{error}', String(error)));
@@ -102,7 +102,7 @@ export function PreviewPanel({
     }
   };
 
-  // 对单个版本执行抠图
+  // 瀵瑰崟涓増鏈墽琛屾姞鍥?
   const handleRemoveBg = async (folder: FolderPreview, version: IconVersion) => {
     if (removingBgVersion || !session) return;
 
@@ -113,7 +113,7 @@ export function PreviewPanel({
         folderPath: folder.folderPath,
         versionId: version.id,
       });
-      // 刷新会话数据
+      // 鍒锋柊浼氳瘽鏁版嵁
       onSessionUpdate?.();
     } catch (error) {
       console.error('Remove bg failed:', error);
@@ -123,7 +123,7 @@ export function PreviewPanel({
     }
   };
 
-  // 一键抠图
+  // 涓€閿姞鍥?
   const handleRemoveBgAll = async () => {
     if (isRemovingBgAll || !session) return;
 
@@ -133,7 +133,7 @@ export function PreviewPanel({
         sessionId: session.id,
       });
       console.log(t('preview.removeBgAllResults'), results);
-      // 刷新会话数据
+      // 鍒锋柊浼氳瘽鏁版嵁
       onSessionUpdate?.();
       showMessageDialog(results.join('\n'));
     } catch (error) {
@@ -144,7 +144,7 @@ export function PreviewPanel({
     }
   };
 
-  // 空状态
+  // 绌虹姸鎬?
   if (!session || session.folders.length === 0) {
     return (
       <div className="preview-panel empty">
@@ -157,7 +157,7 @@ export function PreviewPanel({
     );
   }
 
-  // 计算就绪数量
+  // 璁＄畻灏辩华鏁伴噺
   const readyCount = session.folders.filter(f => {
     if (!f.currentVersionId) return false;
     const version = f.versions.find(v => v.id === f.currentVersionId);
@@ -168,7 +168,7 @@ export function PreviewPanel({
 
   return (
     <div className="preview-panel">
-      {/* 头部 */}
+      {/* 澶撮儴 */}
       <div className="panel-header">
         <h3>{t('preview.title')}</h3>
         <span className="folder-count">
@@ -176,7 +176,7 @@ export function PreviewPanel({
         </span>
       </div>
 
-      {/* 网格卡片列表 */}
+      {/* 缃戞牸鍗＄墖鍒楄〃 */}
       <div className="folder-grid">
         {session.folders.map(folder => {
           const currentVersion = folder.versions.find(v => v.id === folder.currentVersionId);
@@ -187,9 +187,9 @@ export function PreviewPanel({
 
           return (
             <div key={folder.folderPath} className={`folder-card ${isExpanded ? 'expanded' : ''}`}>
-              {/* 卡片主体 */}
+              {/* 鍗＄墖涓讳綋 */}
               <div className="card-main" onClick={() => hasVersions && toggleExpand(folder.folderPath)}>
-                {/* 图标预览 */}
+                {/* 鍥炬爣棰勮 */}
                 <div className="card-preview">
                   {currentVersion?.thumbnailBase64 ? (
                     <img src={currentVersion.thumbnailBase64} alt="icon" />
@@ -200,7 +200,7 @@ export function PreviewPanel({
                   )}
                 </div>
 
-                {/* 文件夹信息 */}
+                {/* 鏂囦欢澶逛俊鎭?*/}
                 <div className="card-info">
                   <span className="card-index">[{folder.displayIndex}]</span>
                   <span className="card-name" title={folder.folderPath}>
@@ -208,7 +208,7 @@ export function PreviewPanel({
                   </span>
                 </div>
 
-                {/* 状态标签 */}
+                {/* 鐘舵€佹爣绛?*/}
                 <div className="card-status">
                   {isGenerating && (
                     <span className="status-badge generating">
@@ -227,14 +227,14 @@ export function PreviewPanel({
                   )}
                 </div>
 
-                {/* 展开指示器 */}
+                {/* 灞曞紑鎸囩ず鍣?*/}
                 {hasVersions && (
                   <div className="expand-indicator">
                     {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                   </div>
                 )}
 
-                {/* 移除按钮 */}
+                {/* 绉婚櫎鎸夐挳 */}
                 <button
                   className="remove-btn"
                   onClick={async (e) => {
@@ -251,7 +251,7 @@ export function PreviewPanel({
                   <X size={14} />
                 </button>
 
-                {/* 还原按钮 */}
+                {/* 杩樺師鎸夐挳 */}
                 <button
                   className="restore-btn"
                   onClick={(e) => handleRestoreIcon(folder.folderPath, e)}
@@ -266,9 +266,10 @@ export function PreviewPanel({
                 </button>
               </div>
 
-              {/* 展开的版本列表 */}
+              {/* 灞曞紑鐨勭増鏈垪琛?*/}
               {isExpanded && hasVersions && (
                 <div className="card-expanded animate-fadeIn">
+                  <div className="versions-helper">{t('preview.versionActionsHint', '点击版本卡片切换当前图标，再使用下方按钮查看大图、抠图、应用或删除。')}</div>
                   <div className="versions-row">
                     {folder.versions.map(version => (
                       <VersionThumbnail
@@ -290,9 +291,9 @@ export function PreviewPanel({
         })}
       </div>
 
-      {/* 底部操作区 */}
+      {/* 搴曢儴鎿嶄綔鍖?*/}
       <div className="panel-footer">
-        {/* 清除所有按钮 */}
+        {/* 娓呴櫎鎵€鏈夋寜閽?*/}
         {onClearAll && totalCount > 0 && (
           <button
             className="clear-all-btn"
@@ -304,7 +305,7 @@ export function PreviewPanel({
             {t('preview.clearAll')}
           </button>
         )}
-        {/* 一键抠图按钮 */}
+        {/* 涓€閿姞鍥炬寜閽?*/}
         {readyCount > 0 && (
           <button
             className="removebg-all-btn"
@@ -356,3 +357,7 @@ export function PreviewPanel({
     </div>
   );
 }
+
+
+
+

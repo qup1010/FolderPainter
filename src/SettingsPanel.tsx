@@ -60,7 +60,7 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
   const { mode, setMode } = useTheme();
 
   // 国际化
-  const { t, locale } = useI18n();
+  const { t, locale, setLocale } = useI18n();
 
   const setInfoMessage = (text: string) => {
     setMessageType("info");
@@ -756,6 +756,26 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
               <div className="config-section-header">
                 <h3>{t('settings.appearance.title')}</h3>
                 <p className="config-desc">{t('settings.appearance.desc')}</p>
+              </div>
+
+              <div className="setting-group">
+                <label>{t('settings.appearance.language')}</label>
+                <div className="language-options">
+                  <button
+                    className={`language-btn ${locale === 'zh-CN' ? 'active' : ''}`}
+                    onClick={() => setLocale('zh-CN')}
+                    type="button"
+                  >
+                    {t('settings.appearance.chinese')}
+                  </button>
+                  <button
+                    className={`language-btn ${locale === 'en' ? 'active' : ''}`}
+                    onClick={() => setLocale('en')}
+                    type="button"
+                  >
+                    {t('settings.appearance.english')}
+                  </button>
+                </div>
               </div>
 
               <div className="setting-group">

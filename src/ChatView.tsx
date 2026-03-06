@@ -15,7 +15,7 @@ import { InputDialog } from "./components/Dialogs";
 import { useChatAgent } from "./hooks/useChatAgent";
 import { useFolderSelection } from "./hooks/useFolderSelection";
 import { useIconGeneration } from "./hooks/useIconGeneration";
-import { useI18n, setLocale, getLocale } from "./hooks/useI18n";
+import { useI18n } from "./hooks/useI18n";
 import { useTheme } from "./hooks/useTheme";
 import { ProgressBar } from "./components/ProgressBar";
 import type { PreviewSession, FolderPreview, IconVersion } from "./types/preview";
@@ -54,7 +54,7 @@ export function ChatView({
   isPanelVisible,
 }: ChatViewProps) {
   // 国际化
-  const { t } = useI18n();
+  const { t, locale, setLocale } = useI18n();
   const { resolvedTheme, setMode } = useTheme();
 
   const [messages, setMessages] = useState<ChatMessageData[]>([]);
@@ -176,9 +176,9 @@ export function ChatView({
     if (applyTool && applyTool.data) {
       // 自动执行应用
       await executeToolActions([applyTool]);
-      addAssistantMessage(t('messages.iconsApplied'));
+      addAssistantMessage('', { i18nKey: 'messages.iconsApplied' });
     }
-  }, [addAssistantMessage, executeToolActions, handleGenerateFromToolResult, t]);
+  }, [addAssistantMessage, executeToolActions, handleGenerateFromToolResult]);
 
   // 使用 FolderSelection Hook
   const {
@@ -204,7 +204,7 @@ export function ChatView({
     if (pendingAnalyzePaths.length === 0) return;
 
     if (!textApiConfigured) {
-      addAssistantMessage(t("system.textModelNotConfigured"));
+      addAssistantMessage("", { i18nKey: "system.textModelNotConfigured" });
       return;
     }
 
@@ -212,7 +212,7 @@ export function ChatView({
     const queuedFolders = (session?.folders || []).filter((f) => queuedPaths.includes(f.folderPath));
     if (queuedFolders.length === 0) {
       setPendingAnalyzePaths([]);
-      addAssistantMessage(t("system.noQueuedFolders"));
+      addAssistantMessage("", { i18nKey: "system.noQueuedFolders" });
       return;
     }
 
@@ -321,7 +321,7 @@ export function ChatView({
       })
       .catch((err) => {
         console.error("[dnd] failed to register native-file-drop listener", err);
-        addAssistantMessage(t("system.nativeDropListenerFailed").replace("{error}", String(err)));
+        addAssistantMessage("", { i18nKey: "system.nativeDropListenerFailed", i18nParams: { error: String(err) } });
         return () => {};
       });
 
@@ -330,7 +330,7 @@ export function ChatView({
       if (unlistenNative) unlistenNative();
       else void unlistenNativePromise.then((fn) => fn());
     };
-  }, [handleFoldersAdded, addAssistantMessage, t]);
+  }, [handleFoldersAdded, addAssistantMessage]);
 
   // 加载会话聊天历史
   useEffect(() => {
@@ -389,13 +389,13 @@ export function ChatView({
     // 检查是否是 clear 命令
     if (message.toLowerCase().trim() === 'clear') {
       await handleClearChat();
-      addAssistantMessage(t('chat.clearSuccess'));
+      addAssistantMessage('', { i18nKey: 'chat.clearSuccess' });
       return;
     }
 
     // 检查是否有会话
     if (!session || session.folders.length === 0) {
-      addAssistantMessage(t('messages.addFolderFirst'));
+      addAssistantMessage('', { i18nKey: 'messages.addFolderFirst' });
       return;
     }
 
@@ -413,10 +413,10 @@ export function ChatView({
       if (result) {
         handleAgentResult(result);
       } else if (agentError) {
-        addAssistantMessage(t('messages.processingFailed').replace('{error}', agentError));
+        addAssistantMessage('', { i18nKey: 'messages.processingFailed', i18nParams: { error: agentError } });
       }
     } catch (error) {
-      addAssistantMessage(t('messages.errorOccurred').replace('{error}', String(error)));
+      addAssistantMessage('', { i18nKey: 'messages.errorOccurred', i18nParams: { error: String(error) } });
     }
   };
 
@@ -440,12 +440,12 @@ export function ChatView({
 
     // 应用图标
     if (lowerMsg.includes("应用") || lowerMsg.includes("apply")) {
-      addAssistantMessage(t('messages.useApplyButton'));
+      addAssistantMessage('', { i18nKey: 'messages.useApplyButton' });
       return;
     }
 
     // 其他情况，提示配置文本模型
-    addAssistantMessage(t('messages.localProcessingHint'));
+    addAssistantMessage('', { i18nKey: 'messages.localProcessingHint' });
   };
 
   // 处理消息中的操作按钮
@@ -464,7 +464,7 @@ export function ChatView({
       }
     } else if (action === "edit-prompt" && data) {
       updatePrompt(data.folderPath, data.newPrompt);
-      addAssistantMessage(t('messages.promptUpdated').replace('{name}', data.folderName));
+      addAssistantMessage('', { i18nKey: 'messages.promptUpdated', i18nParams: { name: data.folderName } });
     }
   };
 
@@ -562,7 +562,7 @@ export function ChatView({
   // 显示错误
   useEffect(() => {
     if (error) {
-      addAssistantMessage(t('messages.errorOccurred').replace('{error}', error));
+      addAssistantMessage('', { i18nKey: 'messages.errorOccurred', i18nParams: { error } });
       onClearError();
     }
   }, [error, onClearError, addAssistantMessage]);
@@ -580,14 +580,14 @@ export function ChatView({
           <button
             className="header-btn lang-btn"
             onClick={() => {
-              const currentLang = getLocale();
+              const currentLang = locale;
               const newLang = currentLang === 'zh-CN' ? 'en' : 'zh-CN';
               setLocale(newLang);
             }}
-            title={getLocale() === 'zh-CN' ? 'Switch to English' : '切换到中文'}
+            title={locale === 'zh-CN' ? 'Switch to English' : '切换到中文'}
           >
             <Globe size={20} />
-            <span className="lang-label">{getLocale() === 'zh-CN' ? 'EN' : '中'}</span>
+            <span className="lang-label">{locale === 'zh-CN' ? 'EN' : '中'}</span>
           </button>
           {/* 深色模式切换按钮 */}
           <button

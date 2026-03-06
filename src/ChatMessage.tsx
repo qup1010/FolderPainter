@@ -11,6 +11,7 @@ export interface ChatMessageData {
   content: string;
   timestamp: Date;
   i18nKey?: string;
+  i18nParams?: Record<string, string | number>;
   folders?: string[];
   previewImages?: { folderPath: string; imageUrl: string }[];
   analysisResults?: {
@@ -39,7 +40,12 @@ interface ChatMessageProps {
 
 export function ChatMessage({ message, onAction, onSelectTemplate, onCustomStyle }: ChatMessageProps) {
   const { t } = useI18n();
-  const displayContent = message.i18nKey ? t(message.i18nKey) : message.content;
+  const displayContent = message.i18nKey
+    ? Object.entries(message.i18nParams || {}).reduce(
+        (text, [key, value]) => text.replace(`{${key}}`, String(value)),
+        t(message.i18nKey, message.content || message.i18nKey)
+      )
+    : message.content;
 
   const isFolderActionMessage =
     message.type === "user" &&
@@ -144,4 +150,3 @@ export function ChatMessage({ message, onAction, onSelectTemplate, onCustomStyle
     </div>
   );
 }
-
