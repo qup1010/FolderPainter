@@ -3,8 +3,7 @@
 
   <h1>FolderPainter</h1>
 
-  <p><strong>AI-Powered Windows Folder Icon Customization Tool</strong></p>
-  <p><strong>One-click generation of unique and beautiful icons :)</strong></p>
+  <p>Generate and apply AI-made icons for Windows folders.</p>
 
   <p>
     <img src="https://img.shields.io/badge/Platform-Windows-0078D6?style=flat-square&logo=windows" alt="Windows">
@@ -15,11 +14,13 @@
   </p>
 
   <p>
-    <a href="#-features">Features</a> •
-    <a href="#-quick-start">Quick Start</a> •
-    <a href="#-usage-guide">Usage Guide</a> •
-    <a href="#-configuration">Configuration</a> •
-    <a href="#-development">Development</a>
+    <a href="#overview">Overview</a> |
+    <a href="#features">Features</a> |
+    <a href="#screenshots">Screenshots</a> |
+    <a href="#quick-start">Quick Start</a> |
+    <a href="#workflow">Workflow</a> |
+    <a href="#configuration">Configuration</a> |
+    <a href="#development">Development</a>
   </p>
 
   <p>
@@ -30,150 +31,125 @@
 
 ---
 
-## ✨ Features
+## Overview
 
-<table>
-<tr>
-<td width="50%">
+FolderPainter is a Windows utility for folder icons. It looks at folder names and directory structure, suggests icon directions, and uses text and image models to generate icons you can apply directly.
 
-### 🤖 AI-Powered Analysis
-- Automatically scan folder content structure
-- LLM analysis and icon suggestions
-- Natural language conversation interaction
+It is useful when you want to:
 
-</td>
-<td width="50%">
+- organize project folders, asset libraries, or collections more clearly
+- generate icons in batches instead of finding them one by one
+- connect your own model endpoints to a local desktop tool
 
-### 🎨 Diverse Styles
-- Multiple preset artistic style templates
-- Custom style descriptions
-- Smart conversation interaction
+## Features
 
-</td>
-</tr>
-<tr>
-<td>
+- Analyze folder structure and generate icon directions and prompts
+- Use preset templates or describe styles in natural language
+- Preview, compare, and apply multiple generated versions
+- Remove backgrounds for transparent icon output
+- Import and export templates
+- Restore the default system icon
 
-### 🖼️ Image Processing
-- AI image generation
-- One-click background removal
-- Multi-version preview and comparison
+## Screenshots
 
-</td>
-<td>
+| Main Interface | Settings |
+| --- | --- |
+| ![Main Interface](assets/1da8cd10ea588bcd39e040d3119f0971d06993c0b631fb4e7c475eb1a01f114f.png) | ![Settings](assets/0ba4d2a037738227208d49d7ba488ece778f7b24788c143fb8896c79846a6395.png) |
 
-### 💾 Template Management
-- Create/Edit/Delete custom templates
-- Template import/export sharing
-- Multi-language support (Chinese/English)
+| Template Library | Folder Analysis |
+| --- | --- |
+| ![Template Library](assets/c97e8500315043ce653f7c7b347333f844b5f0fe55c2f67ec161ba225caa4980.png) | ![Folder Analysis](assets/5586ce8d487f16defbe10b4af3de32ad7558fde9b09e566f7ba8d2ba98f1134a.png) |
 
-</td>
-</tr>
-</table>
+| Preview |
+| --- |
+| ![Preview](assets/68d54538c2f390e8b42058d464b7e8b4fafaaf9856a5b0a4e9f50a658561b087.png) |
 
----
+| Generated Result |
+| --- |
+| ![Generated Result](public/result.png) |
 
-## 📸 Screenshots
+The example above uses `gemini-3-flash` for text analysis and `FLUX-2-KLEIN-4B-FP8` in `ComfyUI` for image generation.
 
-| Main Interface | Template Library |
-|--------|--------|
-| ![Main Interface](public/main.png) | ![Template Library](public/templates.png) |
-
-| Settings | Preview Panel |
-|------|----------|
-| ![Settings](public/settings.png) | ![Actual Demo](public/preview.png) |
-
-| Generated Results | 
-|------|
-| ![Generated Results](public/result.png) | 
-
-Generated using `gemini-3-flash` as the text model + `FLUX-2-KLEIN-4B-FP8` in `ComfyUI` as the image model.
-
-**Tips:** Here is a project that adapts ComfyUI API to OpenAI API format, allowing you to use ComfyUI models with this project:
+If you want to connect ComfyUI models to this project, see:
 [Comfyui2Openai](https://github.com/qup1010/Comfyui2Openai?tab=readme-ov-file)
 
-## 🚀 Quick Start
+## Quick Start
 
-### Download & Install
+Before using the app, prepare two endpoints:
 
-Download the latest version from [Releases](https://github.com/qup1010/FolderPainter/releases):
+- a text model endpoint for folder analysis and prompt generation
+- an image generation endpoint for icon creation
 
-| Version | Description |
-|------|------|
-| `FolderPainter_x.x.x_x64-setup.exe` | Installer (Recommended) |
-| `FolderPainter_x.x.x_x64_en-US.msi` | MSI Package |
+### Download
 
-### Configure API
+Download the latest release from [Releases](https://github.com/qup1010/FolderPainter/releases):
 
-First-time setup requires AI model API configuration:
+| File | Description |
+| --- | --- |
+| `FolderPainter_x.x.x_x64-setup.exe` | Installer, recommended |
+| `FolderPainter_x.x.x_x64_en-US.msi` | MSI package |
 
-1. Click ⚙️ in the top right to open Settings
-2. Configure **Image Generation Model**
-3. Configure **Text Analysis Model** (Enables smart conversation)
-4. Click "Test Connection" to verify configuration
+### First-time Setup
 
-#### Supported Image Model Formats
+1. Open Settings from the top right corner.
+2. Configure the image generation model endpoint.
+3. Configure the text analysis model endpoint.
+4. Click "Test Connection" to confirm the setup.
 
-Supports OpenAI-compatible endpoint calls:
+### Supported Endpoint Formats
+
+Image generation supports the OpenAI-compatible format:
+
 `/v1/images/generations`
 
-Already adapted for ModelScope (MagicPatch) API format.
+Text models support the OpenAI-compatible format:
 
-#### Supported Text Model Formats
-
-Supports OpenAI-compatible endpoint calls:
 `/v1/chat/completions`
 
+## Workflow
 
-## 📖 Usage Guide
-
-### Basic Workflow
-
-```
-Add Folder → AI Analysis → Select/Customize Style → Generate Icon → Preview → Apply
+```text
+Add folder -> Analyze content -> Select or describe style -> Generate icon -> Preview -> Apply
 ```
 
-### Steps
+### Basic Steps
 
-1. **Add Folders** - Click 📁 at bottom left or drag folders into window
-2. **Select Style** - Choose from template library or describe in natural language
-3. **Generate Icon** - Click "Generate" or say "generate"
-4. **Preview & Adjust** - View multiple versions in the right panel
-5. **Apply Icon** - Click "Apply" when satisfied
+1. Add a folder or drag it into the window.
+2. Pick a style from the template library, or describe the result you want.
+3. Generate icons and review multiple candidates.
+4. Apply the version you want to the folder.
 
-### Pro Tips
+### Common Features
 
-- 💡 **Batch Processing**: Add multiple folders at once for batch generation and application
-- 💡 **Background Removal**: Enable cutout feature for transparent background icons
-- 💡 **Template Sharing**: Export templates as JSON to share with others
-- 💡 **Restore Icons**: One-click restore to system default icons
+- Batch processing for multiple folders
+- One-click background removal
+- Import and export templates
+- Restore the default system icon
 
----
-
-## ⚙️ Configuration
+## Configuration
 
 ### Data Storage
 
 User data is stored in `%APPDATA%\FolderPainter\`:
 
-```
+```text
 FolderPainter/
-├── config.json    # API configuration
+├── config.json    # API settings
 └── history.db     # Templates and history
 ```
 
-### Background Removal Service
+### Background Removal Services
 
-Uses free HuggingFace Space services:
+The app currently uses free services hosted on HuggingFace Spaces:
 
-- BRIA RMBG 2.0 
+- BRIA RMBG 2.0
 - BRIA RMBG 1.4
 - not-lain/background-removal
 - KenjieDec/RemBG
 
----
+Please follow the availability and usage terms of those services.
 
-## 🛠️ Development
+## Development
 
 ### Requirements
 
@@ -181,71 +157,44 @@ Uses free HuggingFace Space services:
 - Rust 1.70+
 - Windows 10/11
 
-### Local Development
+### Local Run
 
 ```bash
-# Clone the repository
 git clone https://github.com/qup1010/FolderPainter.git
 cd FolderPainter
-
-# Install dependencies
 npm install
-
-# Start development server
 npm run tauri dev
 ```
 
-### Build for Production
+### Build
 
 ```bash
-# Build production version
 npm run tauri build
 ```
 
-Build artifacts are located in `src-tauri/target/release/bundle/`
+Build artifacts are written to `src-tauri/target/release/bundle/`.
 
 ### Project Structure
 
-```
+```text
 FolderPainter/
-├── src/                    # React Frontend
-│   ├── components/         # UI Components
-│   ├── hooks/              # React Hooks
-│   ├── locales/            # i18n Files
-│   └── utils/              # Utility Functions
-├── src-tauri/              # Rust Backend
-│   └── src/
-│       ├── ai_client.rs    # AI API Calls
-│       ├── templates/      # Template Management
-│       ├── preview.rs      # Preview Session
-│       └── ...
-└── public/                 # Static Assets
-    └── template-covers/    # Preset Template Covers
+├── src/                     # React frontend
+├── src-tauri/              # Rust backend
+├── public/                 # Static assets
+└── assets/                 # README example images
 ```
 
----
+## Notes
 
-## 📝 Notes
+- AI only uses folder names and directory structure. It does not read file contents.
+- Icon generation and model calls require network access.
+- Image generation consumes model quota. High resolution is usually unnecessary for icons.
+- Windows 10/11 only.
 
-- 🔒 **Privacy**: AI only analyzes folder names and directory structure, **does NOT read file contents**
-- 🌐 **Network**: Requires internet connection for AI API calls
-- 💰 **API Costs**: Image generation consumes API quota; smaller resolutions recommended for icons
-- 🖥️ **System**: Windows 10/11 only
+## Contributing
 
----
+Issues and pull requests are welcome.
 
-## 🤝 Contributing
-
-Issues and Pull Requests are welcome!
-
----
-
-## 📄 License
+## License
 
 [MIT License](LICENSE)
-
----
-
-<div align="center">
-  <p>If this project helps you, please give it a ⭐ Star to support us!</p>
-</div>

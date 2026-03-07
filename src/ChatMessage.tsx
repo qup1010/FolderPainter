@@ -1,4 +1,4 @@
-﻿import { ToolResultRenderer } from "./components/tools";
+import { ToolResultRenderer } from "./components/tools";
 import type { ToolResult } from "./types/agent";
 import { useI18n } from "./hooks/useI18n";
 import "./ChatMessage.css";
