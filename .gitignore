@@ -39,6 +39,7 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+.tmp_*
 image-*.png
 
 # Environment and secrets
