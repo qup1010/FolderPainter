@@ -1,3 +1,5 @@
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { ToolResultRenderer } from "./components/tools";
 import type { ToolResult } from "./types/agent";
 import { useI18n } from "./hooks/useI18n";
@@ -68,7 +70,11 @@ export function ChatMessage({ message, onAction, onSelectTemplate, onCustomStyle
         {showSystemLabel && (
           <div className="message-section-label system-label">{t("chat.systemMessageLabel", "System")}</div>
         )}
-        <div className={`message-text ${isAssistantNote ? "assistant-note" : ""}`}>{displayContent}</div>
+        <div className={`message-text ${isAssistantNote ? "assistant-note" : ""}`}>
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {displayContent}
+          </ReactMarkdown>
+        </div>
 
         {message.folders && message.folders.length > 0 && !isFolderActionMessage && (
           <div className="message-folders">

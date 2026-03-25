@@ -117,34 +117,29 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
   const [bgTestingConnection, setBgTestingConnection] = useState(false);
 
   // 预设 Space 列表 (已验证可用)
-  // 注意：api_name 仅用于后端确定调用哪个端点，实际请求体是 Gradio 标准格式 {"data": [...]}
-  const BG_REMOVAL_PRESETS = [
+  const BG_REMOVAL_PRESETS: { name: string; type: "Gradio" | "InferenceApi"; model: string; template: string | null }[] = [
     {
       name: "BRIA RMBG 2.0",
       type: "Gradio",
       model: "briaai/BRIA-RMBG-2.0",
-      // /api/image 端点，参数: image
       template: '{"data": ["{{IMAGE}}"], "api_name": "/image"}'
     },
     {
       name: "BRIA RMBG 1.4",
       type: "Gradio",
       model: "briaai/BRIA-RMBG-1.4",
-      // /api/predict 端点，参数: 单个图片
       template: '{"data": ["{{IMAGE}}"], "api_name": "/predict"}'
     },
     {
       name: "not-lain/background-removal",
       type: "Gradio",
       model: "not-lain/background-removal",
-      // /api/png 端点，参数: f (文件)
       template: '{"data": ["{{IMAGE}}"], "api_name": "/png"}'
     },
     {
       name: "KenjieDec/RemBG",
       type: "Gradio",
       model: "KenjieDec/RemBG",
-      // /api/inference 端点，参数: file, model, x, y
       template: '{"data": ["{{IMAGE}}", "isnet-general-use", 0, 0], "api_name": "/inference"}'
     },
   ];
@@ -780,7 +775,7 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
 
               <div className="setting-group">
                 <label>{t('settings.appearance.theme')}</label>
-                                <div className="theme-options">
+                <div className="theme-options">
                   <button
                     className={`theme-btn ${mode === 'light' ? 'active' : ''}`}
                     onClick={() => handleThemeChange('light')}
@@ -805,8 +800,7 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                 </div>
               </div>
 
-              {/* ?????? */}
-<div className="settings-actions settings-actions-compact">
+              <div className="settings-actions settings-actions-compact">
                 <button className="btn primary" onClick={handleSave} disabled={saving}>
                   <Save size={16} />
                   {saving ? t('settings.saving') : t('settings.saveButton')}
@@ -824,50 +818,60 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                 <p className="config-desc">{t('settings.about.desc')}</p>
               </div>
 
-              <div className="about-content about-card">
-                <div className="about-hero">
-                  <div className="about-logo">
-                    <img src="/logo.png" alt="FolderPainter" className="app-logo" />
-                    <div className="about-title-group">
-                      <h2 className="app-name">FolderPainter</h2>
-                      <p className="app-version">{appVersion}</p>
+              <div className="about-content">
+                <div className="about-hero-section">
+                  <div className="about-logo-wrapper">
+                    <img src="/logo.png" alt="FolderPainter" className="app-main-logo" />
+                  </div>
+                  <div className="about-branding">
+                    <h2 className="app-display-name">FolderPainter</h2>
+                    <span className="app-display-version">{appVersion}</span>
+                  </div>
+                  <p className="app-tagline">{t('settings.about.description')}</p>
+                </div>
+
+                <div className="about-info-grid">
+                  <div className="about-info-card author-card">
+                    <div className="card-icon-box">
+                      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                      </svg>
+                    </div>
+                    <div className="card-details">
+                      <span className="card-label">{t('settings.about.author')}</span>
+                      <strong className="card-value">qup1010</strong>
                     </div>
                   </div>
-                  <p className="about-description-text">{t('settings.about.description')}</p>
-                </div>
 
-                <div className="about-meta-grid">
-                  <div className="about-meta-item">
-                    <span className="about-meta-label">{t('settings.about.author')}</span>
-                    <strong className="about-meta-value">qup1010</strong>
-                  </div>
-                  <div className="about-meta-item">
-                    <span className="about-meta-label">{t('settings.about.github')}</span>
-                    <a
-                      href="https://github.com/qup1010/FolderPainter"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="about-link"
-                      onClick={async (e) => {
-                        e.preventDefault();
-                        await openUrl("https://github.com/qup1010/FolderPainter");
-                      }}
-                    >
-                      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                  <div className="about-info-card project-card">
+                    <div className="card-icon-box">
+                      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
                       </svg>
-                      <span>{t('settings.about.openProject')}</span>
-                    </a>
+                    </div>
+                    <div className="card-details">
+                      <span className="card-label">{t('settings.about.github')}</span>
+                      <button
+                        className="card-action-link"
+                        onClick={async (e) => {
+                          e.preventDefault();
+                          await openUrl("https://github.com/qup1010/FolderPainter");
+                        }}
+                      >
+                        {t('settings.about.openProject')}
+                      </button>
+                    </div>
                   </div>
                 </div>
 
-                <div className="about-tech">
-                  <p className="tech-label">{t('settings.about.techStack')}</p>
-                  <div className="tech-tags">
-                    <span className="tech-tag">Tauri v2</span>
-                    <span className="tech-tag">React</span>
-                    <span className="tech-tag">TypeScript</span>
-                    <span className="tech-tag">Rust</span>
+                <div className="about-tech-section">
+                  <h4 className="tech-section-title">{t('settings.about.techStack')}</h4>
+                  <div className="tech-pills">
+                    <span className="tech-pill tauri">Tauri v2</span>
+                    <span className="tech-pill react">React</span>
+                    <span className="tech-pill ts">TypeScript</span>
+                    <span className="tech-pill rust">Rust</span>
                   </div>
                 </div>
               </div>
