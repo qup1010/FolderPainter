@@ -1,49 +1,67 @@
 .chat-input-container {
   padding: 1rem;
-  border-top: 1px solid var(--border-color);
-  background-color: var(--bg-secondary);
+  border-top: 1px solid color-mix(in srgb, var(--accent-primary) 12%, var(--border-color));
+  background: linear-gradient(180deg, color-mix(in srgb, var(--bg-secondary) 92%, transparent), color-mix(in srgb, var(--bg-primary) 88%, transparent));
 }
 
 .chat-input-wrapper {
   display: flex;
   align-items: flex-end;
   gap: 0.5rem;
-  background-color: var(--bg-primary);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
+  background: var(--bg-elevated);
+  backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 14%, var(--border-color));
+  border-radius: 14px;
   padding: 0.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--motion-fast), box-shadow var(--motion-fast), background-color var(--motion-fast), transform var(--motion-fast);
+}
+
+.chat-input-wrapper:focus-within {
+  border-color: color-mix(in srgb, var(--accent-primary) 42%, var(--border-color));
+  box-shadow: var(--shadow-md), var(--focus-ring), var(--focus-ring-offset);
 }
 
 .attach-btn,
 .send-btn {
   width: 40px;
   height: 40px;
-  border: none;
-  border-radius: 8px;
+  border: 1px solid transparent;
+  border-radius: 10px;
   background-color: transparent;
   font-size: 1.2rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s;
+  transition: color var(--motion-fast), background-color var(--motion-fast), border-color var(--motion-fast), box-shadow var(--motion-fast), transform var(--motion-fast), opacity var(--motion-fast);
   flex-shrink: 0;
   color: var(--text-secondary);
 }
 
 .attach-btn:hover:not(:disabled) {
-  background-color: var(--bg-tertiary);
+  background-color: color-mix(in srgb, var(--accent-primary) 8%, var(--bg-secondary));
+  border-color: color-mix(in srgb, var(--accent-primary) 20%, var(--border-color));
   color: var(--accent-primary);
+  transform: translateY(-1px);
+}
+
+.attach-btn:active:not(:disabled),
+.send-btn:active:not(:disabled) {
+  transform: scale(0.97);
 }
 
 .send-btn {
   background-color: var(--accent-primary);
   color: #fff;
-  border: 1px solid color-mix(in srgb, var(--accent-primary) 75%, var(--border-color));
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 72%, var(--border-color));
+  box-shadow: var(--shadow-sm);
 }
 
 .send-btn:hover:not(:disabled) {
   background-color: var(--accent-primary-hover);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
 }
 
 .send-btn:disabled {
@@ -51,6 +69,7 @@
   color: var(--text-muted);
   border-color: var(--border-color);
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 .attach-btn:disabled {

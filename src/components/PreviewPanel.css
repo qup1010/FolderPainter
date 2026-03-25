@@ -82,21 +82,22 @@
   background-color: var(--card-bg);
   border-radius: var(--card-radius);
   overflow: visible;
-  transition: all 0.2s ease;
+  transition: border-color var(--motion-fast), box-shadow var(--motion-fast), background-color var(--motion-fast), transform var(--motion-fast);
   border: var(--card-border);
   box-shadow: var(--card-shadow);
   flex-shrink: 0;
 }
 
 .folder-card:hover {
-  border-color: color-mix(in srgb, var(--accent-primary) 24%, var(--border-color));
-  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+  border-color: color-mix(in srgb, var(--accent-primary) 26%, var(--border-color));
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-1px);
 }
 
 .folder-card.expanded {
-  border-color: color-mix(in srgb, var(--accent-primary) 46%, var(--border-color));
-  background: linear-gradient(180deg, color-mix(in srgb, var(--accent-primary) 4%, var(--card-bg)), var(--card-bg));
-  box-shadow: 0 14px 30px color-mix(in srgb, var(--accent-primary) 14%, transparent);
+  border-color: color-mix(in srgb, var(--accent-primary) 40%, var(--border-color));
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent-primary) 6%, var(--card-bg)), var(--card-bg));
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--accent-primary) 14%, transparent);
 }
 
 /* 鍗＄墖涓讳綋 */
@@ -185,18 +186,21 @@
   font-size: 0.68rem;
   font-weight: 650;
   letter-spacing: 0.02em;
-  padding: 0.1875rem 0.375rem;
-  border-radius: 4px;
+  padding: 0.2rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
 }
 
 .status-badge.pending {
-  background-color: #f0f0f0;
-  color: #888;
+  background-color: color-mix(in srgb, var(--bg-secondary) 92%, transparent);
+  border-color: var(--border-subtle);
+  color: var(--text-muted);
 }
 
 .status-badge.generating {
-  background-color: #fff3e0;
-  color: #ef6c00;
+  background-color: color-mix(in srgb, var(--accent-warning) 14%, var(--bg-secondary));
+  border-color: color-mix(in srgb, var(--accent-warning) 36%, var(--border-color));
+  color: color-mix(in srgb, var(--accent-warning) 82%, var(--text-primary));
 }
 
 .status-badge.generating .status-icon {
@@ -204,8 +208,9 @@
 }
 
 .status-badge.ready {
-  background-color: #e8f5e9;
-  color: #2e7d32;
+  background-color: color-mix(in srgb, var(--accent-success) 14%, var(--bg-secondary));
+  border-color: color-mix(in srgb, var(--accent-success) 34%, var(--border-color));
+  color: color-mix(in srgb, var(--accent-success) 84%, var(--text-primary));
 }
 
 /* 灞曞紑鎸囩ず鍣?*/
@@ -221,24 +226,25 @@
   right: 4px;
   width: 24px;
   height: 24px;
-  border: 1px solid var(--border-color);
-  background-color: color-mix(in srgb, var(--bg-secondary) 92%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 12%, var(--border-color));
+  background-color: color-mix(in srgb, var(--bg-elevated) 94%, transparent);
   color: var(--text-secondary);
-  border-radius: 6px;
+  border-radius: 7px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 1;
-  transition: all 0.2s;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: color var(--motion-fast), background-color var(--motion-fast), border-color var(--motion-fast), box-shadow var(--motion-fast), transform var(--motion-fast);
+  box-shadow: var(--shadow-sm);
 }
 
 .card-main .remove-btn:hover {
-  background-color: color-mix(in srgb, var(--accent-danger) 15%, var(--bg-secondary));
-  border-color: color-mix(in srgb, var(--accent-danger) 45%, var(--border-color));
+  background-color: color-mix(in srgb, var(--accent-danger) 12%, var(--bg-secondary));
+  border-color: color-mix(in srgb, var(--accent-danger) 38%, var(--border-color));
   color: var(--accent-danger);
-  transform: none;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 /* 杩樺師鎸夐挳 */
@@ -248,24 +254,25 @@
   right: 32px;
   width: 24px;
   height: 24px;
-  border: 1px solid var(--border-color);
-  background-color: color-mix(in srgb, var(--bg-secondary) 92%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 12%, var(--border-color));
+  background-color: color-mix(in srgb, var(--bg-elevated) 94%, transparent);
   color: var(--text-secondary);
-  border-radius: 6px;
+  border-radius: 7px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 1;
-  transition: all 0.2s;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: color var(--motion-fast), background-color var(--motion-fast), border-color var(--motion-fast), box-shadow var(--motion-fast), transform var(--motion-fast), opacity var(--motion-fast);
+  box-shadow: var(--shadow-sm);
 }
 
 .card-main .restore-btn:hover {
-  background-color: color-mix(in srgb, var(--accent-primary) 14%, var(--bg-secondary));
-  border-color: color-mix(in srgb, var(--accent-primary) 45%, var(--border-color));
+  background-color: color-mix(in srgb, var(--accent-primary) 12%, var(--bg-secondary));
+  border-color: color-mix(in srgb, var(--accent-primary) 34%, var(--border-color));
   color: var(--accent-primary);
-  transform: none;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .card-main .restore-btn:disabled {
@@ -280,8 +287,8 @@
 /* 灞曞紑鐨勭増鏈垪琛?*/
 .card-expanded {
   padding: 0.5rem 0.75rem 0.75rem;
-  border-top: 1px solid var(--border-color);
-  background-color: var(--bg-primary);
+  border-top: 1px solid var(--border-subtle);
+  background-color: color-mix(in srgb, var(--bg-primary) 92%, transparent);
 }
 
 .versions-row {
@@ -291,6 +298,7 @@
   padding-bottom: 0.25rem;
   min-width: 0;
   flex-wrap: nowrap;
+  scrollbar-color: color-mix(in srgb, var(--accent-primary) 22%, var(--border-color)) color-mix(in srgb, var(--bg-secondary) 88%, transparent);
 }
 
 .versions-row > * {
@@ -302,46 +310,50 @@
 }
 
 .versions-row::-webkit-scrollbar-track {
-  background: #f0f0f0;
-  border-radius: 2px;
+  background: color-mix(in srgb, var(--bg-secondary) 88%, transparent);
+  border-radius: 999px;
 }
 
 .versions-row::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 2px;
+  background: color-mix(in srgb, var(--accent-primary) 20%, var(--border-color));
+  border-radius: 999px;
 }
 
 /* 搴曢儴 */
 .panel-footer {
   padding: 0.75rem;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--border-subtle);
+  background: color-mix(in srgb, var(--bg-secondary) 84%, transparent);
+  backdrop-filter: blur(12px);
   flex-shrink: 0;
   display: flex;
   gap: 0.5rem;
 }
 
-/* 娓呯┖鎵€鏈夋寜閽?*/
 .clear-all-btn {
   padding: 0.625rem 0.875rem;
-  background-color: transparent;
+  background-color: color-mix(in srgb, var(--bg-secondary) 88%, transparent);
   color: var(--text-secondary);
-  border: 1px solid var(--border-color);
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 14%, var(--border-color));
   border-radius: 8px;
   font-size: 0.8125rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: color var(--motion-fast), background-color var(--motion-fast), border-color var(--motion-fast), box-shadow var(--motion-fast), transform var(--motion-fast), opacity var(--motion-fast);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.375rem;
   flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
 }
 
 .clear-all-btn:hover:not(:disabled) {
   background-color: color-mix(in srgb, var(--accent-danger) 10%, var(--bg-secondary));
-  border-color: color-mix(in srgb, var(--accent-danger) 40%, var(--border-color));
+  border-color: color-mix(in srgb, var(--accent-danger) 34%, var(--border-color));
   color: var(--accent-danger);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .clear-all-btn:disabled {
@@ -353,27 +365,30 @@
   flex-shrink: 0;
 }
 
-/* 涓€閿姞鍥炬寜閽?*/
 .removebg-all-btn {
   padding: 0.625rem 0.875rem;
   background-color: color-mix(in srgb, var(--accent-primary) 10%, var(--bg-secondary));
   color: var(--text-primary);
-  border: 1px solid color-mix(in srgb, var(--accent-primary) 32%, var(--border-color));
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 28%, var(--border-color));
   border-radius: 8px;
   font-size: 0.8125rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: color var(--motion-fast), background-color var(--motion-fast), border-color var(--motion-fast), box-shadow var(--motion-fast), transform var(--motion-fast), opacity var(--motion-fast);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.375rem;
   flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
 }
 
 .removebg-all-btn:hover:not(:disabled) {
-  background-color: color-mix(in srgb, var(--accent-primary) 15%, var(--bg-secondary));
+  background-color: color-mix(in srgb, var(--accent-primary) 14%, var(--bg-secondary));
   color: var(--accent-primary);
+  border-color: color-mix(in srgb, var(--accent-primary) 42%, var(--border-color));
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .removebg-all-btn:disabled {
@@ -394,24 +409,33 @@
   padding: 0.625rem 1rem;
   background-color: var(--accent-primary);
   color: #fff;
-  border: none;
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 72%, transparent);
   border-radius: 8px;
   font-size: 0.8125rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: color var(--motion-fast), background-color var(--motion-fast), border-color var(--motion-fast), box-shadow var(--motion-fast), transform var(--motion-fast), opacity var(--motion-fast);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  box-shadow: var(--shadow-sm);
 }
 
 .apply-all-btn:hover:not(:disabled) {
   background-color: var(--accent-primary-hover);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.apply-all-btn:active:not(:disabled) {
+  background-color: var(--accent-primary-active);
+  transform: scale(0.97);
+  box-shadow: none;
 }
 
 .apply-all-btn:disabled {
-  background-color: #ccc;
+  opacity: 0.6;
   cursor: not-allowed;
 }
 
@@ -426,16 +450,11 @@
 
 /* 鏀寔鎵嬪姩鍒囨崲鐨勬繁鑹叉ā寮?*/
 :root.dark .preview-panel {
-  background-color: #242424;
-}
-
-:root.dark .panel-header {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--bg-secondary) 92%, #0b1220), color-mix(in srgb, var(--bg-primary) 80%, #020617));
-  border-bottom-color: color-mix(in srgb, var(--accent-primary) 16%, var(--border-color));
+  background-color: var(--bg-primary);
 }
 
 :root.dark .panel-header h3 {
-  color: #fff;
+  color: var(--text-primary);
 }
 
 :root.dark .folder-count {
@@ -445,29 +464,30 @@
 }
 
 :root.dark .folder-card {
-  background-color: #1b212b;
-  border-color: #313a46;
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
+  background-color: var(--card-bg);
+  border-color: color-mix(in srgb, var(--accent-primary) 12%, var(--border-color));
+  box-shadow: var(--card-shadow);
 }
 
 :root.dark .folder-card:hover {
-  background-color: #202734;
-  border-color: color-mix(in srgb, var(--accent-primary) 22%, #313a46);
+  background-color: color-mix(in srgb, var(--accent-primary) 4%, var(--card-bg));
+  border-color: color-mix(in srgb, var(--accent-primary) 24%, var(--border-color));
 }
 
 :root.dark .folder-card.expanded {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--accent-primary) 7%, #1b212b), #1b212b);
-  border-color: #4a7fe8;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent-primary) 8%, var(--card-bg)), var(--card-bg));
+  border-color: color-mix(in srgb, var(--accent-primary) 48%, var(--border-color));
   box-shadow: 0 16px 34px rgba(0, 0, 0, 0.26);
 }
 
 :root.dark .card-preview {
-  background: linear-gradient(180deg, rgba(74, 127, 232, 0.08), rgba(255, 255, 255, 0.01));
-  border-color: #344050;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent-primary) 8%, rgba(255, 255, 255, 0.02)), rgba(255, 255, 255, 0.01));
+  border-color: color-mix(in srgb, var(--accent-primary) 14%, var(--border-color));
 }
 
-:root.dark .card-preview .placeholder-icon {
-  color: #666;
+:root.dark .card-preview .placeholder-icon,
+:root.dark .expand-indicator {
+  color: var(--text-muted);
 }
 
 :root.dark .card-index {
@@ -475,79 +495,66 @@
 }
 
 :root.dark .card-name {
-  color: #eee;
+  color: var(--text-primary);
 }
 
 :root.dark .status-badge.pending {
-  background-color: #333;
-  color: #888;
+  background-color: color-mix(in srgb, var(--bg-secondary) 88%, transparent);
+  border-color: color-mix(in srgb, var(--accent-primary) 10%, var(--border-color));
+  color: var(--text-muted);
 }
 
 :root.dark .status-badge.generating {
-  background-color: #3d2e1b;
-  color: #ffb74d;
+  background-color: color-mix(in srgb, var(--accent-warning) 14%, var(--bg-secondary));
+  color: #ffbf60;
 }
 
 :root.dark .status-badge.ready {
-  background-color: #1b3d1f;
-  color: #81c784;
+  background-color: color-mix(in srgb, var(--accent-success) 14%, var(--bg-secondary));
+  color: #7fe3a7;
 }
 
-:root.dark .expand-indicator {
-  color: #666;
-}
-
-:root.dark .card-main .remove-btn {
-  color: #888;
-  opacity: 0.6;
-}
-
-:root.dark .card-main .remove-btn:hover {
-  background-color: #3d1b1b;
-  color: #ef5350;
-  opacity: 1;
+:root.dark .card-main .remove-btn,
+:root.dark .card-main .restore-btn {
+  background-color: color-mix(in srgb, var(--bg-elevated) 94%, rgba(255, 255, 255, 0.02));
 }
 
 :root.dark .card-expanded {
-  background-color: #222;
-  border-top-color: #333;
+  background-color: color-mix(in srgb, var(--bg-primary) 94%, transparent);
+  border-top-color: color-mix(in srgb, var(--accent-primary) 10%, var(--border-color));
 }
 
 :root.dark .panel-footer {
-  border-top-color: #333;
+  border-top-color: color-mix(in srgb, var(--accent-primary) 12%, var(--border-color));
 }
 
 :root.dark .clear-all-btn {
-  color: #999;
-  border-color: #444;
+  color: #d2dbe8;
+  border-color: color-mix(in srgb, var(--accent-primary) 14%, var(--border-color));
 }
 
 :root.dark .clear-all-btn:hover:not(:disabled) {
-  background-color: #3d1b1b;
-  border-color: #7f1d1d;
-  color: #ef5350;
+  background-color: color-mix(in srgb, var(--accent-danger) 14%, var(--bg-secondary));
+  border-color: color-mix(in srgb, var(--accent-danger) 34%, var(--border-color));
+  color: #ff8f98;
 }
 
 :root.dark .empty-icon {
-  color: #555;
+  color: color-mix(in srgb, var(--accent-primary) 12%, var(--border-color));
 }
 
 :root.dark .empty-title {
-  color: #ccc;
+  color: var(--text-secondary);
 }
 
 :root.dark .empty-hint {
-  color: #888;
+  color: var(--text-muted);
 }
 
-/* 娣辫壊妯″紡杩樺師鎸夐挳 */
-:root.dark .card-main .restore-btn {
-  color: #666;
-}
-
-:root.dark .card-main .restore-btn:hover {
-  background-color: #1e3a5f;
-  color: #64b5f6;
+:root.dark .versions-helper {
+  color: #c7d2fe;
+  background-color: rgba(96, 165, 250, 0.08);
+  border-color: rgba(96, 165, 250, 0.18);
 }
 
 

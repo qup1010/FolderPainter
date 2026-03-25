@@ -2,46 +2,44 @@
 
 .dialog-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
+    inset: 0;
+    background: var(--bg-overlay);
+    backdrop-filter: blur(10px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1200;
-    animation: fadeIn 0.2s ease-out;
+    animation: fadeIn 0.18s ease-out;
 }
 
 .dialog-container {
-    width: 90%;
-    max-width: 400px;
-    background-color: var(--bg-secondary, #fff);
-    border-radius: 12px;
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
-    border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+    width: min(400px, calc(100vw - 32px));
+    background: var(--bg-acrylic);
+    backdrop-filter: blur(18px);
+    border-radius: 14px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid color-mix(in srgb, var(--accent-primary) 16%, var(--border-color));
     overflow: hidden;
-    animation: scaleIn 0.2s ease-out;
+    animation: scaleIn 0.18s ease-out;
 }
 
 .dialog-header {
     padding: 1.25rem 1.5rem;
-    border-bottom: 1px solid var(--border-color, #eee);
-    background-color: var(--bg-primary, #fff);
+    border-bottom: 1px solid var(--border-subtle);
+    background: color-mix(in srgb, var(--bg-secondary) 86%, transparent);
 }
 
 .dialog-header h3 {
     margin: 0;
+    font-family: var(--font-display);
     font-size: 1.125rem;
-    font-weight: 600;
-    color: var(--text-primary, #333);
+    font-weight: 680;
+    color: var(--text-primary);
 }
 
 .dialog-content {
     padding: 1.5rem;
-    color: var(--text-secondary, #666);
+    color: var(--text-secondary);
     font-size: 0.9375rem;
     line-height: 1.5;
 }
@@ -50,18 +48,18 @@
     width: 100%;
     padding: 0.625rem 0.875rem;
     margin-top: 0.5rem;
-    border: 1px solid var(--border-color, #ddd);
-    border-radius: 8px;
+    border: 1px solid color-mix(in srgb, var(--accent-primary) 14%, var(--border-color));
+    border-radius: 10px;
     font-size: 0.9375rem;
-    color: var(--text-primary, #333);
-    background-color: var(--bg-primary, #fff);
-    transition: all 0.2s;
+    color: var(--text-primary);
+    background-color: color-mix(in srgb, var(--bg-secondary) 90%, transparent);
+    transition: color var(--motion-fast), background-color var(--motion-fast), border-color var(--motion-fast), box-shadow var(--motion-fast), transform var(--motion-fast);
 }
 
 .dialog-input:focus {
     outline: none;
-    border-color: var(--primary-color, #396cd8);
-    box-shadow: 0 0 0 3px var(--primary-color-alpha, rgba(57, 108, 216, 0.1));
+    border-color: color-mix(in srgb, var(--accent-primary) 42%, var(--border-color));
+    box-shadow: var(--focus-ring), var(--focus-ring-offset);
 }
 
 .dialog-footer {
@@ -69,55 +67,59 @@
     justify-content: flex-end;
     gap: 0.75rem;
     padding: 1.25rem 1.5rem;
-    background-color: var(--bg-secondary, #fafafa);
-    border-top: 1px solid var(--border-color, #eee);
+    background-color: color-mix(in srgb, var(--bg-secondary) 82%, var(--bg-primary));
+    border-top: 1px solid var(--border-subtle);
 }
 
 .dialog-btn {
-    padding: 0.5rem 1.25rem;
-    border: none;
-    border-radius: 6px;
+    padding: 0.56rem 1.25rem;
+    border-radius: 10px;
     font-size: 0.875rem;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: color var(--motion-fast), background-color var(--motion-fast), border-color var(--motion-fast), box-shadow var(--motion-fast), transform var(--motion-fast), opacity var(--motion-fast);
+}
+
+.dialog-btn:active:not(:disabled) {
+    transform: scale(0.97);
 }
 
 .dialog-btn-cancel {
-    background-color: transparent;
-    border: 1px solid var(--border-color, #ddd);
-    color: var(--text-secondary, #666);
+    background-color: color-mix(in srgb, var(--bg-secondary) 86%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent-primary) 14%, var(--border-color));
+    color: var(--text-secondary);
+    box-shadow: var(--shadow-sm);
 }
 
 .dialog-btn-cancel:hover {
-    background-color: var(--bg-hover, #f0f0f0);
-    border-color: var(--text-secondary, #bbb);
-    color: var(--text-primary, #333);
+    background-color: color-mix(in srgb, var(--accent-primary) 8%, var(--bg-secondary));
+    border-color: color-mix(in srgb, var(--accent-primary) 30%, var(--border-color));
+    color: var(--accent-primary);
+    transform: translateY(-1px);
 }
 
 .dialog-btn-confirm {
-    background-color: var(--primary-color, #396cd8);
+    background-color: var(--accent-primary);
     color: #fff;
-    box-shadow: 0 2px 4px rgba(57, 108, 216, 0.2);
+    border: 1px solid color-mix(in srgb, var(--accent-primary) 72%, transparent);
+    box-shadow: var(--shadow-sm);
 }
 
 .dialog-btn-confirm:hover {
-    background-color: var(--primary-hover, #2d5bb8);
+    background-color: var(--accent-primary-hover);
     transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
 }
 
 .dialog-btn-danger {
-    background-color: var(--danger-color, #f44336);
+    background-color: var(--accent-danger);
     color: #fff;
-    box-shadow: 0 2px 4px rgba(244, 67, 54, 0.2);
+    border: 1px solid color-mix(in srgb, var(--accent-danger) 72%, transparent);
+    box-shadow: var(--shadow-sm);
 }
 
 .dialog-btn-danger:hover {
-    background-color: #d32f2f;
+    background-color: color-mix(in srgb, var(--accent-danger) 88%, black);
     transform: translateY(-1px);
-}
-
-/* 深色模式适配 */
-@media (prefers-color-scheme: dark) {
-    /* 使用全局变量, 无需额外覆盖 */
+    box-shadow: var(--shadow-md);
 }

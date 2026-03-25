@@ -2,7 +2,6 @@
 
 /* ============ 通用动画 ============ */
 
-/* 淡入 */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -12,11 +11,10 @@
   }
 }
 
-/* 淡入上移 */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -24,11 +22,10 @@
   }
 }
 
-/* 淡入下移 */
 @keyframes fadeInDown {
   from {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-8px);
   }
   to {
     opacity: 1;
@@ -36,11 +33,10 @@
   }
 }
 
-/* 缩放淡入 */
 @keyframes scaleIn {
   from {
     opacity: 0;
-    transform: scale(0.95);
+    transform: scale(0.97);
   }
   to {
     opacity: 1;
@@ -48,7 +44,6 @@
   }
 }
 
-/* 旋转 */
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -58,42 +53,40 @@
   }
 }
 
-/* 脉冲 */
 @keyframes pulse {
   0%, 100% {
     opacity: 1;
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.55;
   }
 }
 
-/* 弹跳 */
 @keyframes bounce {
   0%, 100% {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-4px);
+    transform: translateY(-3px);
   }
 }
 
 /* ============ 动画类 ============ */
 
 .animate-fadeIn {
-  animation: fadeIn 0.2s ease-out;
+  animation: fadeIn 0.18s ease-out;
 }
 
 .animate-fadeInUp {
-  animation: fadeInUp 0.3s ease-out;
+  animation: fadeInUp 0.2s ease-out;
 }
 
 .animate-fadeInDown {
-  animation: fadeInDown 0.3s ease-out;
+  animation: fadeInDown 0.2s ease-out;
 }
 
 .animate-scaleIn {
-  animation: scaleIn 0.2s ease-out;
+  animation: scaleIn 0.18s ease-out;
 }
 
 .animate-spin {
@@ -101,39 +94,39 @@
 }
 
 .animate-pulse {
-  animation: pulse 1.5s ease-in-out infinite;
+  animation: pulse 1.4s ease-in-out infinite;
 }
 
 /* ============ 过渡效果 ============ */
 
 .transition-all {
-  transition: all 0.2s ease;
+  transition: all var(--motion-medium);
 }
 
 .transition-colors {
-  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  transition: color var(--motion-fast), background-color var(--motion-fast), border-color var(--motion-fast), box-shadow var(--motion-fast);
 }
 
 .transition-transform {
-  transition: transform 0.2s ease;
+  transition: transform var(--motion-fast);
 }
 
 .transition-opacity {
-  transition: opacity 0.2s ease;
+  transition: opacity var(--motion-fast);
 }
 
 /* ============ 悬停效果 ============ */
 
 .hover-lift:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 .hover-scale:hover {
-  transform: scale(1.02);
+  transform: scale(1.01);
 }
 
 .hover-glow:hover {
-  box-shadow: 0 4px 12px rgba(57, 108, 216, 0.2);
+  box-shadow: 0 6px 14px rgba(0, 120, 212, 0.18);
 }
 
 /* ============ 减少动效模式 ============ */
@@ -145,5 +138,6 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

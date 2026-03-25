@@ -39,7 +39,7 @@
     height: 100%;
     background: var(--gradient-success);
     border-radius: 5px;
-    transition: width 0.3s ease;
+    transition: width 0.2s ease-out;
     position: relative;
 }
 
@@ -72,18 +72,20 @@
     align-self: flex-end;
     padding: 0.4rem 1rem;
     font-size: 0.8rem;
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    background: var(--accent-danger);
     color: white;
-    border: none;
-    border-radius: 6px;
+    border: 1px solid color-mix(in srgb, var(--accent-danger) 72%, transparent);
+    border-radius: 8px;
     cursor: pointer;
-    font-weight: 500;
-    transition: all 0.2s;
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+    transition: color var(--motion-fast), background-color var(--motion-fast), border-color var(--motion-fast), box-shadow var(--motion-fast), transform var(--motion-fast);
 }
 
 .progress-cancel-btn:hover {
+    background: color-mix(in srgb, var(--accent-danger) 88%, black);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    box-shadow: var(--shadow-md);
 }
 
 /* 深色模式 */
