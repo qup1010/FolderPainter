@@ -12,7 +12,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.4rem;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--accent-primary) 8%, #ffffff), var(--bg-secondary));
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent-primary) 8%, var(--bg-secondary)), var(--bg-secondary));
   border-bottom: 1px solid color-mix(in srgb, var(--accent-primary) 14%, var(--border-color));
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
   flex-shrink: 0;
@@ -122,7 +122,7 @@
   position: absolute;
   inset: 1rem;
   z-index: 5;
-  border: 2px dashed color-mix(in srgb, var(--accent-primary) 65%, #ffffff);
+  border: 2px dashed color-mix(in srgb, var(--accent-primary) 65%, var(--bg-secondary));
   border-radius: 12px;
   background: color-mix(in srgb, var(--accent-primary) 10%, transparent);
   color: var(--text-primary);

@@ -1,4 +1,4 @@
-﻿.analysis-result-view {
+.analysis-result-view {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -77,7 +77,7 @@
 }
 
 .analysis-header .category-badge {
-  background: color-mix(in srgb, var(--accent-primary, #3b82f6) 18%, var(--bg-secondary, #fff));
+  background: color-mix(in srgb, var(--accent-primary, #3b82f6) 18%, var(--bg-secondary));
   color: var(--accent-primary, #3b82f6);
   font-size: 11px;
   padding: 2px 8px;
@@ -141,6 +141,33 @@
   color: var(--text-secondary, #6b7280);
   margin: 0 0 10px 0;
   font-weight: 500;
+}
+
+/* Dark Mode Adaptation */
+:root.dark .analysis-card {
+  background: var(--bg-secondary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+}
+
+:root.dark .flow-step {
+  background: var(--bg-tertiary);
+}
+
+:root.dark .flow-step.active {
+  background: color-mix(in srgb, var(--accent-primary) 15%, var(--bg-secondary));
+}
+
+:root.dark .visual-subject {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+:root.dark .style-btn.custom-btn {
+  background: var(--bg-tertiary);
+  border-color: var(--border-color);
+}
+
+:root.dark .style-btn.custom-btn:hover {
+  background: color-mix(in srgb, var(--accent-primary) 10%, var(--bg-tertiary));
 }
 
 .style-buttons {

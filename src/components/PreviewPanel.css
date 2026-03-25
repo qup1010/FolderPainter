@@ -1,4 +1,4 @@
-﻿/* PreviewPanel 鏍峰紡 - 缃戞牸鍗＄墖甯冨眬 */
+/* PreviewPanel 鏍峰紡 - 缃戞牸鍗＄墖甯冨眬 */
 
 .preview-panel {
   display: flex;
@@ -42,7 +42,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.25rem;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--accent-primary) 7%, #ffffff), var(--bg-secondary));
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent-primary) 7%, var(--bg-secondary)), var(--bg-secondary));
   border-bottom: 1px solid color-mix(in srgb, var(--accent-primary) 12%, var(--border-color));
   flex-shrink: 0;
 }
@@ -115,7 +115,7 @@
   width: 48px;
   height: 48px;
   border-radius: 10px;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--accent-primary) 6%, #ffffff), var(--bg-secondary));
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent-primary) 6%, var(--bg-secondary)), var(--bg-secondary));
   display: flex;
   align-items: center;
   justify-content: center;

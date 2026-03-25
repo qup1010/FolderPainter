@@ -33,7 +33,7 @@
 }
 
 .target-item {
-  background: white;
+  background: var(--bg-secondary, #ffffff);
   border: 1px solid var(--border-color, #e5e7eb);
   border-radius: 8px;
   padding: 12px;
@@ -59,7 +59,7 @@
 }
 
 .target-prompt {
-  background: rgba(15, 23, 42, 0.03);
+  background: color-mix(in srgb, var(--accent-primary, #2f6fed) 5%, var(--bg-primary, #f3f6fb));
   padding: 8px;
   border-radius: 6px;
   margin-bottom: 8px;
@@ -122,4 +122,23 @@
   color: var(--text-muted, #9ca3af);
   margin: 0;
   text-align: center;
+}
+
+/* Dark Mode Overrides */
+:root.dark .generation-progress {
+  background: linear-gradient(135deg, rgba(80, 140, 255, 0.08), rgba(60, 210, 210, 0.08));
+  border-color: rgba(80, 140, 255, 0.24);
+}
+
+:root.dark .target-item {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+:root.dark .target-prompt {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+:root.dark .target-prompt code {
+  color: var(--text-secondary);
 }
